@@ -1,0 +1,9 @@
+# .gitattributes
+
+# Copyright (c) Mateusz Jandura. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+* text=auto
+
+# Treat C/C++ headers as a C++ code
+*.h = linguist-language=C++

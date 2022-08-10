@@ -1,0 +1,11 @@
+# .gitignore
+
+# Copyright (c) Mateusz Jandura. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+# Ignore compilation files.
+[Dd]ebug/
+[Rr]elease/
+
+# Ignore GIT internal files.
+.vs/
