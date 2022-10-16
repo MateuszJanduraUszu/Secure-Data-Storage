@@ -84,9 +84,6 @@
     <Filter Include="src\cryptography\cipher\asymmetric">
       <UniqueIdentifier>{1b4c1594-a2ff-486f-bc5c-acaa6193c6cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\cryptography\checksum">
-      <UniqueIdentifier>{054c6ef4-ca5e-4342-aed9-c80f3c24b7ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\cryptography\hash\generic">
       <UniqueIdentifier>{6c9edd18-11cd-49e5-81ec-36ef702e2856}</UniqueIdentifier>
     </Filter>

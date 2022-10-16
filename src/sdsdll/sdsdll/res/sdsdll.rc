@@ -25,7 +25,7 @@ LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,16,41,232
+ FILEVERSION 1,16,41,233
  PRODUCTVERSION 1,0,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
@@ -43,7 +43,7 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Secure Data Storage Developers"
             VALUE "FileDescription", "Secure Data Storage DLL"
-            VALUE "FileVersion", "1.16.41.232"
+            VALUE "FileVersion", "1.16.41.233"
             VALUE "InternalName", "sdsdll.rc"
             VALUE "LegalCopyright", "Copyright © Mateusz Jandura. All rights reserved."
             VALUE "OriginalFilename", "sdsdll.rc"
