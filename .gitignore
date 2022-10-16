@@ -3,9 +3,13 @@
 # Copyright (c) Mateusz Jandura. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-# Ignore compilation files.
-[Dd]ebug/
-[Rr]elease/
-
 # Ignore GIT internal files.
 .vs/
+
+# Ignore binary files.
+/src/sdsdll/bin/
+/src/sdsdll/sdsdll/x64/
+/src/sdsdll/sdsdll/x86/
+/src/tests/bin/
+/src/tests/tests/x64/
+/src/tests/tests/x86/

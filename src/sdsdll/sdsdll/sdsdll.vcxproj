@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\build\main.cpp" />
+    <ClCompile Include="src\build\sdsdll_pch.cpp">
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</MultiProcessorCompilation>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\compression\lz4.cpp" />
+    <ClCompile Include="src\core\debug\trace.cpp" />
+    <ClCompile Include="src\core\memory\allocator.cpp" />
+    <ClCompile Include="src\cryptography\cipher\symmetric\aes256_cbc.cpp" />
+    <ClCompile Include="src\cryptography\cipher\symmetric\aes256_gcm.cpp" />
+    <ClCompile Include="src\cryptography\cipher\symmetric\aes_key.cpp" />
+    <ClCompile Include="src\cryptography\cipher\cipher_types.cpp" />
+    <ClCompile Include="src\cryptography\hash\generic\blake3.cpp" />
+    <ClCompile Include="src\cryptography\hash\generic\sha512.cpp" />
+    <ClCompile Include="src\cryptography\hash\generic\xxhash.cpp" />
+    <ClCompile Include="src\cryptography\hash\password\argon2d.cpp" />
+    <ClCompile Include="src\cryptography\hash\password\argon2i.cpp" />
+    <ClCompile Include="src\cryptography\hash\password\argon2id.cpp" />
+    <ClCompile Include="src\cryptography\hash\password\scrypt.cpp" />
+    <ClCompile Include="src\cryptography\random\random.cpp" />
+    <ClCompile Include="src\cryptography\random\salt.cpp" />
+    <ClCompile Include="src\encoding\bom.cpp" />
+    <ClCompile Include="src\encoding\utf16.cpp" />
+    <ClCompile Include="src\encoding\utf8.cpp" />
+    <ClCompile Include="src\extensions\scfg.cpp" />
+    <ClCompile Include="src\extensions\sudb.cpp" />
+    <ClCompile Include="src\filesystem\com.cpp" />
+    <ClCompile Include="src\filesystem\directory.cpp" />
+    <ClCompile Include="src\filesystem\file.cpp" />
+    <ClCompile Include="src\filesystem\link.cpp" />
+    <ClCompile Include="src\filesystem\security.cpp" />
+    <ClCompile Include="src\filesystem\path.cpp" />
+    <ClCompile Include="src\filesystem\shortcut.cpp" />
+    <ClCompile Include="src\filesystem\status.cpp" />
+    <ClCompile Include="src\recovery\arc.cpp" />
+    <ClCompile Include="src\system\execution\process.cpp" />
+    <ClCompile Include="src\system\handle\generic_handle.cpp" />
+    <ClCompile Include="src\system\handle\library_handle.cpp" />
+    <ClCompile Include="src\system\handle\process_handle.cpp" />
+    <ClCompile Include="src\system\power\power.cpp" />
+    <ClCompile Include="src\system\registry\key.cpp" />
+    <ClCompile Include="src\system\registry\manager.cpp" />
+    <ClCompile Include="src\system\registry\view.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="res\resource.h" />
+    <ClInclude Include="src\build\sdsdll_framework.hpp" />
+    <ClInclude Include="src\build\sdsdll_pch.hpp" />
+    <ClInclude Include="src\compression\lz4.hpp" />
+    <ClInclude Include="src\compression\types.hpp" />
+    <ClInclude Include="src\core\api.hpp" />
+    <ClInclude Include="src\core\container\bytes.hpp" />
+    <ClInclude Include="src\core\debug\trace.hpp" />
+    <ClInclude Include="src\core\defs.hpp" />
+    <ClInclude Include="src\core\memory\allocator.hpp" />
+    <ClInclude Include="src\core\optimization\ebco.hpp" />
+    <ClInclude Include="src\core\optimization\sbo.hpp" />
+    <ClInclude Include="src\core\optimization\string_view.hpp" />
+    <ClInclude Include="src\core\pattern\singleton.hpp" />
+    <ClInclude Include="src\core\symbol\loader.hpp" />
+    <ClInclude Include="src\core\traits\concepts.hpp" />
+    <ClInclude Include="src\core\traits\integer.hpp" />
+    <ClInclude Include="src\core\traits\memory_traits.hpp" />
+    <ClInclude Include="src\core\traits\string_traits.hpp" />
+    <ClInclude Include="src\core\traits\type_traits.hpp" />
+    <ClInclude Include="src\cryptography\cipher\symmetric\aes256_cbc.hpp" />
+    <ClInclude Include="src\cryptography\cipher\symmetric\aes256_gcm.hpp" />
+    <ClInclude Include="src\cryptography\cipher\symmetric\aes_key.hpp" />
+    <ClInclude Include="src\cryptography\cipher\symmetric\iv.hpp" />
+    <ClInclude Include="src\cryptography\cipher\cipher_types.hpp" />
+    <ClInclude Include="src\cryptography\hash\generic\blake3.hpp" />
+    <ClInclude Include="src\cryptography\hash\generic\sha512.hpp" />
+    <ClInclude Include="src\cryptography\hash\generic\xxhash.hpp" />
+    <ClInclude Include="src\cryptography\hash\password\argon2d.hpp" />
+    <ClInclude Include="src\cryptography\hash\password\argon2i.hpp" />
+    <ClInclude Include="src\cryptography\hash\password\argon2id.hpp" />
+    <ClInclude Include="src\cryptography\hash\password\scrypt.hpp" />
+    <ClInclude Include="src\cryptography\hash\hash_types.hpp" />
+    <ClInclude Include="src\cryptography\random\random.hpp" />
+    <ClInclude Include="src\cryptography\random\salt.hpp" />
+    <ClInclude Include="src\encoding\bom.hpp" />
+    <ClInclude Include="src\encoding\utf16.hpp" />
+    <ClInclude Include="src\encoding\utf8.hpp" />
+    <ClInclude Include="src\extensions\scfg.hpp" />
+    <ClInclude Include="src\extensions\sudb.hpp" />
+    <ClInclude Include="src\filesystem\com.hpp" />
+    <ClInclude Include="src\filesystem\directory.hpp" />
+    <ClInclude Include="src\filesystem\file.hpp" />
+    <ClInclude Include="src\filesystem\link.hpp" />
+    <ClInclude Include="src\filesystem\security.hpp" />
+    <ClInclude Include="src\filesystem\path.hpp" />
+    <ClInclude Include="src\filesystem\shortcut.hpp" />
+    <ClInclude Include="src\filesystem\status.hpp" />
+    <ClInclude Include="src\recovery\arc.hpp" />
+    <ClInclude Include="src\system\execution\process.hpp" />
+    <ClInclude Include="src\system\handle\generic_handle.hpp" />
+    <ClInclude Include="src\system\handle\handle_wrapper.hpp" />
+    <ClInclude Include="src\system\handle\library_handle.hpp" />
+    <ClInclude Include="src\system\handle\process_handle.hpp" />
+    <ClInclude Include="src\system\power\power.hpp" />
+    <ClInclude Include="src\system\registry\key.hpp" />
+    <ClInclude Include="src\system\registry\manager.hpp" />
+    <ClInclude Include="src\system\registry\view.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\sdsdll.rc" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{285f55b4-1108-4214-8d4f-bae3364b4f0d}</ProjectGuid>
+    <RootNamespace>sdsdll</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)\bin\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(PlatformShortName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)\bin\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(PlatformShortName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)\bin\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(PlatformShortName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\bin\$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(PlatformShortName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;SDSDLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeaderFile>build\sdsdll_pch.hpp</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\src\;$(SolutionDir)\..\thirdparty\BLAKE3\inc;$(SolutionDir)\..\thirdparty\Botan\inc;$(SolutionDir)\..\thirdparty\ICU\inc;$(SolutionDir)\..\thirdparty\LZ4\inc;$(SolutionDir)\..\thirdparty\OpenSSL\inc;$(SolutionDir)\..\thirdparty\xxHash\inc</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(SolutionDir)\..\thirdparty\BLAKE3\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\Botan\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\ICU\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\LZ4\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\OpenSSL\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\xxHash\bin\$(PlatformShortName)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>blake3.lib;botan.lib;icudtd.lib;icuind.lib;icuiod.lib;icutud.lib;icuucd.lib;libcrypto.lib;libssl.lib;lz4d.lib;xxhash.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;SDSDLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeaderFile>build\sdsdll_pch.hpp</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\src\;$(SolutionDir)\..\thirdparty\BLAKE3\inc;$(SolutionDir)\..\thirdparty\Botan\inc;$(SolutionDir)\..\thirdparty\ICU\inc;$(SolutionDir)\..\thirdparty\LZ4\inc;$(SolutionDir)\..\thirdparty\OpenSSL\inc;$(SolutionDir)\..\thirdparty\xxHash\inc</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(SolutionDir)\..\thirdparty\BLAKE3\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\Botan\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\ICU\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\LZ4\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\OpenSSL\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\xxHash\bin\$(PlatformShortName)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>blake3.lib;botan.lib;icudt.lib;icuin.lib;icuio.lib;icutu.lib;icuuc.lib;libcrypto.lib;libssl.lib;lz4.lib;xxhash.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;SDSDLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeaderFile>build\sdsdll_pch.hpp</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\src\;$(SolutionDir)\..\thirdparty\BLAKE3\inc;$(SolutionDir)\..\thirdparty\Botan\inc;$(SolutionDir)\..\thirdparty\ICU\inc;$(SolutionDir)\..\thirdparty\LZ4\inc;$(SolutionDir)\..\thirdparty\OpenSSL\inc;$(SolutionDir)\..\thirdparty\xxHash\inc</AdditionalIncludeDirectories>
+      <CallingConvention>StdCall</CallingConvention>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(SolutionDir)\..\thirdparty\BLAKE3\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\Botan\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\ICU\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\LZ4\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\OpenSSL\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\xxHash\bin\$(PlatformShortName)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>blake3.lib;botan.lib;icudtd.lib;icuind.lib;icuiod.lib;icutud.lib;icuucd.lib;libcrypto.lib;libssl.lib;lz4d.lib;xxhash.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;SDSDLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeaderFile>build\sdsdll_pch.hpp</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\src\;$(SolutionDir)\..\thirdparty\BLAKE3\inc;$(SolutionDir)\..\thirdparty\Botan\inc;$(SolutionDir)\..\thirdparty\ICU\inc;$(SolutionDir)\..\thirdparty\LZ4\inc;$(SolutionDir)\..\thirdparty\OpenSSL\inc;$(SolutionDir)\..\thirdparty\xxHash\inc</AdditionalIncludeDirectories>
+      <CallingConvention>StdCall</CallingConvention>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(SolutionDir)\..\thirdparty\BLAKE3\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\Botan\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\ICU\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\LZ4\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\OpenSSL\bin\$(PlatformShortName)\$(Configuration);$(SolutionDir)\..\thirdparty\xxHash\bin\$(PlatformShortName)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>blake3.lib;botan.lib;icudt.lib;icuin.lib;icuio.lib;icutu.lib;icuuc.lib;libcrypto.lib;libssl.lib;lz4.lib;xxhash.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

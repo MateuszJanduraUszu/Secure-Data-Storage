@@ -1,0 +1,406 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src\build">
+      <UniqueIdentifier>{bc5f53f8-ffed-4356-93a1-5afc172fa8a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{aa22ad6b-49bd-46ef-aade-54e0f0df8328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\filesystem">
+      <UniqueIdentifier>{3814c85c-7dc2-40ce-9d6a-5d4ab109d2fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\debug">
+      <UniqueIdentifier>{ba9fbad1-05b3-4702-b20b-9e1223f76184}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\traits">
+      <UniqueIdentifier>{980cc1b4-ac23-4e3f-8520-b4514a47630e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\memory">
+      <UniqueIdentifier>{19cc0c5b-f3d7-461e-9598-3954a0a73ce4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\optimization">
+      <UniqueIdentifier>{c8a56a9a-7c0f-4438-b046-87683f3dcb4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\pattern">
+      <UniqueIdentifier>{ab962f6a-3e74-4a76-acb8-d44301ca402e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\time_zone">
+      <UniqueIdentifier>{9faf0a31-90c9-48a4-81b1-e2d21835f02b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cryptography">
+      <UniqueIdentifier>{51962627-ead2-414c-9d09-3220a849d27a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\system">
+      <UniqueIdentifier>{e7c8bb03-d52d-41a5-b3aa-6f1503834552}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\compression">
+      <UniqueIdentifier>{bc0f4563-7472-4301-b03d-41a4c22ed67a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\encoding">
+      <UniqueIdentifier>{a497e5a1-737c-49fd-98a7-542278b1a1cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\extensions">
+      <UniqueIdentifier>{f1d788fa-3b15-4953-90d6-ca0a95a0ff0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\system\registry">
+      <UniqueIdentifier>{c141520e-6e27-4669-863b-88431ad4c48c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\system\execution">
+      <UniqueIdentifier>{717410a2-ec37-4277-89d7-ca916ab02a67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\system\power">
+      <UniqueIdentifier>{c5b2f6fb-e33a-4bf7-a201-113d21fa9b27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\hardware">
+      <UniqueIdentifier>{541b11be-02be-4721-9cda-51e2c490ad98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\system\handle">
+      <UniqueIdentifier>{b85ed7f8-0cfc-4b72-ac52-f341efd46ce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\symbol">
+      <UniqueIdentifier>{088df27b-648b-472f-ac43-c020142c5948}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cryptography\random">
+      <UniqueIdentifier>{8fd6017f-2687-406e-9b85-ce0e91f8a2d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cryptography\cipher">
+      <UniqueIdentifier>{43d96f6f-d681-4a5e-a6ec-7476fdda8b09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cryptography\hash">
+      <UniqueIdentifier>{c0258a0a-b02a-4441-abc1-b01b3ff94a76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cryptography\cipher\symmetric">
+      <UniqueIdentifier>{23fd797d-93a1-4d8d-91b8-2bd298ac5f19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cryptography\cipher\asymmetric">
+      <UniqueIdentifier>{1b4c1594-a2ff-486f-bc5c-acaa6193c6cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cryptography\checksum">
+      <UniqueIdentifier>{054c6ef4-ca5e-4342-aed9-c80f3c24b7ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cryptography\hash\generic">
+      <UniqueIdentifier>{6c9edd18-11cd-49e5-81ec-36ef702e2856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\cryptography\hash\password">
+      <UniqueIdentifier>{6aae2279-d130-4030-9e96-c54180ad3ff3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\recovery">
+      <UniqueIdentifier>{50487b32-eccd-4962-b766-35e654aa4421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\container">
+      <UniqueIdentifier>{45eaf5c2-c8c5-4601-a269-26cb76407b18}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\build\main.cpp">
+      <Filter>src\build</Filter>
+    </ClCompile>
+    <ClCompile Include="src\build\sdsdll_pch.cpp">
+      <Filter>src\build</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\memory\allocator.cpp">
+      <Filter>src\core\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\debug\trace.cpp">
+      <Filter>src\core\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\power\power.cpp">
+      <Filter>src\system\power</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\handle\generic_handle.cpp">
+      <Filter>src\system\handle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filesystem\path.cpp">
+      <Filter>src\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filesystem\directory.cpp">
+      <Filter>src\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filesystem\file.cpp">
+      <Filter>src\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filesystem\link.cpp">
+      <Filter>src\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filesystem\shortcut.cpp">
+      <Filter>src\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filesystem\status.cpp">
+      <Filter>src\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\execution\process.cpp">
+      <Filter>src\system\execution</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\handle\process_handle.cpp">
+      <Filter>src\system\handle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\handle\library_handle.cpp">
+      <Filter>src\system\handle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\registry\key.cpp">
+      <Filter>src\system\registry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\registry\manager.cpp">
+      <Filter>src\system\registry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\registry\view.cpp">
+      <Filter>src\system\registry</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filesystem\com.cpp">
+      <Filter>src\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cryptography\random\random.cpp">
+      <Filter>src\cryptography\random</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cryptography\random\salt.cpp">
+      <Filter>src\cryptography\random</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cryptography\hash\password\scrypt.cpp">
+      <Filter>src\cryptography\hash\password</Filter>
+    </ClCompile>
+    <ClCompile Include="src\encoding\bom.cpp">
+      <Filter>src\encoding</Filter>
+    </ClCompile>
+    <ClCompile Include="src\encoding\utf8.cpp">
+      <Filter>src\encoding</Filter>
+    </ClCompile>
+    <ClCompile Include="src\encoding\utf16.cpp">
+      <Filter>src\encoding</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cryptography\hash\password\argon2id.cpp">
+      <Filter>src\cryptography\hash\password</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cryptography\hash\password\argon2d.cpp">
+      <Filter>src\cryptography\hash\password</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cryptography\hash\password\argon2i.cpp">
+      <Filter>src\cryptography\hash\password</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cryptography\hash\generic\blake3.cpp">
+      <Filter>src\cryptography\hash\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cryptography\cipher\symmetric\aes256_gcm.cpp">
+      <Filter>src\cryptography\cipher\symmetric</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cryptography\cipher\symmetric\aes_key.cpp">
+      <Filter>src\cryptography\cipher\symmetric</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cryptography\hash\generic\sha512.cpp">
+      <Filter>src\cryptography\hash\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cryptography\cipher\symmetric\aes256_cbc.cpp">
+      <Filter>src\cryptography\cipher\symmetric</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cryptography\cipher\cipher_types.cpp">
+      <Filter>src\cryptography\cipher</Filter>
+    </ClCompile>
+    <ClCompile Include="src\compression\lz4.cpp">
+      <Filter>src\compression</Filter>
+    </ClCompile>
+    <ClCompile Include="src\extensions\scfg.cpp">
+      <Filter>src\extensions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filesystem\security.cpp">
+      <Filter>src\filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cryptography\hash\generic\xxhash.cpp">
+      <Filter>src\cryptography\hash\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\extensions\sudb.cpp">
+      <Filter>src\extensions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\recovery\arc.cpp">
+      <Filter>src\recovery</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\build\sdsdll_framework.hpp">
+      <Filter>src\build</Filter>
+    </ClInclude>
+    <ClInclude Include="src\build\sdsdll_pch.hpp">
+      <Filter>src\build</Filter>
+    </ClInclude>
+    <ClInclude Include="res\resource.h">
+      <Filter>res</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\api.hpp">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\debug\trace.hpp">
+      <Filter>src\core\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\optimization\ebco.hpp">
+      <Filter>src\core\optimization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\traits\concepts.hpp">
+      <Filter>src\core\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\traits\type_traits.hpp">
+      <Filter>src\core\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\defs.hpp">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\pattern\singleton.hpp">
+      <Filter>src\core\pattern</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\traits\string_traits.hpp">
+      <Filter>src\core\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\traits\memory_traits.hpp">
+      <Filter>src\core\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\optimization\sbo.hpp">
+      <Filter>src\core\optimization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\power\power.hpp">
+      <Filter>src\system\power</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\handle\handle_wrapper.hpp">
+      <Filter>src\system\handle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\handle\generic_handle.hpp">
+      <Filter>src\system\handle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filesystem\path.hpp">
+      <Filter>src\filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filesystem\directory.hpp">
+      <Filter>src\filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filesystem\file.hpp">
+      <Filter>src\filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filesystem\link.hpp">
+      <Filter>src\filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filesystem\shortcut.hpp">
+      <Filter>src\filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filesystem\status.hpp">
+      <Filter>src\filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\execution\process.hpp">
+      <Filter>src\system\execution</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\handle\process_handle.hpp">
+      <Filter>src\system\handle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\symbol\loader.hpp">
+      <Filter>src\core\symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\handle\library_handle.hpp">
+      <Filter>src\system\handle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\registry\key.hpp">
+      <Filter>src\system\registry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\registry\manager.hpp">
+      <Filter>src\system\registry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\registry\view.hpp">
+      <Filter>src\system\registry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filesystem\com.hpp">
+      <Filter>src\filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\random\random.hpp">
+      <Filter>src\cryptography\random</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\random\salt.hpp">
+      <Filter>src\cryptography\random</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\hash\password\scrypt.hpp">
+      <Filter>src\cryptography\hash\password</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\hash\hash_types.hpp">
+      <Filter>src\cryptography\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="src\encoding\bom.hpp">
+      <Filter>src\encoding</Filter>
+    </ClInclude>
+    <ClInclude Include="src\encoding\utf8.hpp">
+      <Filter>src\encoding</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\hash\password\argon2id.hpp">
+      <Filter>src\cryptography\hash\password</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\hash\password\argon2d.hpp">
+      <Filter>src\cryptography\hash\password</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\hash\password\argon2i.hpp">
+      <Filter>src\cryptography\hash\password</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\hash\generic\blake3.hpp">
+      <Filter>src\cryptography\hash\generic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\cipher\symmetric\aes256_gcm.hpp">
+      <Filter>src\cryptography\cipher\symmetric</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\cipher\symmetric\aes_key.hpp">
+      <Filter>src\cryptography\cipher\symmetric</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\cipher\symmetric\iv.hpp">
+      <Filter>src\cryptography\cipher\symmetric</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\cipher\cipher_types.hpp">
+      <Filter>src\cryptography\cipher</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\hash\generic\sha512.hpp">
+      <Filter>src\cryptography\hash\generic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\optimization\string_view.hpp">
+      <Filter>src\core\optimization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\cipher\symmetric\aes256_cbc.hpp">
+      <Filter>src\cryptography\cipher\symmetric</Filter>
+    </ClInclude>
+    <ClInclude Include="src\compression\lz4.hpp">
+      <Filter>src\compression</Filter>
+    </ClInclude>
+    <ClInclude Include="src\compression\types.hpp">
+      <Filter>src\compression</Filter>
+    </ClInclude>
+    <ClInclude Include="src\extensions\scfg.hpp">
+      <Filter>src\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\traits\integer.hpp">
+      <Filter>src\core\traits</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filesystem\security.hpp">
+      <Filter>src\filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cryptography\hash\generic\xxhash.hpp">
+      <Filter>src\cryptography\hash\generic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\encoding\utf16.hpp">
+      <Filter>src\encoding</Filter>
+    </ClInclude>
+    <ClInclude Include="src\extensions\sudb.hpp">
+      <Filter>src\extensions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\recovery\arc.hpp">
+      <Filter>src\recovery</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\memory\allocator.hpp">
+      <Filter>src\core\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\container\bytes.hpp">
+      <Filter>src\core\container</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\sdsdll.rc">
+      <Filter>res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

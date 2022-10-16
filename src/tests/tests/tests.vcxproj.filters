@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src\unit">
+      <UniqueIdentifier>{44fe0d8c-3343-4864-872d-4754411e2d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\unit\cryptography">
+      <UniqueIdentifier>{83709513-0d4d-4531-bc3f-aecc99403abf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="unit\cryptography\aes256_cbc.hpp">
+      <Filter>src\unit\cryptography</Filter>
+    </ClInclude>
+    <ClInclude Include="unit\cryptography\aes256_gcm.hpp">
+      <Filter>src\unit\cryptography</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
