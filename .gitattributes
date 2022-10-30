@@ -6,4 +6,4 @@
 * text=auto
 
 # Treat C/C++ headers as a C++ code
-*.h = linguist-language=C++
+*.h linguist-language=C++
