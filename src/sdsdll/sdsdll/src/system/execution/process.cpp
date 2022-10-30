@@ -109,7 +109,7 @@ _NODISCARD bool _Is_process_elevated(const wchar_t* const _Name) noexcept {
 _NODISCARD bool _Is_process_running(const wchar_t* const _Name) noexcept {
     // try to open a process handle with the lowest access
     process_handle_wrapper _Handle = _Open_process_handle(_Name, process_access::terminate);
-    return !!_Handle; // negate _Handle twice to access process_handle_wrapper::operator bool()
+    return _Handle.good();
 }
 
 // FUNCTION _Suspend_process
@@ -290,7 +290,7 @@ _NODISCARD const bool process::is_elevated() const noexcept {
 
 // FUNCTION process::is_open
 _NODISCARD bool process::is_open() const noexcept {
-    return !!_Mydata._Handle; // double negation to access process_handle_wrapper::operator bool()
+    return _Mydata._Handle.good();
 }
 
 // FUNCTION process::name

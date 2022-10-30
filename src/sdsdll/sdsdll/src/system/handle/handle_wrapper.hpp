@@ -73,6 +73,10 @@ public:
         }
     }
 
+    _NODISCARD constexpr bool good() const noexcept {
+        return _Myval != _Traits::invalid_value;
+    }
+
     _NODISCARD constexpr explicit operator bool() const noexcept {
         return _Myval != _Traits::invalid_value;
     }
