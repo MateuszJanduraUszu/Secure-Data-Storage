@@ -8,7 +8,6 @@
 #define _SDSDLL_CORE_OPTIMIZATION_SBO_HPP_
 #include <core/defs.hpp>
 #if _SDSDLL_PREPROCESSOR_GUARD
-#include <core/debug/trace.hpp>
 #include <core/memory/allocator.hpp>
 #include <core/optimization/ebco.hpp>
 #include <core/traits/memory_traits.hpp>
@@ -148,12 +147,9 @@ public:
             } else { // allocate the buffer
                 _Data._Mystorage._Ptr = _Mypair._Get_val2().allocate(_New_size);
                 if (!_Data._Mystorage._Ptr) { // allocation failed
-                    _SDSDLL_DEBUG_ERROR("Failed to allocate %zu bytes.", _New_size * sizeof(_Ty));
                     return false;
                 }
 
-                _SDSDLL_DEBUG_TRACE(
-                    "Allocated %zu bytes at %p.", _New_size * sizeof(_Ty), _Data._Mystorage._Ptr);
                 _Data._Mysize = _New_size;
                 memory_traits::set(_Data._Mystorage._Ptr,
                     0, _Data._Mysize * sizeof(_Ty)); // fill the allocated buffer with zeros
@@ -162,8 +158,6 @@ public:
             return true;
         } else { // increase or decrease an old buffer (may change the buffer location)
             if (_New_size > _Max_size()) { // overflow possible
-                _SDSDLL_DEBUG_WARNING("Attempted to allocate %zu bytes which may have caused an overflow.",
-                    _New_size * sizeof(_Ty));
                 return false;
             }
 
@@ -184,8 +178,6 @@ public:
             memory_traits::set(_Data._Mystorage._Buf, 0, _Buffer_val::_Buffer_size * sizeof(_Ty));
         } else { // deallocate the allocated buffer
             _Mypair._Get_val2().deallocate(_Data._Mystorage._Ptr, _Data._Mysize);
-            _SDSDLL_DEBUG_TRACE(
-                "Deallocated %zu bytes at %p.", _Data._Mysize * sizeof(_Ty), _Data._Mystorage._Ptr);
             _Data._Mystorage._Ptr = nullptr;
             _Data._Mysize         = 0;
         }
@@ -205,14 +197,11 @@ private:
             _Alloc& _Al      = _Mypair._Get_val2();
             pointer _New_ptr = _Al.allocate(_New_size);
             if (!_New_ptr) { // allocation failed
-                _SDSDLL_DEBUG_ERROR("Failed to allocate %zu bytes.", _New_size * sizeof(_Ty));
                 return false;
             }
 
-            _SDSDLL_DEBUG_TRACE("Allocated %zu bytes at %p.", _New_size * sizeof(_Ty), _New_ptr);
             _Data._Mysize = _New_size;
-            memory_traits::move(
-                _New_ptr, _Data._Mystorage._Buf, (_STD min)(_Data._Mysize, _New_size) * sizeof(_Ty));
+            memory_traits::move(_New_ptr, _Data._Mystorage._Buf, _New_size * sizeof(_Ty));
             memory_traits::set(_Data._Mystorage._Buf, 0, _Buffer_val::_Buffer_size * sizeof(_Ty));
             _Data._Mystorage._Ptr = _New_ptr; // assign a new buffer
         }
@@ -226,11 +215,9 @@ private:
         if (_New_size > _Buffer_val::_Buffer_size) { // SBO is still not available
             pointer _New_ptr = _Al.allocate(_New_size);
             if (!_New_ptr) { // allocation failed
-                _SDSDLL_DEBUG_ERROR("Failed to allocate %zu bytes.", _New_size * sizeof(_Ty));
                 return false;
             }
 
-            _SDSDLL_DEBUG_TRACE("Allocated %zu bytes at %p.", _New_size * sizeof(_Ty), _New_ptr);
             memory_traits::move(
                 _New_ptr, _Data._Mystorage._Ptr, (_STD min)(_Data._Mysize, _New_size) * sizeof(_Ty));
             if (_New_size > _Data._Mysize) { // fill the rest of the buffer with zeros
@@ -238,8 +225,6 @@ private:
             }
 
             _Al.deallocate(_Data._Mystorage._Ptr, _Data._Mysize); // deallocate an old buffer
-            _SDSDLL_DEBUG_TRACE(
-                "Deallocated %zu bytes at %p.", _Data._Mysize * sizeof(_Ty), _Data._Mystorage._Ptr);
             _Data._Mystorage._Ptr = _New_ptr; // assign a new buffer
             _Data._Mysize         = _New_size;
         } else { // SBO is now available
@@ -247,8 +232,6 @@ private:
             const size_type _Min_size = (_STD min)(_Data._Mysize, _New_size);
             memory_traits::move(_Temp_buf, _Data._Mystorage._Ptr, _Min_size * sizeof(_Ty));
             _Al.deallocate(_Data._Mystorage._Ptr, _Data._Mysize); // deallocate an old buffer
-            _SDSDLL_DEBUG_TRACE(
-                "Deallocated %zu bytes at %p.", _Data._Mysize * sizeof(_Ty), _Data._Mystorage._Ptr);
             _Data._Mystorage._Ptr = nullptr;
             memory_traits::move(_Data._Mystorage._Buf, _Temp_buf, _Min_size * sizeof(_Ty));
             _Data._Mysize = _New_size;
@@ -263,8 +246,6 @@ private:
             // Note: The _Data._Mystorage._Ptr is always allocated if the buffer size
             //       is greater than _Buffer_val::_Buffer_size.
             _Mypair._Get_val2().deallocate(_Data._Mystorage._Ptr, _Data._Mysize);
-            _SDSDLL_DEBUG_TRACE(
-                "Deallocated %zu bytes at %p.", _Data._Mysize * sizeof(_Ty), _Data._Mystorage._Ptr);
         }
     }
 
@@ -328,31 +309,24 @@ public:
         } else if (_Data._Mysize == 0) { // allocate a new buffer
             _Data._Mystorage._Ptr = _Mypair._Get_val2().allocate(_New_size);
             if (!_Data._Mystorage._Ptr) { // allocation failed
-                _SDSDLL_DEBUG_ERROR("Failed to allocate %zu bytes.", _New_size * sizeof(_Ty));
                 return false;
             }
 
-            _SDSDLL_DEBUG_TRACE(
-                "Allocated %zu bytes at %p.", _New_size * sizeof(_Ty), _Data._Mystorage._Ptr);
             _Data._Mysize = _New_size;
             memory_traits::set(
                 _Data._Mystorage._Ptr, 0, _Data._Mysize * sizeof(_Ty)); // fill the buffer with zeros
             return true;
         } else { // increase or decrease an old buffer
             if (_New_size > _Max_size()) { // overflow possible
-                _SDSDLL_DEBUG_WARNING("Attempted to allocate %zu bytes which may have caused an overflow.",
-                    _New_size * sizeof(_Ty));
                 return false;
             }
 
             _Alloc& _Al      = _Mypair._Get_val2();
             pointer _New_ptr = _Al.allocate(_New_size);
             if (!_New_ptr) { // allocation failed
-                _SDSDLL_DEBUG_ERROR("Failed to allocate %zu bytes.", _New_size * sizeof(_Ty));
                 return false;
             }
 
-            _SDSDLL_DEBUG_TRACE("Allocated %zu bytes at %p.", _New_size * sizeof(_Ty), _New_ptr);
             const size_type _Min_size = (_STD min)(_Data._Mysize, _New_size);
             memory_traits::move(_New_ptr, _Data._Mystorage._Ptr, _Min_size * sizeof(_Ty));
             if (_New_size > _Data._Mysize) { // fill the rest of the buffer with zeros
@@ -360,8 +334,6 @@ public:
             }
 
             _Al.deallocate(_Data._Mystorage._Ptr, _Data._Mysize); // deallocate an old buffer
-            _SDSDLL_DEBUG_TRACE(
-                "Deallocated %zu bytes at %p.", _Data._Mysize * sizeof(_Ty), _Data._Mystorage._Ptr);
             _Data._Mystorage._Ptr = _New_ptr; // assign a new buffer
             _Data._Mysize         = _New_size;
             return true;
@@ -372,8 +344,6 @@ public:
         _Buffer_val& _Data = _Mypair._Val1;
         if (_Data._Mysize > 0) { // buffer not empty, deallocate
             _Mypair._Get_val2().deallocate(_Data._Mystorage._Ptr, _Data._Mysize);
-            _SDSDLL_DEBUG_TRACE(
-                "Deallocated %zu bytes at %p.", _Data._Mysize * sizeof(_Ty), _Data._Mystorage._Ptr);
             _Data._Mystorage._Ptr = nullptr;
             _Data._Mysize         = 0;
         }

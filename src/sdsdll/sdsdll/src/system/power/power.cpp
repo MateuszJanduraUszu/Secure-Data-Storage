@@ -23,22 +23,18 @@ _NODISCARD bool _Check_shutdown_type(const _Shutdown_type _Type) noexcept {
 // FUNCTION _Perform_shutdown
 _NODISCARD bool _Perform_shutdown(const _Shutdown_type _Type) noexcept {
     if (!_Check_shutdown_type(_Type)) { // unknown type
-        _SDSDLL_DEBUG_WARNING("Attempted to perform invalid shutdown.");
         return false;
     }
 
     generic_handle_wrapper _Handle;
     if (OpenProcessToken(
         GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &_Handle.get()) == 0) {
-        _SDSDLL_DEBUG_ERROR("Failed to open the current process token.");
         return false;
     }
 
-    _SDSDLL_DEBUG_TRACE("Opened the current process token.");
     TOKEN_PRIVILEGES _Token;
     if (LookupPrivilegeValueA(
         nullptr, "SeShutdownPrivilege", _SDSDLL addressof(_Token.Privileges[0].Luid)) == 0) {
-        _SDSDLL_DEBUG_ERROR("Failed to lookup for privileges.");
         return false;
     }
 
@@ -46,11 +42,9 @@ _NODISCARD bool _Perform_shutdown(const _Shutdown_type _Type) noexcept {
     _Token.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
     const DWORD _Flags              = static_cast<DWORD>(_Type) | EWX_FORCEIFHUNG;
     if (AdjustTokenPrivileges(_Handle.get(), false, _SDSDLL addressof(_Token), 0, nullptr, nullptr) == 0) {
-        _SDSDLL_DEBUG_ERROR("Failed to adjust the current process privileges.");
         return false;
     }
 
-    _SDSDLL_DEBUG_TRACE("Adjusted the current process token privileges.");
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 28159) // C28159: consider using InitiateSystemShutdownEx()
