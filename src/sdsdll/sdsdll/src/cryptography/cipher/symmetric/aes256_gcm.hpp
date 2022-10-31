@@ -67,7 +67,7 @@ class _Aes256_gcm_default_engine { // default engine for the AES-256 GCM algorit
 private:
     static_assert(is_any_of_v<_Elem, char, uint8_t, wchar_t>, "Requires UTF-8/UTF-16 element type.");
 
-    using _Simple_types = _Simple_cipher_types<_Elem, _Aes256_gcm_default_engine<_Elem>, aes_key<32>, iv<16>>;
+    using _Simple_types = _Simple_cipher_types<_Elem, _Aes256_gcm_default_engine<_Elem>, aes_key<32>, iv<12>>;
     using _Fn           = _Aes256_gcm_fn<_Simple_types>;
 
 public:
@@ -103,36 +103,36 @@ private:
 // FUNCTION TEMPLATE decrypt_aes256_gcm
 template <class _Elem, class _Eng = _Aes256_gcm_default_engine<uint8_t>>
 _SDSDLL_API _NODISCARD constexpr basic_string<_Elem> decrypt_aes256_gcm(
-    const uint8_t* const _Data, const size_t _Count, const aes_key<32>& _Key, const iv<16>& _Iv);
+    const uint8_t* const _Data, const size_t _Count, const aes_key<32>& _Key, const iv<12>& _Iv);
 
 template <class _Elem, class _Eng = _Aes256_gcm_default_engine<uint8_t>>
 _SDSDLL_API _NODISCARD constexpr basic_string<_Elem> decrypt_aes256_gcm(
-    const uint8_t* const _Data, const aes_key<32>& _Key, const iv<16>& _Iv);
+    const uint8_t* const _Data, const aes_key<32>& _Key, const iv<12>& _Iv);
 
 template <class _Elem, class _Eng = _Aes256_gcm_default_engine<uint8_t>>
 _SDSDLL_API _NODISCARD constexpr basic_string<_Elem> decrypt_aes256_gcm(
-    const byte_string_view _Data, const aes_key<32>& _Key, const iv<16>& _Iv);
+    const byte_string_view _Data, const aes_key<32>& _Key, const iv<12>& _Iv);
 
 template <class _Elem, class _Eng = _Aes256_gcm_default_engine<uint8_t>>
 _SDSDLL_API _NODISCARD constexpr basic_string<_Elem> decrypt_aes256_gcm(
-    const byte_string& _Data, const aes_key<32>& _Key, const iv<16>& _Iv);
+    const byte_string& _Data, const aes_key<32>& _Key, const iv<12>& _Iv);
 
 // FUNCTION TEMPLATE encrypt_aes256_gcm
 template <class _Elem, class _Eng = _Aes256_gcm_default_engine<_Elem>>
 _SDSDLL_API _NODISCARD constexpr byte_string encrypt_aes256_gcm(
-    const _Elem* const _Data, const size_t _Count, const aes_key<32>& _Key, const iv<16>& _Iv);
+    const _Elem* const _Data, const size_t _Count, const aes_key<32>& _Key, const iv<12>& _Iv);
 
 template <class _Elem, class _Eng = _Aes256_gcm_default_engine<_Elem>>
 _SDSDLL_API _NODISCARD constexpr byte_string encrypt_aes256_gcm(
-    const _Elem* const _Data, const aes_key<32>& _Key, const iv<16>& _Iv);
+    const _Elem* const _Data, const aes_key<32>& _Key, const iv<12>& _Iv);
 
 template <class _Elem, class _Eng = _Aes256_gcm_default_engine<_Elem>>
 _SDSDLL_API _NODISCARD constexpr byte_string encrypt_aes256_gcm(
-    const basic_string_view<_Elem> _Data, const aes_key<32>& _Key, const iv<16>& _Iv);
+    const basic_string_view<_Elem> _Data, const aes_key<32>& _Key, const iv<12>& _Iv);
 
 template <class _Elem, class _Eng = _Aes256_gcm_default_engine<_Elem>>
 _SDSDLL_API _NODISCARD constexpr byte_string encrypt_aes256_gcm(
-    const basic_string<_Elem>& _Data, const aes_key<32>& _Key, const iv<16>& _Iv);
+    const basic_string<_Elem>& _Data, const aes_key<32>& _Key, const iv<12>& _Iv);
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD

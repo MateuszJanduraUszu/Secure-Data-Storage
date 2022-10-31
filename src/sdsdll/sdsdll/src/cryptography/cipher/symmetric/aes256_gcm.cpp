@@ -147,7 +147,7 @@ _NODISCARD constexpr typename _Aes256_gcm_default_engine<_Elem>::byte_string
 // FUNCTION TEMPLATE decrypt_aes256_gcm
 template <class _Elem, class _Eng>
 _NODISCARD constexpr basic_string<_Elem> decrypt_aes256_gcm(const uint8_t* const _Data,
-    const size_t _Count, const aes_key<32>& _Key, const iv<16>& _Iv) {
+    const size_t _Count, const aes_key<32>& _Key, const iv<12>& _Iv) {
     static_assert(is_any_of_v<_Elem, char, wchar_t>, "Requires UTF-8/UTF-16 element type.");
     static_assert(is_same_v<uint8_t, typename _Eng::char_type>, "Incompatible type.");
     static_assert(is_same_v<size_t, typename _Eng::size_type>, "Incompatible type.");
@@ -166,49 +166,49 @@ _NODISCARD constexpr basic_string<_Elem> decrypt_aes256_gcm(const uint8_t* const
 }
 
 template _SDSDLL_API _NODISCARD string decrypt_aes256_gcm(
-    const uint8_t* const, const size_t, const aes_key<32>&, const iv<16>&);
+    const uint8_t* const, const size_t, const aes_key<32>&, const iv<12>&);
 template _SDSDLL_API _NODISCARD wstring decrypt_aes256_gcm(
-    const uint8_t* const, const size_t, const aes_key<32>&, const iv<16>&);
+    const uint8_t* const, const size_t, const aes_key<32>&, const iv<12>&);
 
 template <class _Elem, class _Eng>
 _NODISCARD constexpr basic_string<_Elem> decrypt_aes256_gcm(
-    const uint8_t* const _Data, const aes_key<32>& _Key, const iv<16>& _Iv) {
+    const uint8_t* const _Data, const aes_key<32>& _Key, const iv<12>& _Iv) {
     using _Size_t = typename _Eng::size_type;
     using _Traits = string_traits<uint8_t, _Size_t>;
     return _SDSDLL decrypt_aes256_gcm<_Elem, _Eng>(_Data, _Traits::length(_Data), _Key, _Iv);
 }
 
 template _SDSDLL_API _NODISCARD string decrypt_aes256_gcm(
-    const uint8_t* const, const aes_key<32>&, const iv<16>&);
+    const uint8_t* const, const aes_key<32>&, const iv<12>&);
 template _SDSDLL_API _NODISCARD wstring decrypt_aes256_gcm(
-    const uint8_t* const, const aes_key<32>&, const iv<16>&);
+    const uint8_t* const, const aes_key<32>&, const iv<12>&);
 
 template <class _Elem, class _Eng>
 _NODISCARD constexpr basic_string<_Elem> decrypt_aes256_gcm(
-    const byte_string_view _Data, const aes_key<32>& _Key, const iv<16>& _Iv) {
+    const byte_string_view _Data, const aes_key<32>& _Key, const iv<12>& _Iv) {
     return _SDSDLL decrypt_aes256_gcm<_Elem, _Eng>(_Data.data(), _Data.size(), _Key, _Iv);
 }
 
 template _SDSDLL_API _NODISCARD string decrypt_aes256_gcm(
-    const byte_string_view, const aes_key<32>&, const iv<16>&);
+    const byte_string_view, const aes_key<32>&, const iv<12>&);
 template _SDSDLL_API _NODISCARD wstring decrypt_aes256_gcm(
-    const byte_string_view, const aes_key<32>&, const iv<16>&);
+    const byte_string_view, const aes_key<32>&, const iv<12>&);
 
 template <class _Elem, class _Eng>
 _NODISCARD constexpr basic_string<_Elem> decrypt_aes256_gcm(
-    const byte_string& _Data, const aes_key<32>& _Key, const iv<16>& _Iv) {
+    const byte_string& _Data, const aes_key<32>& _Key, const iv<12>& _Iv) {
     return _SDSDLL decrypt_aes256_gcm<_Elem, _Eng>(_Data.c_str(), _Data.size(), _Key, _Iv);
 }
 
 template _SDSDLL_API _NODISCARD string decrypt_aes256_gcm(
-    const byte_string&, const aes_key<32>&, const iv<16>&);
+    const byte_string&, const aes_key<32>&, const iv<12>&);
 template _SDSDLL_API _NODISCARD wstring decrypt_aes256_gcm(
-    const byte_string&, const aes_key<32>&, const iv<16>&);
+    const byte_string&, const aes_key<32>&, const iv<12>&);
 
 // FUNCTION TEMPLATE encrypt_aes256_gcm
 template <class _Elem, class _Eng>
 _NODISCARD constexpr byte_string encrypt_aes256_gcm(
-    const _Elem* const _Data, const size_t _Count, const aes_key<32>& _Key, const iv<16>& _Iv) {
+    const _Elem* const _Data, const size_t _Count, const aes_key<32>& _Key, const iv<12>& _Iv) {
     static_assert(is_same_v<_Elem, typename _Eng::char_type>, "Incompatible type.");
     static_assert(is_same_v<size_t, typename _Eng::size_type>, "Incompatible type.");
     if (_Count == 0) { // empty string, do nothing
@@ -219,44 +219,44 @@ _NODISCARD constexpr byte_string encrypt_aes256_gcm(
 }
 
 template _SDSDLL_API _NODISCARD byte_string encrypt_aes256_gcm(
-    const char* const, const size_t, const aes_key<32>&, const iv<16>&);
+    const char* const, const size_t, const aes_key<32>&, const iv<12>&);
 template _SDSDLL_API _NODISCARD byte_string encrypt_aes256_gcm(
-    const wchar_t* const, const size_t, const aes_key<32>&, const iv<16>&);
+    const wchar_t* const, const size_t, const aes_key<32>&, const iv<12>&);
 
 template <class _Elem, class _Eng>
 _NODISCARD constexpr byte_string encrypt_aes256_gcm(
-    const _Elem* const _Data, const aes_key<32>& _Key, const iv<16>& _Iv) {
+    const _Elem* const _Data, const aes_key<32>& _Key, const iv<12>& _Iv) {
     using _Size_t = typename _Eng::size_type;
     using _Traits = string_traits<_Elem, _Size_t>;
     return _SDSDLL encrypt_aes256_gcm<_Elem, _Eng>(_Data, _Traits::length(_Data), _Key, _Iv);
 }
 
 template _SDSDLL_API _NODISCARD byte_string encrypt_aes256_gcm(
-    const char* const, const aes_key<32>&, const iv<16>&);
+    const char* const, const aes_key<32>&, const iv<12>&);
 template _SDSDLL_API _NODISCARD byte_string encrypt_aes256_gcm(
-    const wchar_t* const, const aes_key<32>&, const iv<16>&);
+    const wchar_t* const, const aes_key<32>&, const iv<12>&);
 
 template <class _Elem, class _Eng>
 _NODISCARD constexpr byte_string encrypt_aes256_gcm(
-    const basic_string_view<_Elem> _Data, const aes_key<32>& _Key, const iv<16>& _Iv) {
+    const basic_string_view<_Elem> _Data, const aes_key<32>& _Key, const iv<12>& _Iv) {
     return _SDSDLL encrypt_aes256_gcm<_Elem, _Eng>(_Data.data(), _Data.size(), _Key, _Iv);
 }
 
 template _SDSDLL_API _NODISCARD byte_string encrypt_aes256_gcm(
-    const string_view, const aes_key<32>&, const iv<16>&);
+    const string_view, const aes_key<32>&, const iv<12>&);
 template _SDSDLL_API _NODISCARD byte_string encrypt_aes256_gcm(
-    const wstring_view, const aes_key<32>&, const iv<16>&);
+    const wstring_view, const aes_key<32>&, const iv<12>&);
 
 template <class _Elem, class _Eng>
 _NODISCARD constexpr byte_string encrypt_aes256_gcm(
-    const basic_string<_Elem>& _Data, const aes_key<32>& _Key, const iv<16>& _Iv) {
+    const basic_string<_Elem>& _Data, const aes_key<32>& _Key, const iv<12>& _Iv) {
     return _SDSDLL encrypt_aes256_gcm<_Elem, _Eng>(_Data.c_str(), _Data.size(), _Key, _Iv);
 }
 
 template _SDSDLL_API _NODISCARD byte_string encrypt_aes256_gcm(
-    const string&, const aes_key<32>&, const iv<16>&);
+    const string&, const aes_key<32>&, const iv<12>&);
 template _SDSDLL_API _NODISCARD byte_string encrypt_aes256_gcm(
-    const wstring&, const aes_key<32>&, const iv<16>&);
+    const wstring&, const aes_key<32>&, const iv<12>&);
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD

@@ -128,7 +128,7 @@ _NODISCARD const _Scfg_entry& _Scfg_entries_loader::_Get() const noexcept {
 }
 
 // FUNCTION scfg_file copy constructors/destructor
-scfg_file::scfg_file(const path& _Target, const aes_key<32>& _Key, const iv<16>& _Iv)
+scfg_file::scfg_file(const path& _Target, const aes_key<32>& _Key, const iv<12>& _Iv)
     : _Myfile(_Target), _Myheader(), _Myentries(), _Mysec{_Key, _Iv},
     _Myok(_Load_file()), _Mychanges(false) {}
 
@@ -311,7 +311,7 @@ void scfg_file::set_key(const aes_key<32>& _New_key) noexcept {
 }
 
 // FUNCTION scfg_file::set_iv
-void scfg_file::set_iv(const iv<16>& _New_iv) noexcept {
+void scfg_file::set_iv(const iv<12>& _New_iv) noexcept {
     _Mysec._Iv = _New_iv;
     if (_Myok) {
         _Mychanges = true; // encrypt data with a new IV

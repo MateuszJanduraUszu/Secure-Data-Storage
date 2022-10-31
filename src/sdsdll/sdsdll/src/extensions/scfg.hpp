@@ -94,7 +94,7 @@ struct _Scfg_entry {
 // STRUCT _Scfg_security
 struct _Scfg_security {
     aes_key<32> _Key;
-    iv<16> _Iv;
+    iv<12> _Iv;
 };
 
 // CLASS _Scfg_entries_loader
@@ -122,7 +122,7 @@ private:
 // CLASS scfg_file
 class _SDSDLL_API scfg_file { // manages SCFG file reading/writing
 public:
-    scfg_file(const path& _Target, const aes_key<32>& _Key, const iv<16>& _Iv);
+    scfg_file(const path& _Target, const aes_key<32>& _Key, const iv<12>& _Iv);
     ~scfg_file() noexcept;
     
     scfg_file() = delete;
@@ -139,7 +139,7 @@ public:
     void set_key(const aes_key<32>& _New_key) noexcept;
 
     // changes the current IV
-    void set_iv(const iv<16>& _New_iv) noexcept;
+    void set_iv(const iv<12>& _New_iv) noexcept;
 
     // loads the file again
     void refresh() noexcept;
