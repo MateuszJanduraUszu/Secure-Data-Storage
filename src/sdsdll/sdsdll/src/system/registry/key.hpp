@@ -56,8 +56,8 @@ public:
     registry_key(registry_key&& _Other) noexcept;
     ~registry_key() noexcept;
 
-    registry_key(const predefined_registry_key _Key,
-        const wchar_t* const _Subkey, const registry_access _Access) noexcept;
+    registry_key(const predefined_registry_key _Key, const wchar_t* const _Subkey,
+        const registry_access _Access = registry_access::all) noexcept;
 
     registry_key& operator=(registry_key& _Other) noexcept;
     registry_key& operator=(registry_key&& _Other) noexcept;
@@ -76,7 +76,7 @@ public:
 
     // tries to open an existing key
     _NODISCARD bool open(const predefined_registry_key _Key,
-        const wchar_t* const _Subkey, const registry_access _Access) noexcept;
+        const wchar_t* const _Subkey, const registry_access _Access = registry_access::all) noexcept;
 
     // tries to remove an open/created key
     _NODISCARD bool remove() noexcept;

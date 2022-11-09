@@ -20,7 +20,7 @@ _NODISCARD HKEY _Create_registry_key(
     }
 
     HKEY _Result;
-    return RegCreateKeyExW(
+    return ::RegCreateKeyExW(
         reinterpret_cast<HKEY>(_Key), _Subkey, 0, nullptr, 0, static_cast<DWORD>(registry_access::all),
             nullptr, &_Result, nullptr) == ERROR_SUCCESS ? _Result : nullptr;
 }
@@ -33,7 +33,7 @@ _NODISCARD HKEY _Open_registry_key(const predefined_registry_key _Key,
     }
 
     HKEY _Result;
-    return RegOpenKeyExW(reinterpret_cast<HKEY>(_Key), _Subkey, 0,
+    return ::RegOpenKeyExW(reinterpret_cast<HKEY>(_Key), _Subkey, 0,
         static_cast<DWORD>(_Access), &_Result) == ERROR_SUCCESS ? _Result : nullptr;
 }
 
@@ -42,7 +42,7 @@ _NODISCARD bool _Registry_key_exists(
     const predefined_registry_key _Key, const wchar_t* const _Subkey) noexcept {
     HKEY _Handle = _Open_registry_key(_Key, _Subkey, registry_access::read); // the lowest access
     if (_Handle) {
-        RegCloseKey(_Handle);
+        ::RegCloseKey(_Handle);
         return true;
     } else {
         return false;
@@ -65,15 +65,8 @@ registry_key::registry_key(registry_key&& _Other) noexcept {
 }
 
 registry_key::registry_key(const predefined_registry_key _Key,
-    const wchar_t* const _Subkey, const registry_access _Access) noexcept {
-    if (_Access == registry_access::all && !this_process::is_elevated()) {
-        _Myptr = nullptr;
-        return;
-    }
-
-    if (!open(_Key, _Subkey, _Access)) { // try to create a new one if failed to open
-        (void) create(_Key, _Subkey);
-    }
+    const wchar_t* const _Subkey, const registry_access _Access) noexcept : _Myptr(nullptr) {
+    (void) open(_Key, _Subkey, _Access);
 }
 #ifdef _MSC_VER
 #pragma warning(pop)
@@ -162,13 +155,13 @@ _NODISCARD bool registry_key::remove() noexcept {
 
     const HKEY _Key = reinterpret_cast<HKEY>(_Mycache._Key);
     if (is_tree()) { // remove a key with the subkeys
-        if (RegDeleteTreeW(
+        if (::RegDeleteTreeW(
             _Key, _Mycache._Subkey) == ERROR_SUCCESS) { // second argument cannot be a null-pointer
             close();
             return true;
         }
     } else { // remove a single key
-        if (RegDeleteKeyW(
+        if (::RegDeleteKeyW(
             _Key, _Mycache._Subkey) == ERROR_SUCCESS) { // second argument cannot be a null-pointer
             close();
             return true;
@@ -181,7 +174,7 @@ _NODISCARD bool registry_key::remove() noexcept {
 // FUNCTION registry_key::close
 void registry_key::close() noexcept {
     if (_Myptr) {
-        RegCloseKey(_Myptr);
+        ::RegCloseKey(_Myptr);
         _Myptr   = nullptr;
         _Mycache = _Cached_data{}; // clear cache
     }
@@ -199,7 +192,7 @@ _NODISCARD bool registry_key::is_tree() const noexcept {
     }
 
     DWORD _Count;
-    if (RegQueryInfoKeyW(_Myptr, nullptr, nullptr, nullptr, &_Count, nullptr, nullptr,
+    if (::RegQueryInfoKeyW(_Myptr, nullptr, nullptr, nullptr, &_Count, nullptr, nullptr,
         nullptr, nullptr, nullptr, nullptr, nullptr) != ERROR_SUCCESS) {
         return false;
     }
