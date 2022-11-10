@@ -116,7 +116,7 @@ public:
     _NODISCARD static const wstring& name() noexcept;
     
     // terminates the current process
-    static void terminate(const uint32_t _Code) noexcept;
+    static void terminate(const uint32_t _Code = 0) noexcept;
 
 private:
     struct _This_process_data {
@@ -198,7 +198,7 @@ public:
     _NODISCARD bool resume() noexcept;
 
     // tries to terminate an open/created process
-    _NODISCARD bool terminate(const uint32_t _Code) noexcept;
+    _NODISCARD bool terminate(const uint32_t _Code = 0) noexcept;
 
 private:
 #ifdef _MSC_VER

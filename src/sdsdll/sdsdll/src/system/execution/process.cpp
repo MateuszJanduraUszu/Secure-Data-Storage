@@ -21,22 +21,22 @@ _NODISCARD bool _Is_current_process_name(const wchar_t* const _Name) noexcept {
 // FUNCTION _Get_process_id
 _NODISCARD DWORD _Get_process_id(const wchar_t* const _Name) noexcept {
     if (_Is_current_process_name(_Name)) {
-        return GetCurrentProcessId();
+        return ::GetCurrentProcessId();
     } else {
-        generic_handle_wrapper _Snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, 0);
+        generic_handle_wrapper _Snapshot = ::CreateToolhelp32Snapshot(TH32CS_SNAPALL, 0);
         if (!_Snapshot) { // failed to take a snapshot
             return 0;
         }
 
         PROCESSENTRY32W _Entry = {0};
         _Entry.dwSize          = sizeof(PROCESSENTRY32W);
-        bool _Next             = Process32FirstW(_Snapshot, _SDSDLL addressof(_Entry));
+        bool _Next             = ::Process32FirstW(_Snapshot, _SDSDLL addressof(_Entry));
         while (_Next) {
             if (string_traits<wchar_t, int>::compare(_Entry.szExeFile, _Name) == 0) {
                 return _Entry.th32ProcessID;
             }
 
-            _Next = Process32NextW(_Snapshot, _SDSDLL addressof(_Entry));
+            _Next = ::Process32NextW(_Snapshot, _SDSDLL addressof(_Entry));
         }
 
         return 0; // process not found
@@ -48,9 +48,9 @@ _NODISCARD void* _Open_process_handle(
     const wchar_t* const _Name, const process_access _Access, DWORD* const _Id) noexcept {
     if (_Id) {
         *_Id = _Get_process_id(_Name);
-        return OpenProcess(static_cast<DWORD>(_Access), false, *_Id);
+        return ::OpenProcess(static_cast<DWORD>(_Access), false, *_Id);
     } else {
-        return OpenProcess(static_cast<DWORD>(_Access), false, _Get_process_id(_Name));
+        return ::OpenProcess(static_cast<DWORD>(_Access), false, _Get_process_id(_Name));
     }
 }
 
@@ -58,13 +58,13 @@ _NODISCARD void* _Open_process_handle(
 _NODISCARD void* _Open_process_token(
     const wchar_t* const _Name, const _Token_access _Access) noexcept {
     process_handle_wrapper _Handle = _Is_current_process_name(_Name) ?
-        GetCurrentProcess() : _Open_process_handle(_Name, process_access::query_information);
+        ::GetCurrentProcess() : _Open_process_handle(_Name, process_access::query_information);
     if (!_Handle) { // failed to open a process handle
         return nullptr;
     }
 
     void* _Result;
-    return OpenProcessToken(_Handle, static_cast<DWORD>(_Access), &_Result) != 0 ? _Result : nullptr;
+    return ::OpenProcessToken(_Handle, static_cast<DWORD>(_Access), &_Result) != 0 ? _Result : nullptr;
 }
 
 // FUNCTION _Is_current_process_elevated
@@ -76,7 +76,7 @@ _NODISCARD bool _Is_current_process_elevated() noexcept {
 
     TOKEN_ELEVATION _Elevation;
     DWORD _Len; // returned length
-    if (GetTokenInformation(_Handle, TokenElevation, _SDSDLL addressof(_Elevation),
+    if (::GetTokenInformation(_Handle, TokenElevation, _SDSDLL addressof(_Elevation),
         sizeof(TOKEN_ELEVATION), &_Len) == 0) { // failed to get a token informations
         return false;
     }
@@ -96,7 +96,7 @@ _NODISCARD bool _Is_process_elevated(const wchar_t* const _Name) noexcept {
 
         TOKEN_ELEVATION _Elevation;
         DWORD _Len; // returned length
-        if (GetTokenInformation(_Handle, TokenElevation, _SDSDLL addressof(_Elevation),
+        if (::GetTokenInformation(_Handle, TokenElevation, _SDSDLL addressof(_Elevation),
             sizeof(TOKEN_ELEVATION), &_Len) == 0) { // failed to get a token informations
             return false;
         }
@@ -130,7 +130,7 @@ _NODISCARD bool _Resume_process(void* const _Handle) noexcept {
 this_process::_This_process_data this_process::_Mydata{};
 
 // FUNCTION this_process::_This_process_data constructor/destructor
-this_process::_This_process_data::_This_process_data() : _Id(GetCurrentProcessId()),
+this_process::_This_process_data::_This_process_data() : _Id(::GetCurrentProcessId()),
     _Elevated(_Is_current_process_elevated()), _Name(_Get_current_process_name()) {}
 
 this_process::_This_process_data::~_This_process_data() noexcept {}
@@ -155,7 +155,7 @@ _NODISCARD const wstring& this_process::name() noexcept {
 
 // FUNCTION this_process::terminate
 void this_process::terminate(const uint32_t _Code) noexcept {
-    ExitProcess(_Code);
+    ::ExitProcess(_Code);
 }
 
 // FUNCTION _Process_data constructors/destructor
@@ -211,11 +211,11 @@ _NODISCARD bool process::create(const path& _Target, const wchar_t* const _Args)
     STARTUPINFOW _Startup_info     = {0};
     _Startup_info.cb               = sizeof(STARTUPINFOW);
     PROCESS_INFORMATION _Proc_info = {0};
-    if (CreateProcessW(
+    if (::CreateProcessW(
         _Target.c_str(), const_cast<wchar_t*>(_Args), nullptr, nullptr, false, CREATE_NEW_CONSOLE,
         nullptr, nullptr, _SDSDLL addressof(_Startup_info), _SDSDLL addressof(_Proc_info)) != 0) {
         if (_Proc_info.hThread) { // close a redundant handle
-            CloseHandle(_Proc_info.hThread);
+            ::CloseHandle(_Proc_info.hThread);
         }
 
         _Mydata._Handle   = _Proc_info.hProcess;
@@ -241,10 +241,10 @@ _NODISCARD bool process::create_elevated(const path& _Target, const wchar_t* con
     _Info.lpParameters      = _Args; // command line arguments
     _Info.lpVerb            = L"runas"; // launches a new process as the Administrator
     _Info.nShow             = SW_SHOW;
-    if (ShellExecuteExW(_SDSDLL addressof(_Info)) != 0) {
+    if (::ShellExecuteExW(_SDSDLL addressof(_Info)) != 0) {
         _Mydata._Handle   = _Info.hProcess;
         _Mydata._Name     = _Target.filename().str();
-        _Mydata._Id       = GetProcessId(_Mydata._Handle);
+        _Mydata._Id       = ::GetProcessId(_Mydata._Handle);
         _Mydata._Elevated = true; // always true
         return true;
     } else {
@@ -322,7 +322,7 @@ _NODISCARD bool process::terminate(const uint32_t _Code) noexcept {
         return false;
     }
     
-    if (TerminateProcess(_Mydata._Handle, _Code) != 0) {
+    if (::TerminateProcess(_Mydata._Handle, _Code) != 0) {
         _Mydata._Handle.close();
         _Mydata._Name.clear();
         _Mydata._Id       = 0;
