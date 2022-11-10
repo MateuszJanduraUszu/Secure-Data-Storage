@@ -148,6 +148,14 @@ template <class _Ty>
 struct is_nothrow_move_constructible
     : bool_constant<__is_nothrow_constructible(_Ty, add_rvalue_reference_t<_Ty>)> {};
 
+// CONSTANT TEMPLATE is_nothrow_destructible_v
+template <class _Ty>
+_INLINE_VARIABLE constexpr bool is_nothrow_destructible_v = __is_nothrow_destructible(_Ty);
+
+// STRUCT TEMPLATE is_nothrow_destructible
+template <class _Ty>
+struct is_nothrow_destructible : bool_constant<__is_nothrow_destructible(_Ty)> {};
+
 // STRUCT TEMPLATE _Underlying_type
 template <class _Ty, bool = is_enum_v<_Ty>>
 struct _Underlying_type {
