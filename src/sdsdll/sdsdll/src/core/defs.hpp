@@ -181,13 +181,6 @@
     }
 #endif // _BIT_OPS
 
-// Enable debug trace (only in debug mode)
-#ifdef _DEBUG_TRACE_ENABLED
-#define _ENABLE_DEBUG_TRACE 1
-#else // ^^^ _DEBUG_TRACE_ENABLED ^^^ / vvv !_DEBUG_TRACE_ENABLED vvv
-#define _ENABLE_DEBUG_TRACE 0
-#endif  // _DEBUG_TRACE_ENABLED
-
 // Verify _Cond and report an exception if failed
 #ifdef _DEBUG
 #define _SDSDLL_VERIFY(_Cond, _Msg)
@@ -240,5 +233,12 @@
 #else // ^^^ __cpp_constexpr_dynamic_alloc ^^^ / vvv !__cpp_constexpr_dynamic_alloc vvv
 #define _CONSTEXPR_DYNAMIC_ALLOC
 #endif // __cpp_constexpr_dynamic_alloc
+
+// C++17 noexcept function type
+#ifdef __cpp_noexcept_function_type
+#define _NOEXCEPT_FNTYPE noexcept
+#else // ^^^ __cpp_noexcept_function_type ^^^ / vvv !__cpp_noexcept_function_type vvv
+#define _NOEXCEPT_FNTYPE
+#endif // __cpp_noexcept_function_type
 #endif // _SDSDLL_PREPROCESSOR_GUARD
 #endif // _SDSDLL_CORE_DEFS_HPP_
