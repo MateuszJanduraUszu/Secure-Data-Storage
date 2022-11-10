@@ -27,7 +27,7 @@ template <class _Elem>
 struct _SDSDLL_API blake3_traits { // traits for the BLAKE3 hash
 private:
     static_assert(is_any_of_v<_Elem, char, unsigned char, wchar_t>,
-        "Requires a UTF-8/Unicode element type.");
+        "Requires a byte/UTF-8/Unicode element type.");
 
 public:
     using char_type       = _Elem;
