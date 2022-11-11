@@ -82,7 +82,7 @@ _NODISCARD wstring registry_view_manager::read_string(const wchar_t* const _Name
     }
 
     DWORD _Buf_size = _Get_buffer_size(_Name);
-    wstring _Result(static_cast<size_t>(_Buf_size - 2 / sizeof(wchar_t)), wchar_t{});
+    wstring _Result(static_cast<size_t>((_Buf_size / sizeof(wchar_t)) - 1), wchar_t{});
     return ::RegGetValueW(_Mykey, nullptr, _Name, RRF_RT_ANY, nullptr, _Result.data(), &_Buf_size)
         == ERROR_SUCCESS ? _Result : wstring{};
 }

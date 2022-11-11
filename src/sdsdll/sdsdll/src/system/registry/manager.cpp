@@ -79,7 +79,7 @@ _NODISCARD bool registry_manager::modify_string(
 
     using _Traits = string_traits<wchar_t, DWORD>;
     return ::RegSetValueExW(_Mykey, _Name, 0, REG_SZ, reinterpret_cast<const unsigned char*>(_New_value),
-        _Traits::length(_New_value) * sizeof(wchar_t)) == ERROR_SUCCESS;
+        (_Traits::length(_New_value) + 1) * sizeof(wchar_t)) == ERROR_SUCCESS;
 }
 
 _NODISCARD bool registry_manager::modify_string(
