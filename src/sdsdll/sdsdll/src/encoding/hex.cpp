@@ -27,9 +27,9 @@ _NODISCARD constexpr basic_string<_Elem> _String_to_hex(const _Elem* _Str, size_
     _Elem* _Buf_ptr = _Buf.data();
     while (_Count-- > 0) {
         if _CONSTEXPR_IF (sizeof(_Elem) == 1) {
-            _CSTD snprintf(reinterpret_cast<char*>(_Buf_ptr), 3, "%02x", *_Str);
+            _CSTD snprintf(reinterpret_cast<char*>(_Buf_ptr), 3, "%02x", static_cast<int>(*_Str));
         } else {
-            ::_snwprintf_s(_Buf_ptr, 3, 3, L"%02x", *_Str);
+            ::_snwprintf_s(_Buf_ptr, 3, 3, L"%02x", static_cast<int>(*_Str));
         }
 
         ++_Str;
