@@ -11,7 +11,7 @@ _SDSDLL_BEGIN
 // FUNCTION _Open_file_handle
 _NODISCARD void* _Open_file_handle(const path& _Target, const file_access _Access, const file_share _Share,
     const file_disposition _Disp, const file_attributes _Attrs, const file_flags _Flags) noexcept {
-    return CreateFileW(_Target.c_str(), static_cast<DWORD>(_Access),
+    return ::CreateFileW(_Target.c_str(), static_cast<DWORD>(_Access),
         static_cast<DWORD>(_Share), nullptr, static_cast<DWORD>(_Disp),
             static_cast<DWORD>(_Attrs) | static_cast<DWORD>(_Flags), nullptr);
 }
@@ -29,7 +29,8 @@ file_status::file_status(const path& _Target, const file_attributes _Attrs, cons
 
 // FUNCTION file_status::_Refresh
 void file_status::_Refresh() {
-    _Myattrs = file_attributes{GetFileAttributesW(_Mypath.c_str())};
+    _Myattrs = file_attributes{::GetFileAttributesW(_Mypath.c_str())};
+
     // Note: The GetFileAttributesW() will return INVALID_FILE_ATTRIBUTES (file_attributes::unknown)
     //       if the target not found. Don't use GetLastError() to check if the target exists,
     //       because some functions will return ERROR_PATH_NOT_FOUND and other ERROR_FILE_NOT_FOUND
@@ -68,7 +69,7 @@ void file_status::_Refresh() {
                 return;
             }
 
-            if (DeviceIoControl(_Handle, FSCTL_GET_REPARSE_POINT, nullptr, 0, _SDSDLL addressof(_Rep_buf),
+            if (::DeviceIoControl(_Handle, FSCTL_GET_REPARSE_POINT, nullptr, 0, _SDSDLL addressof(_Rep_buf),
                 static_cast<DWORD>(_Buf._Size() * sizeof(wchar_t)), &_Bytes, nullptr) == 0) {
                 _Reset();
                 return;
@@ -139,10 +140,10 @@ _NODISCARD bool change_attributes(
     }
 
     if (_Mask) { // make mask from an old and a new attributes
-        return SetFileAttributesW(
+        return ::SetFileAttributesW(
             _Target.c_str(), static_cast<DWORD>(_Old_attrs ^ _New_attrs)) != 0;
     } else { // discard an old attributes
-        return SetFileAttributesW(_Target.c_str(), static_cast<DWORD>(_New_attrs)) != 0;
+        return ::SetFileAttributesW(_Target.c_str(), static_cast<DWORD>(_New_attrs)) != 0;
     }
 }
 

@@ -131,14 +131,14 @@ _NODISCARD bool operator!=(const directory_entry& _Left, const directory_entry& 
 _NODISCARD void* _Open_directory_handle(const path& _Target) noexcept {
     const wstring& _Dir_path = _Target.str() + LR"(\*)";
     WIN32_FIND_DATAW _Data;
-    return FindFirstFileExW(_Dir_path.c_str(), FindExInfoBasic,
+    return ::FindFirstFileExW(_Dir_path.c_str(), FindExInfoBasic,
         _SDSDLL addressof(_Data), FindExSearchNameMatch, nullptr, 0);
 }
 
 // FUNCTION _Close_directory_handle
 void _Close_directory_handle(void*& _Handle) noexcept {
     if (_Handle) {
-        FindClose(_Handle);
+        ::FindClose(_Handle);
         _Handle = nullptr;
     }
 }
@@ -158,7 +158,7 @@ _NODISCARD bool _Advance_directory_iterator(
 
     WIN32_FIND_DATAW _Temp;
     for (;;) {
-        if (FindNextFileW(_Handle, _SDSDLL addressof(_Temp)) == 0) {
+        if (::FindNextFileW(_Handle, _SDSDLL addressof(_Temp)) == 0) {
             return false;
         }
 

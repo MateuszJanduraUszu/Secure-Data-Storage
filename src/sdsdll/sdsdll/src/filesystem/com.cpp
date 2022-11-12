@@ -10,11 +10,11 @@
 _SDSDLL_BEGIN
 // FUNCTION _Com_instance copy constructor/destructor
 _Com_instance::_Com_instance(const COINIT _Options) noexcept
-    : _Mystate(_Com_state{SUCCEEDED(CoInitializeEx(nullptr, _Options))}) {}
+    : _Mystate(_Com_state{SUCCEEDED(::CoInitializeEx(nullptr, _Options))}) {}
 
 _Com_instance::~_Com_instance() noexcept {
     if (_Mystate == _Com_state::_Initialized) {
-        CoUninitialize();
+        ::CoUninitialize();
     }
 }
 

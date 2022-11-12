@@ -10,7 +10,7 @@
 _SDSDLL_BEGIN
 // FUNCTION library_handle_traits::close
 void library_handle_traits::close(const value_type _Handle) noexcept {
-    FreeLibrary(_Handle);
+    ::FreeLibrary(_Handle);
 }
 _SDSDLL_END
 

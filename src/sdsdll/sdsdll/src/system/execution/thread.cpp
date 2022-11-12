@@ -134,12 +134,8 @@ void thread::_Tidy() noexcept {
 
 // FUNCTION thread::hardware_concurrency
 _NODISCARD uint32_t thread::hardware_concurrency() noexcept {
-    static atomic<uint32_t> _Count(0);
-    if (_Count.load(_STD memory_order_relaxed) == 0) {
-        _Count.store(_Hardware_concurrency());
-    }
-
-    return _Count.load();
+    static atomic<uint32_t> _Count(_Hardware_concurrency());
+    return _Count.load(_STD memory_order_relaxed);
 }
 
 // FUNCTION thread::register_event_callback

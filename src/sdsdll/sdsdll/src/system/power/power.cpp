@@ -27,13 +27,13 @@ _NODISCARD bool _Perform_shutdown(const _Shutdown_type _Type) noexcept {
     }
 
     generic_handle_wrapper _Handle;
-    if (OpenProcessToken(
-        GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &_Handle.get()) == 0) {
+    if (::OpenProcessToken(
+        ::GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &_Handle.get()) == 0) {
         return false;
     }
 
     TOKEN_PRIVILEGES _Token;
-    if (LookupPrivilegeValueA(
+    if (::LookupPrivilegeValueA(
         nullptr, "SeShutdownPrivilege", _SDSDLL addressof(_Token.Privileges[0].Luid)) == 0) {
         return false;
     }
@@ -41,7 +41,8 @@ _NODISCARD bool _Perform_shutdown(const _Shutdown_type _Type) noexcept {
     _Token.PrivilegeCount           = 1;
     _Token.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
     const DWORD _Flags              = static_cast<DWORD>(_Type) | EWX_FORCEIFHUNG;
-    if (AdjustTokenPrivileges(_Handle.get(), false, _SDSDLL addressof(_Token), 0, nullptr, nullptr) == 0) {
+    if (::AdjustTokenPrivileges(
+        _Handle.get(), false, _SDSDLL addressof(_Token), 0, nullptr, nullptr) == 0) {
         return false;
     }
 
@@ -50,7 +51,7 @@ _NODISCARD bool _Perform_shutdown(const _Shutdown_type _Type) noexcept {
 #pragma warning(disable : 28159) // C28159: consider using InitiateSystemShutdownEx()
                                  // instead of ExitWindowsEx()
 #endif // _MSC_VER
-    return ExitWindowsEx(_Flags, _Default_shutdown_reason) != 0;
+    return ::ExitWindowsEx(_Flags, _Default_shutdown_reason) != 0;
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif // _MSC_VER

@@ -10,7 +10,7 @@
 _SDSDLL_BEGIN
 // FUNCTION process_handle_traits::close
 void process_handle_traits::close(const value_type _Handle) noexcept {
-    CloseHandle(_Handle);
+    ::CloseHandle(_Handle);
 }
 _SDSDLL_END
 

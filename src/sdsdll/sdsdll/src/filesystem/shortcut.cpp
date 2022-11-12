@@ -17,7 +17,7 @@ _Shortcut_handle::_Shortcut_handle(const path& _Target)
         return;
     }
 
-    if (FAILED(CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_ALL, IID_IShellLinkW,
+    if (FAILED(::CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_ALL, IID_IShellLinkW,
         reinterpret_cast<void**>(_SDSDLL addressof(_Link))))) {
         _File = nullptr;
     }

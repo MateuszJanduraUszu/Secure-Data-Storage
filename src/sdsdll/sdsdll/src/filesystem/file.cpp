@@ -16,7 +16,7 @@ _NODISCARD bool _Clear_file(void* const _Handle) noexcept {
 // FUNCTION _File_size
 _NODISCARD bool _File_size(void* const _Handle, uintmax_t& _Size) noexcept {
     FILE_STANDARD_INFO _Info = {0};
-    if (GetFileInformationByHandleEx(
+    if (::GetFileInformationByHandleEx(
         _Handle, FileStandardInfo, _SDSDLL addressof(_Info), sizeof(FILE_STANDARD_INFO)) == 0) {
         return false;
     }
@@ -29,7 +29,7 @@ _NODISCARD bool _File_size(void* const _Handle, uintmax_t& _Size) noexcept {
 _NODISCARD bool _Resize_file(void* const _Handle, const uintmax_t _New_size) noexcept {
     FILE_END_OF_FILE_INFO _Info = {0};
     _Info.EndOfFile.QuadPart    = static_cast<intmax_t>(_New_size);
-    return SetFileInformationByHandle(
+    return ::SetFileInformationByHandle(
         _Handle, FileEndOfFileInfo, _SDSDLL addressof(_Info), sizeof(FILE_END_OF_FILE_INFO)) != 0;
 }
 
@@ -37,10 +37,10 @@ _NODISCARD bool _Resize_file(void* const _Handle, const uintmax_t _New_size) noe
 _NODISCARD bool _Read_file(
     void* const _Handle, void* const _Buf, const size_t _Count, size_t* const _Read) noexcept {
     if (_Read) { // check how many bytes have been read
-        return ReadFile(
+        return ::ReadFile(
             _Handle, _Buf, static_cast<DWORD>(_Count), reinterpret_cast<DWORD*>(_Read), nullptr) != 0;
     } else { // skip information about read bytes
-        return ReadFile(_Handle, _Buf, static_cast<DWORD>(_Count), nullptr, nullptr) != 0;
+        return ::ReadFile(_Handle, _Buf, static_cast<DWORD>(_Count), nullptr, nullptr) != 0;
     }
 }
 
@@ -48,7 +48,7 @@ _NODISCARD bool _Read_file(
 _NODISCARD bool _Write_file(
     void* const _Handle, const void* const _Bytes, const size_t _Count) noexcept {
     DWORD _Written; // written bytes
-    return WriteFile(_Handle, _Bytes, static_cast<DWORD>(_Count), &_Written, nullptr) == 0 ?
+    return ::WriteFile(_Handle, _Bytes, static_cast<DWORD>(_Count), &_Written, nullptr) == 0 ?
         false : static_cast<size_t>(_Written) == _Count;
 }
 
@@ -104,7 +104,7 @@ _NODISCARD bool delete_file(const path& _Target) {
         }
     }
 
-    return DeleteFileW(_Target.c_str()) != 0;
+    return ::DeleteFileW(_Target.c_str()) != 0;
 }
 
 // FUNCTION file_size
@@ -169,7 +169,7 @@ _Filepos::~_Filepos() noexcept {}
 // FUNCTION _Filepos::_Submit_changes
 void _Filepos::_Submit_changes() const noexcept {
     if (_Myhandle) {
-        SetFilePointerEx(_Myhandle, _Myval, nullptr, FILE_BEGIN);
+        ::SetFilePointerEx(_Myhandle, _Myval, nullptr, FILE_BEGIN);
     }
 }
 
@@ -313,7 +313,7 @@ _NODISCARD bool file::open(
 
 // FUNCTION file::is_open
 _NODISCARD bool file::is_open() const noexcept {
-    return !!_Myhandle; // negate twice to access generic_handle_wrapper::operator bool()
+    return _Myhandle.good();
 }
 
 // FUNCTION file::close

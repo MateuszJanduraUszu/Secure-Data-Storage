@@ -10,7 +10,7 @@
 _SDSDLL_BEGIN
 // FUNCTION generic_handle_traits::close
 void generic_handle_traits::close(const value_type _Handle) noexcept {
-    CloseHandle(_Handle);
+    ::CloseHandle(_Handle);
 }
 _SDSDLL_END
 

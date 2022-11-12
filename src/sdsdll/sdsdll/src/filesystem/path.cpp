@@ -522,9 +522,9 @@ _NODISCARD path operator+(const wstring& _Left, const path& _Right) noexcept {
 
 // FUNCTION current_path
 _NODISCARD path current_path() {
-    const DWORD _Buf_size = GetCurrentDirectoryW(0, nullptr);
+    const DWORD _Buf_size = ::GetCurrentDirectoryW(0, nullptr);
     _Sbo_buffer<wchar_t> _Buf(static_cast<size_t>(_Buf_size));
-    if (GetCurrentDirectoryW(_Buf_size, _Buf._Get()) == _Buf_size - 1) { // exclude null-terminator
+    if (::GetCurrentDirectoryW(_Buf_size, _Buf._Get()) == _Buf_size - 1) { // exclude null-terminator
         return wstring{_Buf._Get(), static_cast<size_t>(_Buf_size)};
     } else {
         return path{};
@@ -532,13 +532,13 @@ _NODISCARD path current_path() {
 }
 
 _NODISCARD bool current_path(const path& _Path) {
-    return SetCurrentDirectoryW(_Path.c_str()) != 0;
+    return ::SetCurrentDirectoryW(_Path.c_str()) != 0;
 }
 
 // FUNCTION _Query_executable_path
 _NODISCARD bool _Query_executable_path(_Sbo_buffer<wchar_t>& _Buf, size_t& _Buf_size) noexcept {
-    const DWORD _Copied = GetModuleFileNameW(nullptr, _Buf._Get(), static_cast<DWORD>(_Buf_size));
-    if (_Copied > 0 && GetLastError() != ERROR_INSUFFICIENT_BUFFER) {
+    const DWORD _Copied = ::GetModuleFileNameW(nullptr, _Buf._Get(), static_cast<DWORD>(_Buf_size));
+    if (_Copied > 0 && ::GetLastError() != ERROR_INSUFFICIENT_BUFFER) {
         _Buf_size = static_cast<size_t>(_Copied);
         return true;
     } else {
