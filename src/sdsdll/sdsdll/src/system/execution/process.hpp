@@ -167,13 +167,13 @@ public:
     process(const process&) = delete;
     process& operator=(const process&) = delete;
 
-    // creates a new process
+    // tries to create a new process
     _NODISCARD bool create(const path& _Target, const wchar_t* const _Args);
     
-    // creates a new process with administrator privileges
+    // tries to create a new process with the administrator privileges
     _NODISCARD bool create_elevated(const path& _Target, const wchar_t* const _Args);
 
-    // tries to open a process handle
+    // tries to open an existing process handle
     _NODISCARD bool open(const wchar_t* const _Name, const process_access _Access) noexcept;
 
     // closes an open/created process handle
@@ -194,7 +194,7 @@ public:
     // tries to suspend an open/created process
     _NODISCARD bool suspend() noexcept;
 
-    // tries to resume a open/created process
+    // tries to resume an open/created process
     _NODISCARD bool resume() noexcept;
 
     // tries to terminate an open/created process

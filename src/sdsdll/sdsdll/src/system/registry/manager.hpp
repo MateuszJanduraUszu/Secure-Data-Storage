@@ -32,8 +32,8 @@ public:
     registry_manager(const registry_manager&) = delete;
     registry_manager& operator=(const registry_manager&) = delete;
 
-    registry_manager(registry_key& _Key);
-    registry_manager(registry_key&& _Key);
+    explicit registry_manager(registry_key& _Key);
+    explicit registry_manager(registry_key&& _Key);
 
     // inserts a new key and writes an integer into it
     _NODISCARD bool insert_integer(const wchar_t* const _Name, const uint32_t _Value) noexcept;

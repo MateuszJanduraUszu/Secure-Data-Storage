@@ -56,7 +56,7 @@ public:
     registry_key(registry_key&& _Other) noexcept;
     ~registry_key() noexcept;
 
-    registry_key(const predefined_registry_key _Key, const wchar_t* const _Subkey,
+    explicit registry_key(const predefined_registry_key _Key, const wchar_t* const _Subkey,
         const registry_access _Access = registry_access::all) noexcept;
 
     registry_key& operator=(registry_key& _Other) noexcept;

@@ -54,8 +54,8 @@ public:
     registry_view_manager(const registry_view_manager&) = delete;
     registry_view_manager& operator=(const registry_view_manager&) = delete;
 
-    registry_view_manager(registry_key& _Key);
-    registry_view_manager(registry_key&& _Key);
+    explicit registry_view_manager(registry_key& _Key);
+    explicit registry_view_manager(registry_key&& _Key);
 
     // returns the current key
     _NODISCARD registry_key& key() noexcept;
