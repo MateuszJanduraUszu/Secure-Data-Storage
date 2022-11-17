@@ -89,22 +89,19 @@ _NODISCARD bool create_shortcut(const path& _Target, const path& _Shortcut,
 }
 
 // FUNCTION read_shortcut
-_NODISCARD unequivocal_result<path> read_shortcut(const path& _Target) {
+_NODISCARD path read_shortcut(const path& _Target) {
     _Shortcut_handle _Handle(_Target);
     if (!_Handle._Valid()) {
-        return {path{}, false};
+        return path{};
     }
 
     _Sbo_buffer<wchar_t> _Buf(_Short_path_size + 1);
     if (_Buf._Empty()) { // allocation failed
-        return {path{}, false};
+        return path{};
     }
 
-    if (SUCCEEDED(_Handle._Link->GetPath(_Buf._Get(), static_cast<int>(_Buf._Size()), nullptr, 0))) {
-        return {path{_Buf._Get()}, true}; // exclude null-terminator
-    } else {
-        return {path{}, false};
-    }
+    return SUCCEEDED(_Handle._Link->GetPath(
+        _Buf._Get(), static_cast<int>(_Buf._Size()), nullptr, 0)) ? path{_Buf._Get()} : path{};
 }
 
 // FUNCTION remove_shortcut

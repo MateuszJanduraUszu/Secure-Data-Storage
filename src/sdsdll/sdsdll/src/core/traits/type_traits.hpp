@@ -183,13 +183,6 @@ _NODISCARD constexpr bool _Has_bits(const _Ty _Bitmask, const _Ty _Bits) noexcep
         return (_Bitmask & _Bits) != _Ty{};
     }
 }
-
-// STRUCT TEMPLATE unequivocal_result
-template <class _Ty>
-struct unequivocal_result {
-    _Ty value;
-    bool success;
-};
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD

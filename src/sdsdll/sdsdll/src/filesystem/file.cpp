@@ -108,33 +108,27 @@ _NODISCARD bool delete_file(const path& _Target) {
 }
 
 // FUNCTION file_size
-_NODISCARD unequivocal_result<uintmax_t> file_size(const path& _Target) {
+_NODISCARD uintmax_t file_size(const path& _Target) {
     { // check if it is possible to get the file size
         const file_status _Status(_Target);
         if (!_SDSDLL exists(_Status) || _SDSDLL is_directory(_Status, any_directory_type)) {
-            return {0, false};
+            return 0;
         }
     }
 
     generic_handle_wrapper _Handle = _Open_file_handle(_Target, file_access::read,
         file_share::read, file_disposition::only_if_exists, file_attributes::normal, file_flags::none);
     if (!_Handle) {
-        return {0, false};
+        return 0;
     }
 
-    unequivocal_result<uintmax_t> _Result;
-    _Result.success = _File_size(_Handle, _Result.value);
-    return _Result;
+    uintmax_t _Result;
+    return _File_size(_Handle, _Result) ? _Result : 0;
 }
 
 // FUNCTION is_empty_file
-_NODISCARD unequivocal_result<bool> is_empty_file(const path& _Target) {
-    const auto& _Size = _SDSDLL file_size(_Target);
-    if (_Size.success) {
-        return {_Size.value == 0, true};
-    } else {
-        return {false, false};
-    }
+_NODISCARD bool is_empty_file(const path& _Target) {
+    return _SDSDLL file_size(_Target) == 0;
 }
 
 // FUNCTION resize_file

@@ -38,7 +38,7 @@ public:
     IShellLinkW* _Link;
     IPersistFile* _File;
 
-    _Shortcut_handle(const path& _Target);
+    explicit _Shortcut_handle(const path& _Target);
     ~_Shortcut_handle() noexcept;
 
     _Shortcut_handle() = delete;
@@ -61,7 +61,7 @@ _SDSDLL_API _NODISCARD bool create_shortcut(const path& _Target, const path& _Sh
     const wstring& _Description, const shortcut_icon& _Icon, const path& _Directory);
 
 // FUNCTION read_shortcut
-_SDSDLL_API _NODISCARD unequivocal_result<path> read_shortcut(const path& _Target);
+_SDSDLL_API _NODISCARD path read_shortcut(const path& _Target);
 
 // FUNCTION remove_shortcut
 _SDSDLL_API _NODISCARD bool remove_shortcut(const path& _Target);

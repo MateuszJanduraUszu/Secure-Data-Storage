@@ -59,10 +59,10 @@ _SDSDLL_API _NODISCARD bool create_file(
 _SDSDLL_API _NODISCARD bool delete_file(const path& _Target);
 
 // FUNCTION file_size
-_SDSDLL_API _NODISCARD unequivocal_result<uintmax_t> file_size(const path& _Target);
+_SDSDLL_API _NODISCARD uintmax_t file_size(const path& _Target);
 
 // FUNCTION is_empty_file
-_SDSDLL_API _NODISCARD unequivocal_result<bool> is_empty_file(const path& _Target);
+_SDSDLL_API _NODISCARD bool is_empty_file(const path& _Target);
 
 // FUNCTION resize_file
 _SDSDLL_API _NODISCARD bool resize_file(const path& _Target, const uintmax_t _New_size);
@@ -71,7 +71,7 @@ _SDSDLL_API _NODISCARD bool resize_file(const path& _Target, const uintmax_t _Ne
 class _Filepos {
 public:
     _Filepos() noexcept;
-    _Filepos(void* const _Handle) noexcept;
+    explicit _Filepos(void* const _Handle) noexcept;
     ~_Filepos() noexcept;
 
     _Filepos(const _Filepos&) = delete;
