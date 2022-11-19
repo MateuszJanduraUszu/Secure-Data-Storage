@@ -9,72 +9,73 @@
 
 _SDSDLL_BEGIN
 // FUNCTION TEMPLATE salt constructors/destructor
-template <class _Eng>
-constexpr salt<_Eng>::salt() noexcept : _Mybase() {}
+template <size_t _Size>
+constexpr salt<_Size>::salt() noexcept : _Mybase() {}
 
-template <class _Eng>
-constexpr salt<_Eng>::salt(const salt& _Other) noexcept : _Mybase(_Other) {}
+template <size_t _Size>
+constexpr salt<_Size>::salt(const salt& _Other) noexcept : _Mybase(_Other) {}
 
-template <class _Eng>
-constexpr salt<_Eng>::salt(salt&& _Other) noexcept : _Mybase(_STD move(_Other)) {}
+template <size_t _Size>
+constexpr salt<_Size>::salt(salt&& _Other) noexcept : _Mybase(_STD move(_Other)) {}
 
-template <class _Eng>
-constexpr salt<_Eng>::salt(const value_type* const _Ptr) noexcept : _Mybase(_Ptr) {}
+template <size_t _Size>
+constexpr salt<_Size>::salt(const value_type* const _Ptr) noexcept : _Mybase(_Ptr) {}
 
-template <class _Eng>
-_CONSTEXPR20 salt<_Eng>::~salt() noexcept {}
+template <size_t _Size>
+_CONSTEXPR20 salt<_Size>::~salt() noexcept {}
 
 // FUNCTION TEMPLATE salt::operator=
-template <class _Eng>
-constexpr salt<_Eng>& salt<_Eng>::operator=(const salt& _Other) noexcept {
+template <size_t _Size>
+constexpr salt<_Size>& salt<_Size>::operator=(const salt& _Other) noexcept {
     _Mybase::operator=(_Other);
     return *this;
 }
 
-template <class _Eng>
-constexpr salt<_Eng>& salt<_Eng>::operator=(salt&& _Other) noexcept {
+template <size_t _Size>
+constexpr salt<_Size>& salt<_Size>::operator=(salt&& _Other) noexcept {
     _Mybase::operator=(_STD move(_Other));
     return *this;
 }
 
-template <class _Eng>
-constexpr salt<_Eng>& salt<_Eng>::operator=(const value_type* const _Ptr) noexcept {
+template <size_t _Size>
+constexpr salt<_Size>& salt<_Size>::operator=(const value_type* const _Ptr) noexcept {
     _Mybase::operator=(_Ptr);
     return *this;
 }
 
+template _SDSDLL_API class salt<16>;
+
 // FUNCTION TEMPLATE operator==
-template <class _Eng>
-_NODISCARD constexpr bool operator==(const salt<_Eng>& _Left, const salt<_Eng>& _Right) noexcept {
-    using _Salt_t = salt<_Eng>;
+template <size_t _Size>
+_NODISCARD constexpr bool operator==(const salt<_Size>& _Left, const salt<_Size>& _Right) noexcept {
+    using _Salt_t = salt<_Size>;
     return memory_traits::compare(
         _Left.get(), _Right.get(), _Salt_t::size * sizeof(typename _Salt_t::value_type)) == 0;
 }
 
+template _SDSDLL_API _NODISCARD bool operator==(const salt<16>&, const salt<16>&) noexcept;
+
 // FUNCTION TEMPLATE operator!=
-template <class _Eng>
-_NODISCARD constexpr bool operator!=(const salt<_Eng>& _Left, const salt<_Eng>& _Right) noexcept {
-    using _Salt_t = salt<_Eng>;
+template <size_t _Size>
+_NODISCARD constexpr bool operator!=(const salt<_Size>& _Left, const salt<_Size>& _Right) noexcept {
+    using _Salt_t = salt<_Size>;
     return memory_traits::compare(
         _Left.get(), _Right.get(), _Salt_t::size * sizeof(typename _Salt_t::value_type)) != 0;
 }
 
-// auxilary macros for sdsdll::salt class export/import
-#define _EXPORT_OR_IMPORT_SALT_BASE(_Eng, _Elem)     \
-    template _SDSDLL_API class salt<_Eng<_Elem>>;    \
-    template _SDSDLL_API _NODISCARD bool operator==( \
-        const salt<_Eng<_Elem>>&, const salt<_Eng<_Elem>>&);
+template _SDSDLL_API _NODISCARD bool operator!=(const salt<16>&, const salt<16>&) noexcept;
 
-#define _EXPORT_OR_IMPORT_SALT(_Eng)        \
-    _EXPORT_OR_IMPORT_SALT_BASE(_Eng, char) \
-    _EXPORT_OR_IMPORT_SALT_BASE(_Eng, wchar_t)
+// FUNCTION TEMPLATE make_salt
+template <size_t _Size>
+_NODISCARD constexpr salt<_Size> make_salt() noexcept {
+    using _Salt_t  = salt<_Size>;
+    using _Value_t = typename _Salt_t::value_type;
+    _Value_t _Buf[_Salt_t::size];
+    ::RAND_bytes(_Buf, static_cast<int>(_Salt_t::size));
+    return _Salt_t{_Buf};
+}
 
-_EXPORT_OR_IMPORT_SALT(_Argon2d_default_engine)
-_EXPORT_OR_IMPORT_SALT(_Argon2i_default_engine)
-_EXPORT_OR_IMPORT_SALT(_Argon2id_default_engine)
-_EXPORT_OR_IMPORT_SALT(_Scrypt_default_engine)
-#undef _EXPORT_OR_IMPORT_SALT_BASE
-#undef _EXPORT_OR_IMPORT_SALT
+template _SDSDLL_API _NODISCARD salt<16> make_salt() noexcept;
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD

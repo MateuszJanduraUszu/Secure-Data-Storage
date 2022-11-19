@@ -12,20 +12,16 @@
 #include <core/container/bytes.hpp>
 #include <core/traits/memory_traits.hpp>
 #include <core/traits/type_traits.hpp>
-#include <cryptography/hash/password/argon2d.hpp>
-#include <cryptography/hash/password/argon2i.hpp>
-#include <cryptography/hash/password/argon2id.hpp>
-#include <cryptography/hash/password/scrypt.hpp>
 #include <openssl/rand.h>
 #include <type_traits>
 
 _SDSDLL_BEGIN
 // CLASS TEMPLATE salt
-template <class _Eng>
+template <size_t _Size>
 class _SDSDLL_API salt
-    : public _Bytes_container<_Eng::salt_size> { // random bytes for Argon2d, Argon2i, Argon2id and Scrypt
+    : public _Bytes_container<_Size> { // random bytes for Argon2d, Argon2i, Argon2id and Scrypt
 private:
-    using _Mybase = _Bytes_container<_Eng::salt_size>;
+    using _Mybase = _Bytes_container<_Size>;
 
 public:
     using value_type      = typename _Mybase::value_type;
@@ -33,7 +29,6 @@ public:
     using difference_type = typename _Mybase::difference_type;
     using pointer         = typename _Mybase::pointer;
     using const_pointer   = typename _Mybase::const_pointer;
-    using engine          = _Eng;
 
     constexpr salt() noexcept;
     constexpr salt(const salt& _Other) noexcept;
@@ -48,12 +43,16 @@ public:
 };
 
 // FUNCTION TEMPLATE operator==
-template <class _Eng>
-_NODISCARD constexpr bool operator==(const salt<_Eng>& _Left, const salt<_Eng>& _Right) noexcept;
+template <size_t _Size>
+_NODISCARD constexpr bool operator==(const salt<_Size>& _Left, const salt<_Size>& _Right) noexcept;
 
 // FUNCTION TEMPLATE operator!=
-template <class _Eng>
-_NODISCARD constexpr bool operator!=(const salt<_Eng>& _Left, const salt<_Eng>& _Right) noexcept;
+template <size_t _Size>
+_NODISCARD constexpr bool operator!=(const salt<_Size>& _Left, const salt<_Size>& _Right) noexcept;
+
+// FUNCTION TEMPLATE make_salt
+template <size_t _Size>
+_SDSDLL_API _NODISCARD constexpr salt<_Size> make_salt() noexcept;
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD
