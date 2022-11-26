@@ -8,6 +8,28 @@
 #if _SDSDLL_PREPROCESSOR_GUARD
 
 _SDSDLL_BEGIN
+// FUNCTION count_utf16_bytes
+_NODISCARD size_t count_utf16_bytes(const wchar_t* _Text, size_t _Count) noexcept {
+    size_t _Result = 0;
+    while (_Count-- > 0) {
+        if (*_Text <= 0x7F) { // 1 byte per word
+            ++_Result;
+        } else if (*_Text <= 0x07FF) { // 2 bytes per word
+            _Result += 2;
+        } else if (*_Text <= 0xFFFF) { // 3 bytes per word
+            _Result += 3;
+        } else if (*_Text <= 0x0010'FFFF) { // 4 bytes per word
+            _Result += 4;
+        } else { // word too large, see RFC 3629
+            return 0;
+        }
+
+        ++_Text;
+    }
+
+    return _Result;
+}
+
 // FUNCTION utf16_string constructors/destructor
 utf16_string::utf16_string() noexcept : _Mystr() {}
 

@@ -26,6 +26,9 @@ using _STD string;
 using _STD wstring;
 
 _SDSDLL_BEGIN
+// FUNCTION count_utf16_bytes
+_SDSDLL_API _NODISCARD size_t count_utf16_bytes(const wchar_t* _Text, size_t _Count) noexcept;
+
 // CLASS utf16_string
 class _SDSDLL_API utf16_string { // stores a UTF-16 string
 public:
