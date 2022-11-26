@@ -43,7 +43,7 @@ constexpr salt<_Size>& salt<_Size>::operator=(const value_type* const _Ptr) noex
     return *this;
 }
 
-template _SDSDLL_API class salt<16>;
+template class _SDSDLL_API salt<16>;
 
 // FUNCTION TEMPLATE operator==
 template <size_t _Size>
