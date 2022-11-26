@@ -88,9 +88,9 @@ _NODISCARD constexpr bool xxhash_traits<_Elem>::hash_file(byte_type* const _Buf,
     return true;
 }
 
-template _SDSDLL_API struct xxhash_traits<char>;
-template _SDSDLL_API struct xxhash_traits<unsigned char>;
-template _SDSDLL_API struct xxhash_traits<wchar_t>;
+template struct _SDSDLL_API xxhash_traits<char>;
+template struct _SDSDLL_API xxhash_traits<unsigned char>;
+template struct _SDSDLL_API xxhash_traits<wchar_t>;
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD

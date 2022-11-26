@@ -85,9 +85,9 @@ _NODISCARD constexpr bool sha512_traits<_Elem>::hash_file(byte_type* const _Buf,
     return ::EVP_DigestFinal_ex(_Proxy._Ctx, _Buf, &_Bytes) != 0;
 }
 
-template _SDSDLL_API struct sha512_traits<char>;
-template _SDSDLL_API struct sha512_traits<unsigned char>;
-template _SDSDLL_API struct sha512_traits<wchar_t>;
+template struct _SDSDLL_API sha512_traits<char>;
+template struct _SDSDLL_API sha512_traits<unsigned char>;
+template struct _SDSDLL_API sha512_traits<wchar_t>;
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD

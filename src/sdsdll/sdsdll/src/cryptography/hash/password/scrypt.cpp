@@ -57,9 +57,9 @@ _NODISCARD constexpr bool scrypt_traits<_Elem>::hash(byte_type* const _Buf, cons
     return true;
 }
 
-template _SDSDLL_API struct scrypt_traits<char>;
-template _SDSDLL_API struct scrypt_traits<unsigned char>;
-template _SDSDLL_API struct scrypt_traits<wchar_t>;
+template struct _SDSDLL_API scrypt_traits<char>;
+template struct _SDSDLL_API scrypt_traits<unsigned char>;
+template struct _SDSDLL_API scrypt_traits<wchar_t>;
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD

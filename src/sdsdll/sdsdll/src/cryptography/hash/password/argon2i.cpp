@@ -57,9 +57,9 @@ _NODISCARD constexpr bool argon2i_traits<_Elem>::hash(
     return true;
 }
 
-template _SDSDLL_API struct argon2i_traits<char>;
-template _SDSDLL_API struct argon2i_traits<unsigned char>;
-template _SDSDLL_API struct argon2i_traits<wchar_t>;
+template struct _SDSDLL_API argon2i_traits<char>;
+template struct _SDSDLL_API argon2i_traits<unsigned char>;
+template struct _SDSDLL_API argon2i_traits<wchar_t>;
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD
