@@ -5,9 +5,11 @@
 
 #include <Windows.h>
 #include <gtest/gtest.h>
-#include <unit/cryptography/aes256_cbc.hpp>
+#include <unit/cryptography/hash/generic/blake3.hpp>
+#include <unit/cryptography/hash/generic/sha512.hpp>
+#include <unit/cryptography/hash/generic/xxhash.hpp>
 
-int main(int, char**) {
+int main() {
     ::testing::InitGoogleTest();
     return ::RUN_ALL_TESTS();
 }

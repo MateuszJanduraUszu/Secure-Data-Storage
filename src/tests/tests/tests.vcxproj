@@ -183,8 +183,10 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="unit\cryptography\aes256_gcm.hpp" />
-    <ClInclude Include="unit\cryptography\aes256_cbc.hpp" />
+    <ClInclude Include="unit\cryptography\hash\generic\blake3.hpp" />
+    <ClInclude Include="unit\cryptography\hash\generic\common.hpp" />
+    <ClInclude Include="unit\cryptography\hash\generic\sha512.hpp" />
+    <ClInclude Include="unit\cryptography\hash\generic\xxhash.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

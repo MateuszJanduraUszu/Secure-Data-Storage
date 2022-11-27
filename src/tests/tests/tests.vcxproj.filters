@@ -11,6 +11,24 @@
     <Filter Include="src\unit\cryptography">
       <UniqueIdentifier>{83709513-0d4d-4531-bc3f-aecc99403abf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\unit\cryptography\hash">
+      <UniqueIdentifier>{38bd864e-e865-420d-b256-9c922254e24a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\unit\cryptography\hash\password">
+      <UniqueIdentifier>{8e8be90a-3864-494d-aa10-8bab1b210a62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\unit\cryptography\hash\generic">
+      <UniqueIdentifier>{4976fd4b-2f72-4b25-bca4-6a360837954b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\unit\cryptography\cipher">
+      <UniqueIdentifier>{599f5b2e-90bb-4cb5-957f-eac762cec134}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\unit\cryptography\cipher\asymmetric">
+      <UniqueIdentifier>{8eef6269-23db-4b5b-964c-6d4ae1f685eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\unit\cryptography\cipher\symmetric">
+      <UniqueIdentifier>{fe641ebe-9941-4285-b4b3-772ca521354a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -18,11 +36,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="unit\cryptography\aes256_cbc.hpp">
-      <Filter>src\unit\cryptography</Filter>
+    <ClInclude Include="unit\cryptography\hash\generic\blake3.hpp">
+      <Filter>src\unit\cryptography\hash\generic</Filter>
     </ClInclude>
-    <ClInclude Include="unit\cryptography\aes256_gcm.hpp">
-      <Filter>src\unit\cryptography</Filter>
+    <ClInclude Include="unit\cryptography\hash\generic\sha512.hpp">
+      <Filter>src\unit\cryptography\hash\generic</Filter>
+    </ClInclude>
+    <ClInclude Include="unit\cryptography\hash\generic\xxhash.hpp">
+      <Filter>src\unit\cryptography\hash\generic</Filter>
+    </ClInclude>
+    <ClInclude Include="unit\cryptography\hash\generic\common.hpp">
+      <Filter>src\unit\cryptography\hash\generic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

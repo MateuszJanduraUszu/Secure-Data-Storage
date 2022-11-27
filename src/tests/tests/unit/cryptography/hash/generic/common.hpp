@@ -1,4 +1,4 @@
-// blake3.hpp
+// common.hpp
 
 // Copyright (c) Mateusz Jandura. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
