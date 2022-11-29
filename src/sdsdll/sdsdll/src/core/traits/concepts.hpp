@@ -188,6 +188,18 @@ struct all_same : bool_constant<all_same_v<_Ty, _Types...>> {};
 template <class _Ty>
 _INLINE_VARIABLE constexpr bool is_standard_integer_v = is_any_of_v<_Ty, char, unsigned char,
     short, unsigned short, int, unsigned int, long, unsigned long, long long, unsigned long long>;
+
+// STRUCT TEMPLATE is_standard_integer
+template <class _Ty>
+struct is_standard_integer : bool_constant<is_standard_integer_v<_Ty>> {};
+
+// CONSTANT TEMPLATE is_floating_point_v
+template <class _Ty>
+_INLINE_VARIABLE constexpr bool is_floating_point_v = is_any_of_v<_Ty, float, double, long double>;
+
+// STRUCT TEMPLATE is_floating_point
+template <class _Ty>
+struct is_floating_point : bool_constant<is_floating_point_v<_Ty>> {};
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD
