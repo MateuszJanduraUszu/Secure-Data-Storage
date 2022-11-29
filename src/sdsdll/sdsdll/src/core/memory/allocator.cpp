@@ -14,7 +14,7 @@ _NODISCARD constexpr bool _Is_pow_of_2(const size_t _Val) noexcept {
 }
 
 // FUNCTION _Allocate
-_NODISCARD constexpr _CRT_ALLOCATOR void* _Allocate(const size_t _Count) noexcept {
+_NODISCARD constexpr _MSVC_ALLOCATOR void* _Allocate(const size_t _Count) noexcept {
     // try allocate _Count bytes with default alignment (thread-safe)
     if (_Count == 0 || _Count >= static_cast<size_t>(-1)) { // no allocation or risk of overflow
         return nullptr;
@@ -29,7 +29,7 @@ _NODISCARD constexpr _CRT_ALLOCATOR void* _Allocate(const size_t _Count) noexcep
 
 #ifdef __cpp_aligned_new
 // FUNCTION _Allocate_aligned
-_NODISCARD constexpr _CRT_ALLOCATOR void* _Allocate_aligned(const size_t _Count,
+_NODISCARD constexpr _MSVC_ALLOCATOR void* _Allocate_aligned(const size_t _Count,
     const size_t _Align) noexcept { // try allocate _Count bytes with custom alignment (thread-safe)
     if (_Count == 0 || _Count >= static_cast<size_t>(-1)) { // no allocation or risk of overflow
         return nullptr;

@@ -83,9 +83,9 @@
 // The __declspec keyword is specific for VC++, however Clang supports it as well.
 // Note: Set -fdeclspec or -fms-extensions in the Clang options to enable support for __declspec.
 #if defined(_MSC_VER) || defined(__clang__)
-#define _CRT_ALLOCATOR __declspec(allocator)
+#define _MSVC_ALLOCATOR __declspec(allocator)
 #else // ^^^ defined(_MSC_VER) || defined(__clang__) ^^^ / vvv !defined(_MSC_VER) && !defined(__clang__) vvv
-#define _CRT_ALLOCATOR
+#define _MSVC_ALLOCATOR
 #endif // defined(_MSC_VER) || defined(__clang__)
 
 // Microsoft's STL uses _HAS_CXX17/_HAS_CXX20/_HAS_CXX23 to check the C++ version.

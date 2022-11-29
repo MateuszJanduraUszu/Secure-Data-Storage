@@ -13,3 +13,5 @@
 /src/tests/bin/
 /src/tests/tests/x64/
 /src/tests/tests/x86/
+/src/sdsdll/sdsdll/time_zone/time.hpp
+/src/sdsdll/sdsdll/time_zone/timer.cpp

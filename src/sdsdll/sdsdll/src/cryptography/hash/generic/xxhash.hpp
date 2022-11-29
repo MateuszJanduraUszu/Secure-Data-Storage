@@ -42,7 +42,7 @@ private:
 
 public:
     using char_type       = _Elem;
-    using byte_type	      = unsigned char;
+    using byte_type       = unsigned char;
     using char_string     = basic_string<_Elem>;
     using byte_string     = basic_string<unsigned char>;
     using size_type       = size_t;

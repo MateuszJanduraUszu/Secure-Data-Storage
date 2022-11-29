@@ -43,7 +43,8 @@ utf16_string::utf16_string(utf16_string&& _Other) : _Mystr(_STD move(_Other._Mys
 
 utf16_string::utf16_string(const wchar_t* const _Text) : _Mystr(_Text) {}
 
-utf16_string::utf16_string(const wchar_t* const _Text, const size_type _Count) : _Mystr(_Text, _Count) {}
+utf16_string::utf16_string(
+    const wchar_t* const _Text, const size_type _Count) : _Mystr(_Text, _Count) {}
 
 utf16_string::utf16_string(const wstring_view _Text) : _Mystr(_Text.data(), _Text.size()) {}
 

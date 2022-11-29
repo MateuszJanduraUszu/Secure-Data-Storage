@@ -4,8 +4,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #pragma once
-#ifndef _SDSDLL_MEM_ALLOCATOR_HPP_
-#define _SDSDLL_MEM_ALLOCATOR_HPP_
+#ifndef _SDSDLL_CORE_MEMORY_ALLOCATOR_HPP_
+#define _SDSDLL_CORE_MEMORY_ALLOCATOR_HPP_
 #include <core/defs.hpp>
 #if _SDSDLL_PREPROCESSOR_GUARD
 #include <core/api.hpp>
@@ -32,11 +32,11 @@ _INLINE_VARIABLE constexpr size_t _Default_new_alignof = (_STD max)(
 extern _NODISCARD constexpr bool _Is_pow_of_2(const size_t _Val) noexcept;
 
 // FUNCTION _Allocate
-extern _NODISCARD constexpr _CRT_ALLOCATOR void* _Allocate(const size_t _Count) noexcept;
+extern _NODISCARD constexpr _MSVC_ALLOCATOR void* _Allocate(const size_t _Count) noexcept;
 
 #ifdef __cpp_aligned_new
 // FUNCTION _Allocate_aligned
-extern _NODISCARD constexpr _CRT_ALLOCATOR void* _Allocate_aligned(
+extern _NODISCARD constexpr _MSVC_ALLOCATOR void* _Allocate_aligned(
     const size_t _Count, const size_t _Align) noexcept;
 #endif // __cpp_aligned_new
 
@@ -77,7 +77,7 @@ public:
         return *this;
     }
 
-    _NODISCARD constexpr _CRT_ALLOCATOR _Ty* allocate(const size_type _Count) noexcept {
+    _NODISCARD constexpr _MSVC_ALLOCATOR _Ty* allocate(const size_type _Count) noexcept {
 #ifdef __cpp_aligned_new
         return static_cast<_Ty*>(_Allocate_aligned(_Count * sizeof(_Ty), _Default_new_alignof<_Ty>));
 #else // ^^^ __cpp_aligned_new ^^^ / vvv !__cpp_aligned_new vvv
@@ -150,7 +150,7 @@ public:
         return *this;
     }
 
-    _NODISCARD constexpr _CRT_ALLOCATOR void* allocate(const size_type _Count) noexcept {
+    _NODISCARD constexpr _MSVC_ALLOCATOR void* allocate(const size_type _Count) noexcept {
 #ifdef __cpp_aligned_new
         return _Allocate_aligned(_Count, __STDCPP_DEFAULT_NEW_ALIGNMENT__);
 #else // ^^^ __cpp_aligned_new ^^^ / vvv !__cpp_aligned_new vvv
@@ -177,4 +177,4 @@ public:
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD
-#endif // _SDSDLL_MEM_ALLOCATOR_HPP_
+#endif // _SDSDLL_CORE_MEMORY_ALLOCATOR_HPP_

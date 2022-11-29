@@ -121,7 +121,7 @@ public:
     // tries to suspend the thread
     _NODISCARD bool suspend() noexcept;
 
-    // tries to suspend the thread
+    // tries to resume the thread
     _NODISCARD bool resume() noexcept;
 
 private:
