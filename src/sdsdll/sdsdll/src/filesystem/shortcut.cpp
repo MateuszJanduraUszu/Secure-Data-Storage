@@ -9,37 +9,23 @@
 
 _SDSDLL_BEGIN
 // FUNCTION _Shortcut_handle copy constructor/destructor
-_Shortcut_handle::_Shortcut_handle(const path& _Target)
-    : _Com_instance(COINIT_MULTITHREADED), _Path(_Target) {
-    if (!_Ok()) {
-        _Link = nullptr;
-        _File = nullptr;
-        return;
-    }
-
-    if (FAILED(::CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_ALL, IID_IShellLinkW,
+_Shortcut_handle::_Shortcut_handle(const path& _Target) : _Path(_Target) {
+    if (FAILED(::CoCreateInstance(::CLSID_ShellLink, nullptr, CLSCTX_ALL, ::IID_IShellLinkW,
         reinterpret_cast<void**>(_SDSDLL addressof(_Link))))) {
         _File = nullptr;
     }
 
-    _Link->QueryInterface(IID_IPersistFile, reinterpret_cast<void**>(_SDSDLL addressof(_File)));
+    _Link->QueryInterface(::IID_IPersistFile, reinterpret_cast<void**>(_SDSDLL addressof(_File)));
 }
 
 _Shortcut_handle::~_Shortcut_handle() noexcept {
-    if (_File) {
-        _File->Release();
-        _File = nullptr;
-    }
-
-    if (_Link) {
-        _Link->Release();
-        _Link = nullptr;
-    }
+    _SDSDLL release_com_object(_File);
+    _SDSDLL release_com_object(_Link);
 }
 
 // FUNCTION _Shortcut_handle::_Valid
 _NODISCARD bool _Shortcut_handle::_Valid() const noexcept {
-    return _Ok() && _Link != nullptr && _File != nullptr;
+    return _Link != nullptr && _File != nullptr;
 }
 
 // FUNCTION _Shortcut_handle::_Submit

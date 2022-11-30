@@ -13,13 +13,13 @@
 #include <core/optimization/sbo.hpp>
 #include <core/optimization/string_view.hpp>
 #include <core/traits/type_traits.hpp>
-#include <filesystem/com.hpp>
 #include <filesystem/file.hpp>
 #include <filesystem/path.hpp>
 #include <objbase.h>
 #include <objidl.h>
 #include <ShObjIdl_core.h>
 #include <string>
+#include <system/handle/com.hpp>
 
 // STD types
 using _STD wstring;
@@ -32,8 +32,7 @@ struct shortcut_icon {
 };
 
 // STRUCT _Shortcut_handle
-struct _Shortcut_handle : private _Com_instance {
-public:
+struct _Shortcut_handle {
     path _Path;
     IShellLinkW* _Link;
     IPersistFile* _File;
