@@ -31,15 +31,13 @@ public:
     ~sync_event() noexcept;
 
     explicit sync_event(native_handle_type _Handle, const bool _Owns) noexcept;
+    explicit sync_event(const wchar_t* const _Name,
+        const initial_state _State = initial_state::reset, const bool _Manual = true) noexcept;
     
     sync_event& operator=(sync_event&& _Other) noexcept;
 
     sync_event(const sync_event&) = delete;
     sync_event& operator=(const sync_event&) = delete;
-
-    // creates a new sync event
-    _NODISCARD static sync_event&& create_sync_event(const wchar_t* const _Name,
-        const initial_state _State = initial_state::reset, const bool _Manual = true) noexcept;
 
     // opens an existing sync event
     _NODISCARD bool open(const wchar_t* const _Name) noexcept;

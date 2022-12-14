@@ -20,6 +20,10 @@ sync_event::sync_event(sync_event&& _Other) noexcept
 sync_event::sync_event(native_handle_type _Handle, const bool _Owns) noexcept
     : _Myhandle(_Handle), _Myowns(_Owns) {}
 
+sync_event::sync_event(const wchar_t* const _Name, const initial_state _State,
+    const bool _Manual) noexcept : _Myhandle(
+        ::CreateEventW(nullptr, _Manual, static_cast<bool>(_State), _Name)), _Myowns(true) {}
+
 sync_event::~sync_event() noexcept {
     close();
 }
@@ -34,12 +38,6 @@ sync_event& sync_event::operator=(sync_event&& _Other) noexcept {
     }
 
     return *this;
-}
-
-// FUNCTION sync_event::create_sync_event
-_NODISCARD sync_event&& sync_event::create_sync_event(
-    const wchar_t* const _Name, const initial_state _State, const bool _Manual) noexcept {
-    return sync_event{::CreateEventW(nullptr, _Manual, static_cast<bool>(_State), _Name), true};
 }
 
 // FUNCTION sync_event::open
