@@ -11,7 +11,7 @@
 #include <atomic>
 #include <core/api.hpp>
 #include <core/traits/type_traits.hpp>
-#include <cstdint>
+#include <cstddef>
 #include <minwindef.h>
 #include <processthreadsapi.h>
 #include <synchapi.h>
@@ -27,7 +27,7 @@ using _STD vector;
 
 _SDSDLL_BEGIN
 // FUNCTION _Hardware_concurrency
-extern _NODISCARD uint32_t _Hardware_concurrency() noexcept;
+extern _NODISCARD size_t _Hardware_concurrency() noexcept;
 
 // FUNCTION _Suspend_current_thread
 extern void _Suspend_current_thread() noexcept;
@@ -39,7 +39,7 @@ extern _NODISCARD bool _Suspend_thread(void* const _Handle) noexcept;
 extern _NODISCARD bool _Resume_thread(void* const _Handle) noexcept;
 
 // ALIAS _Thread_task_t
-using _Thread_task_t = void(__STDCALL_OR_CDECL*)(void*) _NOEXCEPT_FNTYPE;
+using _Thread_task_t = void(__stdcall*)(void*) _NOEXCEPT_FNTYPE;
 
 // ENUM CLASS thread_state
 enum class thread_state : unsigned char {
@@ -63,7 +63,7 @@ struct _Thread_task_storage {
 };
 
 // FUNCTION _Thread_task
-extern DWORD __stdcall _Thread_task(void* const _Data) noexcept;
+extern DWORD __stdcall _Thread_task(void* const _Data) _NOEXCEPT_FNTYPE;
 
 // CLASS thread
 class _SDSDLL_API thread { // non-copyable thread manager
@@ -89,7 +89,7 @@ public:
     explicit thread(const task _Task, void* const _Data) noexcept;
 
     // returns max threads count
-    _NODISCARD static uint32_t hardware_concurrency() noexcept;
+    _NODISCARD static size_t hardware_concurrency() noexcept;
 
     // registers a new callback
     void register_event_callback(const event _Event, const event_callback _Callback, void* const _Data);
@@ -148,15 +148,8 @@ private:
 
     native_handle_type _Myhandle;
     id _Myid;
-#ifdef _MSC_VER
-#pragma warning(push, 1)
-#pragma warning(disable : 4251) // C4251: _Thread_task_storage and std::vector require dll-interface
-#endif
     _Thread_task_storage _Mystorage;
     vector<_Callback_data> _Mycbs;
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif // _MSC_VER
 };
 _SDSDLL_END
 

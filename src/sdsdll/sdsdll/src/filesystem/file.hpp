@@ -211,15 +211,8 @@ private:
     // goes forward _Off bytes
     void _Go_forward(const size_type _Count) noexcept;
 
-#ifdef _MSC_VER
-#pragma warning(push, 1)
-#pragma warning(disable : 4251) // C4251: generic_handle_wrapper and _Filepos require dll-interface
-#endif // _MSC_VER
     generic_handle_wrapper _Myhandle;
     _Filepos _Mypos;
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif // _MSC_VER
 };
 
 // FUNCTION read_utf16_string_from_file

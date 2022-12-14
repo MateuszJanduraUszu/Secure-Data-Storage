@@ -9,10 +9,10 @@
 
 _SDSDLL_BEGIN
 // FUNCTION _Hardware_concurrency
-_NODISCARD uint32_t _Hardware_concurrency() noexcept {
+_NODISCARD size_t _Hardware_concurrency() noexcept {
     SYSTEM_INFO _Info;
     ::GetNativeSystemInfo(_SDSDLL addressof(_Info));
-    return static_cast<uint32_t>(_Info.dwNumberOfProcessors);
+    return static_cast<size_t>(_Info.dwNumberOfProcessors);
 }
 
 // FUNCTION _Suspend_current_thread
@@ -35,7 +35,7 @@ _Thread_task_storage::_Thread_task_storage(const thread_state _State) noexcept
     : _State(_State), _Queue() {}
 
 // FUNCTION _Thread_task
-DWORD __stdcall _Thread_task(void* const _Data) noexcept {
+DWORD __stdcall _Thread_task(void* const _Data) _NOEXCEPT_FNTYPE {
     // Note: The CreateThread() requires the thread routine to return a DWORD.
     _Thread_task_storage* _Storage = static_cast<_Thread_task_storage*>(_Data);
     for (;;) {
@@ -133,8 +133,8 @@ void thread::_Tidy() noexcept {
 }
 
 // FUNCTION thread::hardware_concurrency
-_NODISCARD uint32_t thread::hardware_concurrency() noexcept {
-    static atomic<uint32_t> _Count(_Hardware_concurrency());
+_NODISCARD size_t thread::hardware_concurrency() noexcept {
+    static atomic<size_t> _Count(_Hardware_concurrency());
     return _Count.load(_STD memory_order_relaxed);
 }
 

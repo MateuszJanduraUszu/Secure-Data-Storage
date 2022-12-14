@@ -81,14 +81,7 @@ public:
     _NODISCARD const wstring& str() const noexcept;
 
 private:
-#ifdef _MSC_VER
-#pragma warning(push, 1)
-#pragma warning(disable : 4251) // C4251: std::wstring requires dll-interface
-#endif // _MSC_VER
     wstring _Mystr;
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif // _MSC_VER
 };
 
 // FUNCTION operator==

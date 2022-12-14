@@ -160,14 +160,7 @@ public:
     _NODISCARD bool increment();
 
 private:
-#ifdef _MSC_VER
-#pragma warning(push, 1)
-#pragma warning(disable : 4251) // C4251: _Dir_iter requires dll-interface
-#endif // _MSC_VER
     _Dir_iter _Myimpl;
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif // _MSC_VER
 };
 _SDSDLL_END
 

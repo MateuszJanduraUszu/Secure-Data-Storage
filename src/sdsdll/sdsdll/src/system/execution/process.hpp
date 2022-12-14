@@ -128,14 +128,7 @@ private:
         wstring _Name; // the current process name
     };
 
-#ifdef _MSC_VER
-#pragma warning(push, 1)
-#pragma warning(disable : 4251) // C4251: _This_process_data requires dll-interface
-#endif // _MSC_VER
     static _This_process_data _Mydata;
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif // _MSC_VER
 };
 
 // STRUCT _Process_data

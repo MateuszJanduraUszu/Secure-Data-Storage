@@ -153,14 +153,7 @@ private:
         _Working
     };
 
-#ifdef _MSC_VER
-#pragma warning(push, 1)
-#pragma warning(disable : 4251) // C4251: _Thread_list requires dll-interface
-#endif // _MSC_VER
     _Thread_list _Mylist;
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif // _MSC_VER
     _Internal_state _Mystate;
 };
 _SDSDLL_END
