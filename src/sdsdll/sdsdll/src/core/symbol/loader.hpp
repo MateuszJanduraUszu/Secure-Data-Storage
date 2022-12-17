@@ -16,17 +16,9 @@
 
 _SDSDLL_BEGIN
 // FUNCTION TEMPLATE _Load_symbol
-template <class _Symbol, class _Elem>
-_NODISCARD constexpr _Symbol _Load_symbol(const _Elem* const _Lib, const char* const _Name) noexcept {
-    library_handle_wrapper _Handle;
-    if _CONSTEXPR_IF (is_same_v<_Elem, char>) {
-        _Handle = ::LoadLibraryA(_Lib);
-    } else if _CONSTEXPR_IF (is_same_v<_Elem, wchar_t>) {
-        _Handle = ::LoadLibraryW(_Lib);
-    } else { // unsupported element type
-        return _Symbol{};
-    }
-
+template <class _Symbol>
+_NODISCARD constexpr _Symbol _Load_symbol(const wchar_t* const _Lib, const char* const _Name) noexcept {
+    library_handle_wrapper _Handle(::LoadLibraryW(_Lib));
     return reinterpret_cast<_Symbol>(::GetProcAddress(_Handle, _Name));
 }
 _SDSDLL_END
