@@ -22,7 +22,7 @@
 
 _SDSDLL_BEGIN
 // CONSTANT _Default_shutdown_reason
-_INLINE_VARIABLE constexpr DWORD _Default_shutdown_reason = SHTDN_REASON_MAJOR_APPLICATION
+inline constexpr DWORD _Default_shutdown_reason = SHTDN_REASON_MAJOR_APPLICATION
     | SHTDN_REASON_MINOR_UPGRADE | SHTDN_REASON_FLAG_PLANNED;
 
 // ENUM CLASS _Shutdown_type

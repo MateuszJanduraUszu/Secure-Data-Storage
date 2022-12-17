@@ -232,7 +232,7 @@ struct any_directory_type_t {
 };
 
 // CONSTANT any_directory_type
-_INLINE_VARIABLE constexpr any_directory_type_t any_directory_type{};
+inline constexpr any_directory_type_t any_directory_type{};
 
 // FUNCTION is_directory
 _SDSDLL_API _NODISCARD bool is_directory(const file_status _Status) noexcept;

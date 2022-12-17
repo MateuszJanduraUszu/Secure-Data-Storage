@@ -25,7 +25,7 @@ using _STD wstring;
 _SDSDLL_BEGIN
 // CONSTANT TEMPLATE _Day_table
 template <bool _Leap>
-_INLINE_VARIABLE constexpr uint8_t _Day_table[12] = {
+inline constexpr uint8_t _Day_table[12] = {
     31, _Leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 

@@ -58,7 +58,7 @@ struct _Choose_native_hex_format<wchar_t> {
 
 // CONSTANT TEMPLATE native_hex_format
 template <class _Elem>
-_INLINE_VARIABLE constexpr hex_format native_hex_format = _Choose_native_hex_format<_Elem>::value;
+inline constexpr hex_format native_hex_format = _Choose_native_hex_format<_Elem>::value;
 
 // STRUCT TEMPLATE _Choose_hex_elem
 template <hex_format>

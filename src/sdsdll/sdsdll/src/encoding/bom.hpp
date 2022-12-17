@@ -34,13 +34,13 @@ struct bom {
 };
 
 // CONSTANT _Utf8_bom
-_INLINE_VARIABLE constexpr char _Utf8_bom[] = "\xEF\xBB\xBF";
+inline constexpr char _Utf8_bom[] = "\xEF\xBB\xBF";
 
 // CONSTANT _Utf16_big_endian_bom
-_INLINE_VARIABLE constexpr char _Utf16_big_endian_bom[] = "\xFE\xFF";
+inline constexpr char _Utf16_big_endian_bom[] = "\xFE\xFF";
 
 // CONSTANT _Utf16_little_endian_bom
-_INLINE_VARIABLE constexpr char _Utf16_little_endian_bom[] = "\xFF\xFE";
+inline constexpr char _Utf16_little_endian_bom[] = "\xFF\xFE";
 
 // FUNCTION fold_bom
 _SDSDLL_API _NODISCARD const char* fold_bom(const bom& _Bom) noexcept;

@@ -12,7 +12,7 @@
 _SDSDLL_BEGIN
 // CONSTANT TEMPLATE _Always_false
 template <class...>
-_INLINE_VARIABLE constexpr bool _Always_false = false;
+inline constexpr bool _Always_false = false;
 
 // STRUCT TEMPLATE integral_constant
 template <class _Ty, _Ty _Val>
@@ -65,14 +65,14 @@ _INLINE_VARIABLE constexpr bool is_same_v = __is_same_as(_Ty1, _Ty2);
 #else // ^^^ Use built-in ^^^ / vvv Use workaround vvv
 // CONSTANT TEMPLATE _Is_same_impl
 template <class, class>
-_INLINE_VARIABLE constexpr bool _Is_same_impl = false;
+inline constexpr bool _Is_same_impl = false;
 
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool _Is_same_impl<_Ty, _Ty> = true;
+inline constexpr bool _Is_same_impl<_Ty, _Ty> = true;
 
 // CONSTANT TEMPLATE is_same_v
 template <class _Ty1, class _Ty2>
-_INLINE_VARIABLE constexpr bool is_same_v = _Is_same_impl<_Ty1, _Ty2>;
+inline constexpr bool is_same_v = _Is_same_impl<_Ty1, _Ty2>;
 #endif // _HAS_BUILTIN(__is_same)
 
 // STRUCT TEMPLATE is_same
@@ -81,13 +81,13 @@ struct is_same : bool_constant<is_same_v<_Ty1, _Ty2>> {};
 
 // CONSTANT TEMPLATE is_array_v
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_array_v = false;
+inline constexpr bool is_array_v = false;
 
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_array_v<_Ty[]> = true;
+inline constexpr bool is_array_v<_Ty[]> = true;
 
 template <class _Ty, size_t _Size>
-_INLINE_VARIABLE constexpr bool is_array_v<_Ty[_Size]> = true;
+inline constexpr bool is_array_v<_Ty[_Size]> = true;
 
 // STRUCT TEMPLATE is_array
 template <class _Ty>
@@ -99,11 +99,11 @@ struct is_enum : bool_constant<__is_enum(_Ty)> {};
 
 // CONSTANT TEMPLATE is_enum_v
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_enum_v = __is_enum(_Ty);
+inline constexpr bool is_enum_v = __is_enum(_Ty);
 
 // CONSTANT TEMPLATE is_empty_v
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_empty_v = __is_empty(_Ty);
+inline constexpr bool is_empty_v = __is_empty(_Ty);
 
 // STRUCT TEMPLATE is_empty
 template <class _Ty>
@@ -111,7 +111,7 @@ struct is_empty : bool_constant<__is_empty(_Ty)> {};
 
 // CONSTANT TEMPLATE is_final_v
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_final_v = __is_final(_Ty);
+inline constexpr bool is_final_v = __is_final(_Ty);
 
 // STRUCT TEMPLATE is_final
 template <class _Ty>
@@ -144,7 +144,7 @@ struct conjunction<_Trait, _Traits...> : conditional_t<_Trait::value, conjunctio
 
 // CONSTANT TEMPLATE conjunction_v
 template <class... _Traits>
-_INLINE_VARIABLE constexpr bool conjunction_v = conjunction<_Traits...>::value;
+inline constexpr bool conjunction_v = conjunction<_Traits...>::value;
 
 // STRUCT TEMPLATE negation
 template <class _Trait>
@@ -152,7 +152,7 @@ struct negation : bool_constant<!_Trait::value> {};
 
 // CONSTANT TEMPLATE negation_v
 template <class _Trait>
-_INLINE_VARIABLE constexpr bool negation_v = negation<_Trait>::value;
+inline constexpr bool negation_v = negation<_Trait>::value;
 
 // STRUC TEMPLATE disjunction
 template <class... _Traits>
@@ -166,11 +166,11 @@ struct disjunction<_Trait, _Traits...> : conditional_t<_Trait::value, _Trait, di
 
 // CONSTANT TEMPLATE disjunction_v
 template <class... _Traits>
-_INLINE_VARIABLE constexpr bool disjunction_v = disjunction<_Traits...>::value;
+inline constexpr bool disjunction_v = disjunction<_Traits...>::value;
 
 // CONSTANT TEMPLATE is_any_of_v
 template <class _Ty, class... _Types>
-_INLINE_VARIABLE constexpr bool is_any_of_v = disjunction_v<is_same<_Ty, _Types>...>;
+inline constexpr bool is_any_of_v = disjunction_v<is_same<_Ty, _Types>...>;
 
 // STRUCT TEMPLATE is_any_of
 template <class _Ty, class... _Types>
@@ -178,7 +178,7 @@ struct is_any_of : bool_constant<is_any_of_v<_Ty, _Types...>> {};
 
 // CONSTANT TEMPLATE all_same_v
 template <class _Ty, class... _Types>
-_INLINE_VARIABLE constexpr bool all_same_v = conjunction_v<is_same<_Ty, _Types>...>;
+inline constexpr bool all_same_v = conjunction_v<is_same<_Ty, _Types>...>;
 
 // STRUCT TEMPLATE all_same
 template <class _Ty, class... _Types>
@@ -186,7 +186,7 @@ struct all_same : bool_constant<all_same_v<_Ty, _Types...>> {};
 
 // CONSTANT TEMPLATE is_standard_integer_v
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_standard_integer_v = is_any_of_v<_Ty, char, unsigned char,
+inline constexpr bool is_standard_integer_v = is_any_of_v<_Ty, char, unsigned char,
     short, unsigned short, int, unsigned int, long, unsigned long, long long, unsigned long long>;
 
 // STRUCT TEMPLATE is_standard_integer
@@ -195,7 +195,7 @@ struct is_standard_integer : bool_constant<is_standard_integer_v<_Ty>> {};
 
 // CONSTANT TEMPLATE is_floating_point_v
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_floating_point_v = is_any_of_v<_Ty, float, double, long double>;
+inline constexpr bool is_floating_point_v = is_any_of_v<_Ty, float, double, long double>;
 
 // STRUCT TEMPLATE is_floating_point
 template <class _Ty>

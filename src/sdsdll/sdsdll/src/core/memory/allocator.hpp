@@ -25,7 +25,7 @@ using _STD align_val_t;
 _SDSDLL_BEGIN
 // CONSTANT TEMPLATE _Default_new_alignof
 template <class _Ty>
-_INLINE_VARIABLE constexpr size_t _Default_new_alignof = (_STD max)(
+inline constexpr size_t _Default_new_alignof = (_STD max)(
     __STDCPP_DEFAULT_NEW_ALIGNMENT__, alignof(_Ty)); // choose default allocation alignment
 
 // FUNCTION _Is_pow_of_2
@@ -112,11 +112,7 @@ public:
 
     template <class _Other>
     constexpr void destroy(_Other* const _Ptr) noexcept {
-#if _HAS_CXX17
         _STD destroy_at(_Ptr);
-#else // ^^^ _HAS_CXX17 ^^^ / vvv !_HAS_CXX17 vvv
-        _Ptr->~_Other(); // std::destroy_at() not available until C++17
-#endif // _HAS_CXX17
     }
 
     _NODISCARD constexpr size_type max_size() const noexcept {

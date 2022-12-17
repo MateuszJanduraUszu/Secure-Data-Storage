@@ -16,11 +16,11 @@
 
 _SDSDLL_BEGIN
 // CONSTANT TEMPLATE _Small_type_size
-_INLINE_VARIABLE constexpr size_t _Small_type_size = 16;
+inline constexpr size_t _Small_type_size = 16;
 
 // CONSTANT TEMPLATE _Is_small_type
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool _Is_small_type = sizeof(_Ty) <= _Small_type_size;
+inline constexpr bool _Is_small_type = sizeof(_Ty) <= _Small_type_size;
 
 // CLASS TEMPLATE _Sbo_buffer_val
 template <class _Ty>

@@ -25,10 +25,10 @@ using _STD wstring;
 
 _SDSDLL_BEGIN
 // CONSTANT _Short_path_size
-_INLINE_VARIABLE constexpr size_t _Short_path_size = 260; // MAX_PATH
+inline constexpr size_t _Short_path_size = 260; // MAX_PATH
 
 // CONSTANT _Long_path_size
-_INLINE_VARIABLE constexpr size_t _Long_path_size = 32767;
+inline constexpr size_t _Long_path_size = 32767;
 
 // FUNCTION _Is_slash
 extern _NODISCARD constexpr bool _Is_slash(const wchar_t _Ch) noexcept;

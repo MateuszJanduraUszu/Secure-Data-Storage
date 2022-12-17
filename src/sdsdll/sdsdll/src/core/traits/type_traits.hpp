@@ -14,7 +14,7 @@
 _SDSDLL_BEGIN
 // FUNCTION TEMPLATE addressof
 template <class _Ty>
-_CONSTEXPR17 _Ty* addressof(_Ty& _Val) noexcept {
+constexpr _Ty* addressof(_Ty& _Val) noexcept {
 #if _HAS_BUILTIN(__builtin_addressof)
     return __builtin_addressof(_Val);
 #else // ^^^ _HAS_BUILTIN(__builtin_addressof) ^^^ / vvv !_HAS_BUILTIN(__builtin_addressof) vvv
@@ -31,10 +31,10 @@ using void_t = void;
 
 // CONSTANT TEMPLATE is_const_v
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_const_v = false;
+inline constexpr bool is_const_v = false;
 
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_const_v<const _Ty> = true;
+inline constexpr bool is_const_v<const _Ty> = true;
 
 // STRUCT TEMPLATE is_const
 template <class _Ty>
@@ -42,10 +42,10 @@ struct is_const : bool_constant<is_const_v<_Ty>> {};
 
 // CONSTANT TEMPLATE is_volatile_v
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_volatile_v = false;
+inline constexpr bool is_volatile_v = false;
 
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_volatile_v<volatile _Ty> = true;
+inline constexpr bool is_volatile_v<volatile _Ty> = true;
 
 // STRUCT TEMPLATE is_volatile
 template <class _Ty>
@@ -106,7 +106,7 @@ using remove_reference_t = typename remove_reference<_Ty>::type;
 
 // CONSTANT TEMPLATE is_constructible_v
 template <class _Ty, class... _Types>
-_INLINE_VARIABLE constexpr bool is_constructible_v = __is_constructible(_Ty, _Types...);
+inline constexpr bool is_constructible_v = __is_constructible(_Ty, _Types...);
 
 // STRUCT TEMPLATE is_constructible
 template <class _Ty, class... _Types>
@@ -114,7 +114,7 @@ struct is_constructible : bool_constant<__is_constructible(_Ty, _Types...)> {};
 
 // CONSTANT TEMPLATE is_nothrow_constructible_v
 template <class _Ty, class... _Types>
-_INLINE_VARIABLE constexpr bool is_nothrow_constructible_v = __is_nothrow_constructible(_Ty, _Types...);
+inline constexpr bool is_nothrow_constructible_v = __is_nothrow_constructible(_Ty, _Types...);
 
 // STRUCT TEMPLATE is_nothrow_constructible
 template <class _Ty, class... _Types>
@@ -122,7 +122,7 @@ struct is_nothrow_constructible : bool_constant<__is_nothrow_constructible(_Ty, 
 
 // CONSTANT TEMPLATE is_nothrow_default_constructible_v
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_nothrow_default_constructible_v = __is_nothrow_constructible(_Ty);
+inline constexpr bool is_nothrow_default_constructible_v = __is_nothrow_constructible(_Ty);
 
 // STRUCT TEMPLATE is_nothrow_default_constructible
 template <class _Ty>
@@ -130,7 +130,7 @@ struct is_nothrow_default_constructible : bool_constant<__is_nothrow_constructib
 
 // CONSTANT TEMPLATE is_nothrow_copy_constructible_v
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_nothrow_copy_constructible_v = __is_nothrow_constructible(
+inline constexpr bool is_nothrow_copy_constructible_v = __is_nothrow_constructible(
     _Ty, add_lvalue_reference_t<const _Ty>);
 
 // STRUCT TEMPLATE is_nothrow_copy_constructible
@@ -140,7 +140,7 @@ struct is_nothrow_copy_constructible
 
 // CONSTANT TEMPLATE is_nothrow_move_constructible_v
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_nothrow_move_constructible_v = __is_nothrow_constructible(
+inline constexpr bool is_nothrow_move_constructible_v = __is_nothrow_constructible(
     _Ty, add_rvalue_reference_t<_Ty>);
 
 // STRUCT TEMPLATE is_nothrow_move_constructible
@@ -150,7 +150,7 @@ struct is_nothrow_move_constructible
 
 // CONSTANT TEMPLATE is_nothrow_destructible_v
 template <class _Ty>
-_INLINE_VARIABLE constexpr bool is_nothrow_destructible_v = __is_nothrow_destructible(_Ty);
+inline constexpr bool is_nothrow_destructible_v = __is_nothrow_destructible(_Ty);
 
 // STRUCT TEMPLATE is_nothrow_destructible
 template <class _Ty>
@@ -176,7 +176,7 @@ using underlying_type_t = typename underlying_type<_Ty>::type;
 // FUNCTION TEMPLATE _Has_bits
 template <class _Ty>
 _NODISCARD constexpr bool _Has_bits(const _Ty _Bitmask, const _Ty _Bits) noexcept {
-    if _CONSTEXPR_IF (is_enum_v<_Ty>) {
+    if constexpr (is_enum_v<_Ty>) {
         using _Int_t = underlying_type_t<_Ty>;
         return (static_cast<_Int_t>(_Bitmask) & static_cast<_Int_t>(_Bits)) != _Int_t{};
     } else {
