@@ -39,7 +39,7 @@ extern _NODISCARD bool _Suspend_thread(void* const _Handle) noexcept;
 extern _NODISCARD bool _Resume_thread(void* const _Handle) noexcept;
 
 // ALIAS _Thread_task_t
-using _Thread_task_t = void(__stdcall*)(void*) _NOEXCEPT_FNTYPE;
+using _Thread_task_t = void(__stdcall*)(void*) noexcept;
 
 // ENUM CLASS thread_state
 enum class thread_state : unsigned char {
@@ -63,7 +63,7 @@ struct _Thread_task_storage {
 };
 
 // FUNCTION _Thread_task
-extern DWORD __stdcall _Thread_task(void* const _Data) _NOEXCEPT_FNTYPE;
+extern DWORD __stdcall _Thread_task(void* const _Data) noexcept;
 
 // CLASS thread
 class _SDSDLL_API thread { // non-copyable thread manager
@@ -78,7 +78,7 @@ public:
         terminate_event
     };
 
-    using event_callback = void(__STDCALL_OR_CDECL*)(const event, void* const) _NOEXCEPT_FNTYPE;
+    using event_callback = void(__STDCALL_OR_CDECL*)(const event, void* const) noexcept;
 
     thread() noexcept;
     ~thread() noexcept;

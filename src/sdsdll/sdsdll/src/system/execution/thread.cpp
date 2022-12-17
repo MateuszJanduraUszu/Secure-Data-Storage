@@ -35,7 +35,7 @@ _Thread_task_storage::_Thread_task_storage(const thread_state _State) noexcept
     : _State(_State), _Queue() {}
 
 // FUNCTION _Thread_task
-DWORD __stdcall _Thread_task(void* const _Data) _NOEXCEPT_FNTYPE {
+DWORD __stdcall _Thread_task(void* const _Data) noexcept {
     // Note: The CreateThread() requires the thread routine to return a DWORD.
     _Thread_task_storage* _Storage = static_cast<_Thread_task_storage*>(_Data);
     for (;;) {
@@ -49,7 +49,7 @@ DWORD __stdcall _Thread_task(void* const _Data) _NOEXCEPT_FNTYPE {
         case thread_state::working: // perform task
             if (!_Storage->_Queue.empty()) {
                 const _Thread_task_data& _Data = _Storage->_Queue.pop();
-                _Data._Task(_Data._Data);
+                (*_Data._Task)(_Data._Data);
             } else { // nothing to do, wait for any task
                 _Storage->_State.store(thread_state::waiting, _STD memory_order_relaxed);
             }
@@ -88,7 +88,7 @@ thread::~thread() noexcept {
 void thread::_Invoke_callbacks(const event _Event) noexcept {
     for (const _Callback_data& _Cbs : _Mycbs) {
         if (_Cbs._Event == _Event) {
-            _Cbs._Callback(_Cbs._Event, _Cbs._Data);
+            (*_Cbs._Callback)(_Cbs._Event, _Cbs._Data);
         }
     }
 }

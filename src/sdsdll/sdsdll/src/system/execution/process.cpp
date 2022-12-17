@@ -115,14 +115,14 @@ _NODISCARD bool _Is_process_running(const wchar_t* const _Name) noexcept {
 // FUNCTION _Suspend_process
 _NODISCARD bool _Suspend_process(void* const _Handle) noexcept {
     using _Fn        = LONG(__stdcall*)(void*);
-    static _Fn _Func = _Load_symbol<_Fn>("ntdll", "NtSuspendProcess");
+    static _Fn _Func = _Load_symbol<_Fn>(L"ntdll", "NtSuspendProcess");
     return _Func ? NT_SUCCESS(_Func(_Handle)) : false;
 }
 
 // FUNCTION _Resume_process
 _NODISCARD bool _Resume_process(void* const _Handle) noexcept {
     using _Fn        = LONG(__stdcall*)(void*);
-    static _Fn _Func = _Load_symbol<_Fn>("ntdll", "NtResumeProcess");
+    static _Fn _Func = _Load_symbol<_Fn>(L"ntdll", "NtResumeProcess");
     return _Func ? NT_SUCCESS(_Func(_Handle)) : false;
 }
 
