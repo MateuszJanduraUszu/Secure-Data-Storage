@@ -12,7 +12,7 @@ _SDSDLL_BEGIN
 template <class _Elem>
 _NODISCARD constexpr string narrow_string(const _Elem* _Str, size_t _Count) {
     static_assert(is_any_of_v<_Elem, char, wchar_t>, "Requires a UTF-8/Unicode element type.");
-    if _CONSTEXPR_IF (is_same_v<_Elem, char>) { // no conversion
+    if constexpr (is_same_v<_Elem, char>) { // no conversion
         return string{_Str, _Count};
     } else { // convert a wide string to narrow
         string _Result;
@@ -58,7 +58,7 @@ template _SDSDLL_API _NODISCARD string narrow_string(const wstring&);
 template <class _Elem>
 _NODISCARD constexpr wstring widen_string(const _Elem* _Str, size_t _Count) {
     static_assert(is_any_of_v<_Elem, char, wchar_t>, "Requires a UTF-8/Unicode element type.");
-    if _CONSTEXPR_IF (is_same_v<_Elem, char>) { // convert a narrow string to wide
+    if constexpr (is_same_v<_Elem, char>) { // convert a narrow string to wide
         wstring _Result;
         _Result.reserve(_Count);
         while (_Count-- > 0) {
@@ -105,7 +105,7 @@ template <class _Elem1, class _Elem2>
 _NODISCARD constexpr basic_string<_Elem1> auto_string(const _Elem2* _Str, size_t _Count) {
     static_assert(is_any_of_v<_Elem1, char, wchar_t> && is_any_of_v<_Elem2, char, wchar_t>,
         "Requires a UTF-8/Unicode element type.");
-    if _CONSTEXPR_IF (is_same_v<_Elem1, _Elem2>) { // no conversion
+    if constexpr (is_same_v<_Elem1, _Elem2>) { // no conversion
         return basic_string<_Elem1>{_Str, _Count};
     } else { // convert a narrow string to wide or a wide string to narrow
         basic_string<_Elem1> _Result;

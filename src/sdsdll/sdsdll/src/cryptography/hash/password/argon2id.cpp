@@ -27,7 +27,7 @@ _NODISCARD constexpr bool argon2id_traits<_Elem>::hash(
     }
 
     constexpr uint8_t _Variant = 2; // Argon2 variant (required by Botan)
-    if _CONSTEXPR_IF (sizeof(_Elem) == 1) { // hash a UTF-8 password
+    if constexpr (sizeof(_Elem) == 1) { // hash a UTF-8 password
         if (_Data_size > 0xFFFF'FFFF) { // Argon2id can hash at most 2^32 - 1 bytes
             return false;
         }

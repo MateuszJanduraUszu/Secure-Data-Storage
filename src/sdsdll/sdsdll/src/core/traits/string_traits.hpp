@@ -64,7 +64,7 @@ public:
     _NODISCARD static constexpr int_type length(const _Elem* _Str) noexcept {
 #if _HAS_BUILTIN(__builtin_strlen)
 #ifdef __cpp_char8_t
-        if _CONSTEXPR_IF (is_same_v<_Elem, char8_t>) {
+        if constexpr (is_same_v<_Elem, char8_t>) {
             return static_cast<_Integer>(__builtin_u8strlen(_Str));
         } else
 #endif // __cpp_char8_t

@@ -37,7 +37,7 @@ _NODISCARD constexpr bool scrypt_traits<_Elem>::hash(byte_type* const _Buf, cons
         return false;
     }
 
-    if _CONSTEXPR_IF (sizeof(_Elem) == 1) { // hash a UTF-8 password
+    if constexpr (sizeof(_Elem) == 1) { // hash a UTF-8 password
         try { // throws if one of the arguments is invalid
             ::Botan::scrypt(_Buf, _Optimal_buf_size, reinterpret_cast<const char*>(_Data),
                 _Data_size, _Salt.get(), _Salt.size, _Cost, _Block_size, _Parallelism);

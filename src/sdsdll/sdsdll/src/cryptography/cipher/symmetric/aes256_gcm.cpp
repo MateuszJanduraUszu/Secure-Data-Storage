@@ -32,7 +32,7 @@ _NODISCARD constexpr bool aes256_gcm_traits<_Elem>::encrypt(
     }
 
     byte_string _Raw_data;
-    if _CONSTEXPR_IF (sizeof(_Elem) == 1) { // encrypt a UTF-8 string
+    if constexpr (sizeof(_Elem) == 1) { // encrypt a UTF-8 string
         _Raw_data.assign(reinterpret_cast<const byte_type*>(_Data), _Data_size);
     } else { // encrypt a Unicode string
         const utf8_string& _Narrow = utf8_string::from_utf16(_Data, _Data_size);
@@ -76,7 +76,7 @@ _NODISCARD constexpr bool aes256_gcm_traits<_Elem>::decrypt(char_type* const _Bu
     }
 
     const size_type _Optimal_buf_size = chars_count(_Data_size);
-    if _CONSTEXPR_IF (sizeof(_Elem) == 1) {
+    if constexpr (sizeof(_Elem) == 1) {
         // Note: A UTF-8 string length is always equal to _Optimal_buf_size.
         if (_Buf_size < _Optimal_buf_size) {
             return false;
@@ -111,7 +111,7 @@ _NODISCARD constexpr bool aes256_gcm_traits<_Elem>::decrypt(char_type* const _Bu
         return false;
     }
 
-    if _CONSTEXPR_IF (sizeof(_Elem) == 1) { // decrypt a UTF-8 string
+    if constexpr (sizeof(_Elem) == 1) { // decrypt a UTF-8 string
         memory_traits::copy(_Buf, _Temp_buf._Get(), _Optimal_buf_size);
         if (_Count) {
             *_Count = _Optimal_buf_size;

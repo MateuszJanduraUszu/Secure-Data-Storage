@@ -21,7 +21,7 @@ _SDSDLL_BEGIN
 template <class _Integer>
 _NODISCARD constexpr _Integer pack_integer(const uint8_t (&_Bytes)[sizeof(_Integer)]) noexcept {
     static_assert(is_standard_integer_v<_Integer>, "Requires 1/2/4/8-byte standard integer.");
-    if _CONSTEXPR_IF (sizeof(_Integer) == 1) { // pack 1-byte integer
+    if constexpr (sizeof(_Integer) == 1) { // pack 1-byte integer
         return static_cast<_Integer>(_Bytes[0]);
     } else { // pack 2/4/8-byte integer
         _Integer _Result;
@@ -33,7 +33,7 @@ _NODISCARD constexpr _Integer pack_integer(const uint8_t (&_Bytes)[sizeof(_Integ
 template <class _Integer>
 _NODISCARD constexpr _Integer pack_integer(const array<uint8_t, sizeof(_Integer)>& _Bytes) noexcept {
     static_assert(is_standard_integer_v<_Integer>, "Requires 1/2/4/8-byte standard integer.");
-    if _CONSTEXPR_IF (sizeof(_Integer) == 1) { // pack 1-byte integer
+    if constexpr (sizeof(_Integer) == 1) { // pack 1-byte integer
         return static_cast<_Integer>(_Bytes[0]);
     } else { // pack 2/4/8-byte integer
         _Integer _Result;
@@ -46,7 +46,7 @@ _NODISCARD constexpr _Integer pack_integer(const array<uint8_t, sizeof(_Integer)
 template <class _Integer>
 _NODISCARD constexpr array<uint8_t, sizeof(_Integer)> unpack_integer(const _Integer _Val) noexcept {
     static_assert(is_standard_integer_v<_Integer>, "Requires 1/2/4/8-byte standard integer.");
-    if _CONSTEXPR_IF (sizeof(_Integer) == 1) { // unpack 1-byte integer
+    if constexpr (sizeof(_Integer) == 1) { // unpack 1-byte integer
         return {static_cast<uint8_t>(_Val)};
     } else { // unpack 2/4/8-byte integer
         array<uint8_t, sizeof(_Integer)> _Result;

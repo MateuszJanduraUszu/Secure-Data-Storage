@@ -26,7 +26,7 @@ _NODISCARD constexpr basic_string<_Elem> _String_to_hex(const _Elem* _Str, size_
     basic_string<_Elem> _Buf(_Count * 2, _Elem{0});
     _Elem* _Buf_ptr = _Buf.data();
     while (_Count-- > 0) {
-        if _CONSTEXPR_IF (sizeof(_Elem) == 1) {
+        if constexpr (sizeof(_Elem) == 1) {
             _CSTD snprintf(reinterpret_cast<char*>(_Buf_ptr), 3, "%02x", static_cast<int>(*_Str));
         } else {
             ::_snwprintf_s(_Buf_ptr, 3, 3, L"%02x", static_cast<int>(*_Str));
@@ -51,7 +51,7 @@ _NODISCARD constexpr hex_string<_Fmt> as_hex(const _Elem* const _Str, const size
     }
 
     const auto& _Hex = _String_to_hex(_Str, _Count);
-    if _CONSTEXPR_IF (is_same_v<_Elem, _Val_t>) { // no additional conversion
+    if constexpr (is_same_v<_Elem, _Val_t>) { // no additional conversion
         return _Hex;
     } else { // convert to the correct format
         return _Fast_strcvt<_Val_t>(_Hex);

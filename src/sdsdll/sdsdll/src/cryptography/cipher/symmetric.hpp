@@ -23,7 +23,7 @@ _NODISCARD constexpr typename _Traits::byte_string encrypt_symmetric(
     const typename _Traits::char_type* const _Data, const typename _Traits::size_type _Size,
     const typename _Traits::key& _Key, const typename _Traits::iv& _Iv) {
     typename _Traits::byte_string _Buf;
-    if _CONSTEXPR_IF (sizeof(typename _Traits::char_type) == 1) {
+    if constexpr (sizeof(typename _Traits::char_type) == 1) {
         _Buf.resize(_Traits::bytes_count(_Size));
     } else {
         const typename _Traits::size_type _Count = _SDSDLL count_utf16_bytes(_Data, _Size);
@@ -69,7 +69,7 @@ _NODISCARD constexpr typename _Traits::char_string decrypt_symmetric(
         return typename _Traits::char_string{};
     }
 
-    if _CONSTEXPR_IF (sizeof(typename _Traits::char_type) > 1) {
+    if constexpr (sizeof(typename _Traits::char_type) > 1) {
         // Note: A Unicode string may be shorter (UTF-8 never).
         _Buf.resize(_Buf_size);
     }
