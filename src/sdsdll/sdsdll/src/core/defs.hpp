@@ -22,9 +22,9 @@
 #error Expected C++ compiler.
 #endif // __cplusplus
 
-// Requires at least C++14
-#if __cplusplus < 201402L
-#error Expected C++14 or later.
+// Requires at least C++17
+#if __cplusplus < 201703L
+#error Expected C++17 or later.
 #endif // __cplusplus
 
 // Only 32/64-bit non-ARM platforms are supported
@@ -40,16 +40,6 @@
 #define __STDCALL_OR_CDECL __cdecl
 #endif // _M_X64
 #endif // __STDCALL_OR_CDECL
-
-// Microsoft's STL stores some stuff in <xlib>/<xlib.h> (non-standard).
-// Prefer using <xlib>/<xlib.h> over <lib> if possible.
-#ifndef _USE_INTERNAL_MICROSOFT_STL_HEADERS
-#ifdef _MSC_VER
-#define _USE_INTERNAL_MICROSOFT_STL_HEADERS 1
-#else // ^^^ _MSC_VER ^^^ / vvv !_MSC_VER vvv
-#define _USE_INTERNAL_MICROSOFT_STL_HEADERS 0
-#endif // _MSC_VER
-#endif // _USE_INTERNAL_MICROSOFT_STL_HEADERS
 
 // The __has_cpp_attribute macro may be undefined
 #ifndef _HAS_CXX_ATTRIBUTE
@@ -88,38 +78,30 @@
 #define _MSVC_ALLOCATOR
 #endif // defined(_MSC_VER) || defined(__clang__)
 
-// Microsoft's STL uses _HAS_CXX17/_HAS_CXX20/_HAS_CXX23 to check the C++ version.
+#if defined(_MSC_VER) || defined(__clang__)
+#define _MSVC_NOVTABLE __declspec(novtable)
+#else // ^^^ defined(_MSC_VER) || defined(__clang__) ^^^ / vvv !defined(_MSC_VER) && !defined(__clang__) vvv
+#define _MSVC_NOVTABLE
+#endif // defined(_MSC_VER) || defined(__clang__)
+
+// Microsoft's STL uses _HAS_CXX20 and _HAS_CXX23 to check the C++ version.
 // Note: Set /Zc:__cplusplus in the VC++ options to update the __cplusplus macro.
-#ifndef _MSC_VER
-#if __cplusplus == 201402L
-#define _HAS_CXX17 0
-#define _HAS_CXX20 0
-#define _HAS_CXX23 0
-#elif __cplusplus == 201703L
-#define _HAS_CXX17 1
+#ifdef _MSC_VER
+#if __cplusplus == 201703L
 #define _HAS_CXX20 0
 #define _HAS_CXX23 0
 #elif __cplusplus == 202002L
-#define _HAS_CXX17 1
 #define _HAS_CXX20 1
 #define _HAS_CXX23 0
 #else // ^^^ __cplusplus == 202002L ^^^ / vvv __cplusplus > 202002L vvv
-#define _HAS_CXX17 1
 #define _HAS_CXX20 1
 #define _HAS_CXX23 1
-#endif // __cplusplus == 201402L
+#endif // __cplusplus == 201703L
 #endif // _MSC_VER
 
-// Microsoft's STL uses _CONSTEXPR17/_CONSTEXPR20/_CONSTEXPR23 to check if constexpr is available.
+// Microsoft's STL uses _CONSTEXPR20 and _CONSTEXPR23 to check if constexpr is available.
 // Define these macros if not defined.
 #ifndef _MSC_VER
-// Functions that became constexpr in C++17
-#if _HAS_CXX17
-#define _CONSTEXPR17 constexpr
-#else // ^^^ _HAS_CXX17 ^^^ / vvv !_HAS_CXX17 vvv
-#define _CONSTEXPR17 inline
-#endif // _HAS_CXX17
-
 // Functions that became constexpr in C++20
 #if _HAS_CXX20
 #define _CONSTEXPR20 constexpr
@@ -181,20 +163,6 @@
     }
 #endif // _BIT_OPS
 
-// Verify _Cond and report an exception if failed
-#ifdef _DEBUG
-#define _SDSDLL_VERIFY(_Cond, _Msg)
-#else // ^^^ _DEBUG ^^^ / vvv NDEBUG vvv
-#define _SDSDLL_VERIFY(_Cond, _Msg)    \
-    do {                               \
-        if (_Cond) {                   \
-            /* no error, do nothing */ \
-        } else {                       \
-            throw;                     \
-        }                              \
-    } while (false)
-#endif // _DEBUG
-
 // SDSDLL namespace
 #define _SDSDLL_BEGIN namespace sdsdll {
 #define _SDSDLL_END   }
@@ -213,32 +181,11 @@
 #define _SDSDLL_STRINGIZE_BASE(_Val) #_Val
 #define _SDSDLL_STRINGIZE(_Val)      _SDSDLL_STRINGIZE_BASE(_Val)
 
-// C++17 constexpr if, see P0292R1
-#ifdef __cpp_if_constexpr
-#define _CONSTEXPR_IF constexpr
-#else // ^^^ __cpp_if_constexpr ^^^ / vvv !__cpp_if_constexpr vvv
-#define _CONSTEXPR_IF
-#endif // __cpp_if_constexpr
-
-// C++17 inline variables, see P0386R1
-#ifdef __cpp_inline_variables
-#define _INLINE_VARIABLE inline
-#else // ^^^ __cpp_inline_variables ^^^ / vvv !__cpp_inline_variables vvv
-#define _INLINE_VARIABLE
-#endif // __cpp_inline_variables
-
 // C++20 constexpr dynamic memory allocation, see P0784R7
 #ifdef __cpp_constexpr_dynamic_alloc
 #define _CONSTEXPR_DYNAMIC_ALLOC constexpr
 #else // ^^^ __cpp_constexpr_dynamic_alloc ^^^ / vvv !__cpp_constexpr_dynamic_alloc vvv
 #define _CONSTEXPR_DYNAMIC_ALLOC
 #endif // __cpp_constexpr_dynamic_alloc
-
-// C++17 noexcept function type
-#ifdef __cpp_noexcept_function_type
-#define _NOEXCEPT_FNTYPE noexcept
-#else // ^^^ __cpp_noexcept_function_type ^^^ / vvv !__cpp_noexcept_function_type vvv
-#define _NOEXCEPT_FNTYPE
-#endif // __cpp_noexcept_function_type
 #endif // _SDSDLL_PREPROCESSOR_GUARD
 #endif // _SDSDLL_CORE_DEFS_HPP_

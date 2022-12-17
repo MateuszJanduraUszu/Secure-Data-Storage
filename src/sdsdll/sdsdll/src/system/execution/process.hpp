@@ -194,14 +194,7 @@ public:
     _NODISCARD bool terminate(const uint32_t _Code = 0) noexcept;
 
 private:
-#ifdef _MSC_VER
-#pragma warning(push, 1)
-#pragma warning(disable : 4251) // C4251: _Process_data requires dll-interface
-#endif // _MSC_VER
     _Process_data _Mydata;
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif // _MSC_VER
 };
 _SDSDLL_END
 
