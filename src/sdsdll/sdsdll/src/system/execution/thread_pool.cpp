@@ -392,6 +392,13 @@ void thread_pool::close() noexcept {
     _Mystate = _Closed;
     _Mylist._Release();
 }
+
+// FUNCTION default_thread_pool
+_NODISCARD thread_pool& default_thread_pool() noexcept {
+    // Note: Use 25% of all threads by default.
+    static thread_pool _Pool(thread::hardware_concurrency() / 4);
+    return _Pool;
+}
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD

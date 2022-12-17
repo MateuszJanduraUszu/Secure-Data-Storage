@@ -156,6 +156,9 @@ private:
     _Thread_list _Mylist;
     _Internal_state _Mystate;
 };
+
+// FUNCTION default_thread_pool
+_SDSDLL_API _NODISCARD thread_pool& default_thread_pool() noexcept;
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD
