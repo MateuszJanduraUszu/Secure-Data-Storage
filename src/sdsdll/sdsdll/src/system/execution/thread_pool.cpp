@@ -352,7 +352,7 @@ _NODISCARD bool thread_pool::submit_task(const thread::task _Task, void* const _
     thread* const _Waiting_thread = _Mylist._Select_thread_by_state(thread_state::waiting);
     if (_Waiting_thread) { // give this task to the first waiting thread
         return _Waiting_thread->submit_task(_Task, _Data);
-    } else { // give this task to the thread with the fewest jobs
+    } else { // give this task to the thread with the fewest tasks
         return _Mylist._Select_thread_by_tasks()->submit_task(_Task, _Data);
     }
 }
