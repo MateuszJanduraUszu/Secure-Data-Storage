@@ -4,8 +4,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #pragma once
-#ifndef _SDSDLL_CRYPTOGRAPHY_RANDOM_HPP_
-#define _SDSDLL_CRYPTOGRAPHY_RANDOM_HPP_
+#ifndef _SDSDLL_CRYPTOGRAPHY_RANDOM_RANDOM_HPP_
+#define _SDSDLL_CRYPTOGRAPHY_RANDOM_RANDOM_HPP_
 #include <core/defs.hpp>
 #if _SDSDLL_PREPROCESSOR_GUARD
 #include <core/api.hpp>
@@ -90,4 +90,4 @@ _SDSDLL_API _NODISCARD byte_string random_bytes(const size_t _Size, const random
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD
-#endif // _SDSDLL_CRYPTOGRAPHY_RANDOM_HPP_
+#endif // _SDSDLL_CRYPTOGRAPHY_RANDOM_RANDOM_HPP_

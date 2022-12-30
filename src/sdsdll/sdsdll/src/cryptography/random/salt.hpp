@@ -4,8 +4,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #pragma once
-#ifndef _SDSDLL_CRYPTOGRAPHY_SALT_HPP_
-#define _SDSDLL_CRYPTOGRAPHY_SALT_HPP_
+#ifndef _SDSDLL_CRYPTOGRAPHY_RANDOM_SALT_HPP_
+#define _SDSDLL_CRYPTOGRAPHY_RANDOM_SALT_HPP_
 #include <core/defs.hpp>
 #if _SDSDLL_PREPROCESSOR_GUARD
 #include <core/api.hpp>
@@ -56,4 +56,4 @@ _SDSDLL_API _NODISCARD constexpr salt<_Size> make_salt() noexcept;
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD
-#endif // _SDSDLL_CRYPTOGRAPHY_SALT_HPP_
+#endif // _SDSDLL_CRYPTOGRAPHY_RANDOM_SALT_HPP_
