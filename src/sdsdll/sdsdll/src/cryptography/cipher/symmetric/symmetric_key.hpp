@@ -9,8 +9,8 @@
 #include <core/defs.hpp>
 #if _SDSDLL_PREPROCESSOR_GUARD
 #include <core/api.hpp>
+#include <core/container/bytes.hpp>
 #include <core/traits/string_traits.hpp>
-#include <cstddef>
 #include <openssl/rand.h>
 #include <type_traits>
 

@@ -62,6 +62,40 @@ struct _Signature_traits {
         const byte_type* const _Data, const size_type _Data_size, const key& _Key) noexcept;
 };
 
+// FUNCTION TEMPLATE sign_data
+template <class _Elem>
+_SDSDLL_API _NODISCARD constexpr byte_string sign_data(
+    const _Elem* const _Data, const size_t _Size, const rsa4096_key& _Key);
+
+template <class _Elem>
+_SDSDLL_API _NODISCARD constexpr byte_string sign_data(
+    const _Elem* const _Data, const rsa4096_key& _Key);
+
+template <class _Elem>
+_SDSDLL_API _NODISCARD constexpr byte_string sign_data(
+    const basic_string_view<_Elem>, const rsa4096_key& _Key);
+
+template <class _Elem>
+_SDSDLL_API _NODISCARD constexpr byte_string sign_data(
+    const basic_string<_Elem>& _Data, const rsa4096_key& _Key);
+
+// FUNCTION TEMPLATE verify_data
+template <class _Elem>
+_SDSDLL_API _NODISCARD constexpr verification_result verify_data(const _Elem* const _Data,
+    const size_t _Size, const rsa4096_key& _Key, const byte_string& _Signature);
+
+template <class _Elem>
+_SDSDLL_API _NODISCARD constexpr verification_result verify_data(
+    const _Elem* const _Data, const rsa4096_key& _Key, const byte_string& _Signature);
+
+template <class _Elem>
+_SDSDLL_API _NODISCARD constexpr verification_result verify_data(
+    const basic_string_view<_Elem> _Data, const rsa4096_key& _Key, const byte_string& _Signature);
+
+template <class _Elem>
+_SDSDLL_API _NODISCARD constexpr verification_result verify_data(
+    const basic_string<_Elem>& _Data, const rsa4096_key& _Key, const byte_string& _Signature);
+
 // FUNCTION sign_file
 _SDSDLL_API _NODISCARD byte_string sign_file(
     file& _File, const rsa4096_key& _Key, const file::off_type _Off = 0);
