@@ -8,19 +8,29 @@
 #if _SDSDLL_PREPROCESSOR_GUARD
 
 _SDSDLL_BEGIN
-// FUNCTION _Sha512_context_proxy constructor/destructor
-_Sha512_context_proxy::_Sha512_context_proxy() noexcept : _Ctx(::EVP_MD_CTX_new()) {}
+// FUNCTION sha512_state constructor/destructor
+sha512_state::sha512_state() noexcept : _Myimpl(::EVP_MD_CTX_new()) {}
 
-_Sha512_context_proxy::~_Sha512_context_proxy() noexcept {
-    if (_Ctx) {
-        ::EVP_MD_CTX_free(_Ctx);
-        _Ctx = nullptr;
+sha512_state::~sha512_state() noexcept {
+    if (_Myimpl) {
+        ::EVP_MD_CTX_free(_Myimpl);
+        _Myimpl = nullptr;
     }
+}
+
+// FUNCTION sha512_state::get
+_NODISCARD sha512_state::pointer sha512_state::get() noexcept {
+    return _Myimpl;
+}
+
+_NODISCARD sha512_state::const_pointer sha512_state::get() const noexcept {
+    return _Myimpl;
 }
 
 // FUNCTION TEMPLATE sha512_traits::bytes_count
 template <class _Elem>
-_NODISCARD constexpr typename sha512_traits<_Elem>::size_type sha512_traits<_Elem>::bytes_count() noexcept {
+_NODISCARD constexpr typename sha512_traits<_Elem>::size_type
+    sha512_traits<_Elem>::bytes_count() noexcept {
     return bits / CHAR_BIT; // always 64 bytes
 }
 
@@ -55,12 +65,12 @@ _NODISCARD constexpr bool sha512_traits<_Elem>::hash_file(byte_type* const _Buf,
         }
     }
 
-    _Sha512_context_proxy _Proxy;
-    if (!_Proxy._Ctx) {
+    state_type _State;
+    if (!_State.get()) {
         return false;
     }
 
-    if (::EVP_DigestInit_ex(_Proxy._Ctx, ::EVP_sha3_512(), nullptr) == 0) {
+    if (::EVP_DigestInit_ex(_State.get(), ::EVP_sha3_512(), nullptr) == 0) {
         return false;
     }
 
@@ -76,18 +86,66 @@ _NODISCARD constexpr bool sha512_traits<_Elem>::hash_file(byte_type* const _Buf,
             break;
         }
 
-        if (::EVP_DigestUpdate(_Proxy._Ctx, _Chunk, _Read) == 0) {
+        if (::EVP_DigestUpdate(_State.get(), _Chunk, _Read) == 0) {
             return false;
         }
     }
 
     uint32_t _Bytes = 0; // hashed bytes (unused)
-    return ::EVP_DigestFinal_ex(_Proxy._Ctx, _Buf, &_Bytes) != 0;
+    return ::EVP_DigestFinal_ex(_State.get(), _Buf, &_Bytes) != 0;
 }
 
 template struct _SDSDLL_API sha512_traits<char>;
 template struct _SDSDLL_API sha512_traits<unsigned char>;
 template struct _SDSDLL_API sha512_traits<wchar_t>;
+
+// FUNCTION TEMPLATE sha512_stream_traits::bytes_count
+template <class _Elem>
+_NODISCARD constexpr typename sha512_stream_traits<_Elem>::size_type
+    sha512_stream_traits<_Elem>::bytes_count() noexcept {
+    return bits / CHAR_BIT; // always 64 bytes
+}
+
+// FUNCTION TEMPLATE sha512_stream_traits::init
+template <class _Elem>
+_NODISCARD constexpr bool sha512_stream_traits<_Elem>::init(state_type& _State) noexcept {
+    if (!_State.get()) {
+        return false;
+    }
+
+    return ::EVP_DigestInit_ex(_State.get(), ::EVP_sha3_512(), nullptr) != 0;
+}
+
+// FUNCTION TEMPLATE sha512_stream_traits::append
+template <class _Elem>
+_NODISCARD constexpr bool sha512_stream_traits<_Elem>::append(
+    state_type& _State, const char_type* const _Data, const size_type _Count) noexcept {
+    if (!_State.get()) {
+        return false;
+    }
+
+    return ::EVP_DigestUpdate(_State.get(), _Data, _Count * sizeof(char_type)) != 0;
+}
+
+// FUNCTION TEMPLATE sha512_stream_traits::complete
+template <class _Elem>
+_NODISCARD constexpr bool sha512_stream_traits<_Elem>::complete(
+    state_type& _State, byte_type* const _Buf, const size_type _Buf_size) noexcept {
+    if (!_State.get()) {
+        return false;
+    }
+
+    if (!_Buf || _Buf_size < bytes_count()) {
+        return false;
+    }
+
+    uint32_t _Bytes = 0; // hashed bytes (unused)
+    return ::EVP_DigestFinal_ex(_State.get(), _Buf, &_Bytes) != 0;
+}
+
+template struct _SDSDLL_API sha512_stream_traits<char>;
+template struct _SDSDLL_API sha512_stream_traits<unsigned char>;
+template struct _SDSDLL_API sha512_stream_traits<wchar_t>;
 _SDSDLL_END
 
 #endif // _SDSDLL_PREPROCESSOR_GUARD

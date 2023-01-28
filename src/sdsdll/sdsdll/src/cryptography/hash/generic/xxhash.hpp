@@ -25,12 +25,27 @@
 using _STD basic_string;
 
 _SDSDLL_BEGIN
-// STRUCT _Xxhash_state_proxy
-struct _Xxhash_state_proxy {
-    XXH3_state_t* _State;
+// CLASS xxhash_state
+class _SDSDLL_API xxhash_state {
+public:
+    using value_type    = XXH3_state_t;
+    using pointer       = XXH3_state_t*;
+    using const_pointer = const XXH3_state_t*;
 
-    _Xxhash_state_proxy() noexcept;
-    ~_Xxhash_state_proxy() noexcept;
+    xxhash_state() noexcept;
+    ~xxhash_state() noexcept;
+
+    xxhash_state(const xxhash_state&) = delete;
+    xxhash_state& operator=(const xxhash_state&) = delete;
+
+    // returns a pointer to the state
+    _NODISCARD pointer get() noexcept;
+
+    // returns a non-mutable pointer to the state
+    _NODISCARD const_pointer get() const noexcept;
+
+private:
+    pointer _Myimpl;
 };
 
 // STRUCT TEMPLATE xxhash_traits
@@ -47,6 +62,7 @@ public:
     using byte_string     = basic_string<unsigned char>;
     using size_type       = size_t;
     using difference_type = ptrdiff_t;
+    using state_type      = xxhash_state;
 
     static constexpr size_type bits = 64;
 
@@ -60,6 +76,39 @@ public:
     // hashes a file
     _NODISCARD static constexpr bool hash_file(byte_type* const _Buf,
         const size_type _Buf_size, file& _File, const file::off_type _Off) noexcept;
+};
+
+// STRUCT TEMPLATE xxhash_stream_traits
+template <class _Elem>
+struct _SDSDLL_API xxhash_stream_traits { // traits for the xxHash stream hash
+private:
+    static_assert(is_any_of_v<_Elem, char, unsigned char, wchar_t>,
+        "Requires a byte/UTF-8/Unicode element type.");
+
+public:
+    using char_type       = _Elem;
+    using byte_type       = unsigned char;
+    using char_string     = basic_string<_Elem>;
+    using byte_string     = basic_string<unsigned char>;
+    using size_type       = size_t;
+    using difference_type = ptrdiff_t;
+    using state_type      = xxhash_state;
+
+    static constexpr size_type bits = 64;
+
+    // returns hashed text length
+    _NODISCARD static constexpr size_type bytes_count() noexcept;
+
+    // initializes the stream
+    _NODISCARD static constexpr bool init(state_type& _State) noexcept;
+
+    // appends a data to the stream
+    _NODISCARD static constexpr bool append(
+        state_type& _State, const char_type* const _Data, const size_type _Count) noexcept;
+
+    // closes the stream
+    _NODISCARD static constexpr bool complete(
+        state_type& _State, byte_type* const _Buf, const size_type _Buf_size) noexcept;
 };
 _SDSDLL_END
 

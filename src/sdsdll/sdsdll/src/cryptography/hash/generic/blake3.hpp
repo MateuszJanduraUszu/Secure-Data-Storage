@@ -22,6 +22,29 @@
 using _STD basic_string;
 
 _SDSDLL_BEGIN
+// CLASS blake3_state
+class _SDSDLL_API blake3_state {
+public:
+    using value_type    = blake3_hasher;
+    using pointer       = blake3_hasher*;
+    using const_pointer = const blake3_hasher*;
+
+    blake3_state() noexcept;
+    ~blake3_state() noexcept;
+
+    blake3_state(const blake3_state&) = delete;
+    blake3_state& operator=(const blake3_state&) = delete;
+    
+    // returns a pointer to the state
+    _NODISCARD pointer get() noexcept;
+
+    // returns a non-mutable pointer to the state
+    _NODISCARD const_pointer get() const noexcept;
+
+private:
+    value_type _Myimpl;
+};
+
 // STRUCT TEMPLATE blake3_traits
 template <class _Elem>
 struct _SDSDLL_API blake3_traits { // traits for the BLAKE3 hash
@@ -36,6 +59,7 @@ public:
     using byte_string     = basic_string<unsigned char>;
     using size_type       = size_t;
     using difference_type = ptrdiff_t;
+    using state_type      = blake3_state;
 
     static constexpr size_type bits = 256;
 
@@ -49,6 +73,39 @@ public:
     // hashes a file
     _NODISCARD static constexpr bool hash_file(byte_type* const _Buf,
         const size_type _Buf_size, file& _File, const file::off_type _Off) noexcept;
+};
+
+// STRUCT TEMPLATE blake3_stream_traits
+template <class _Elem>
+struct _SDSDLL_API blake3_stream_traits { // traits for the BLAKE3 stream hash
+private:
+    static_assert(is_any_of_v<_Elem, char, unsigned char, wchar_t>,
+        "Requires a byte/UTF-8/Unicode element type.");
+
+public:
+    using char_type       = _Elem;
+    using byte_type       = unsigned char;
+    using char_string     = basic_string<_Elem>;
+    using byte_string     = basic_string<unsigned char>;
+    using size_type       = size_t;
+    using difference_type = ptrdiff_t;
+    using state_type      = blake3_state;
+
+    static constexpr size_type bits = 256;
+
+    // returns hashed text length
+    _NODISCARD static constexpr size_type bytes_count() noexcept;
+
+    // initializes the stream
+    _NODISCARD static constexpr bool init(state_type& _State) noexcept;
+
+    // appends a data to the stream
+    _NODISCARD static constexpr bool append(
+        state_type& _State, const char_type* const _Data, const size_type _Count) noexcept;
+
+    // closes the stream
+    _NODISCARD static constexpr bool complete(
+        state_type& _State, byte_type* const _Buf, const size_type _Buf_size) noexcept;
 };
 _SDSDLL_END
 
