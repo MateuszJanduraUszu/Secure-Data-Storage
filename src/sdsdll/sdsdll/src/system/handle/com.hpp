@@ -10,6 +10,7 @@
 #if _SDSDLL_PREPROCESSOR_GUARD
 #include <combaseapi.h>
 #include <core/api.hpp>
+#include <objbase.h>
 
 _SDSDLL_BEGIN
 // STRUCT com_instance

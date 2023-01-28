@@ -10,7 +10,7 @@
 _SDSDLL_BEGIN
 // FUNCTION com_instance::initialize
 void com_instance::initialize() noexcept {
-    (void) ::CoInitialize(nullptr);
+    (void) ::CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 }
 
 // FUNCTION com_instance::uninitialize
