@@ -18,14 +18,12 @@
 #include <cstdint>
 #include <encoding/utf16.hpp>
 #include <encoding/utf8.hpp>
-#include <filesystem/file.hpp>
-#include <filesystem/path.hpp>
-#include <filesystem/status.hpp>
 #include <openssl/bio.h>
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 #include <openssl/rsa.h>
 #include <string>
+#include <type_traits>
 #include <utility>
 
 // STD types
@@ -33,47 +31,53 @@ using _STD basic_string;
 using _STD string;
 
 _SDSDLL_BEGIN
-// STRUCT _Bio_buffer
-struct _Bio_buffer {
-    BIO* _Ptr;
+// STRUCT _Bio_buffer_proxy
+struct _Bio_buffer_proxy {
+    BIO* _Buf;
 
-    _Bio_buffer() noexcept;
-    explicit _Bio_buffer(BIO* const _Ptr) noexcept;
-    ~_Bio_buffer() noexcept;
+    _Bio_buffer_proxy() noexcept;
+    ~_Bio_buffer_proxy() noexcept;
 };
 
-// FUNCTION _Rsa4096_public_key_to_buffer
-extern _NODISCARD BIO* _Rsa4096_public_key_to_buffer(const EVP_PKEY* const _Key);
-
-// FUNCTION _Rsa4096_private_key_to_buffer
-extern _NODISCARD BIO* _Rsa4096_private_key_to_buffer(const EVP_PKEY* const _Key);
-
-// FUNCTION _Export_rsa4096_key_from_buffer
-extern _NODISCARD string _Export_rsa4096_key_from_buffer(_Bio_buffer& _Bio_buf);
-
-// FUNCTION _Import_rsa4096_key_to_buffer
-extern _NODISCARD bool _Import_rsa4096_key_to_buffer(
-    _Bio_buffer& _Bio_buf, const string& _Key);
-
-// FUNCTION _Bio_buffer_to_file
-extern _NODISCARD bool _Bio_buffer_to_file(const path& _Target, _Bio_buffer& _Bio_buf);
-
-// FUNCTION _File_to_bio_buffer
-extern _NODISCARD bool _File_to_bio_buffer(const path& _Target, _Bio_buffer& _Bio_buf);
-
-// CLASS _Rsa4096_key_context
-class _Rsa4096_key_context {
+// CLASS _Rsa4096_key_proxy
+class _Rsa4096_key_proxy {
 public:
-    EVP_PKEY_CTX* _Ptr;
+    EVP_PKEY* _Key;
 
-    explicit _Rsa4096_key_context(EVP_PKEY* const _Key) noexcept;
-    ~_Rsa4096_key_context() noexcept;
+    explicit _Rsa4096_key_proxy(EVP_PKEY* const _Key) noexcept;
+    ~_Rsa4096_key_proxy() noexcept;
 };
+
+// CLASS _Rsa4096_key_context_proxy
+class _Rsa4096_key_context_proxy {
+public:
+    EVP_PKEY_CTX* _Ctx;
+
+    explicit _Rsa4096_key_context_proxy(EVP_PKEY* const _Key) noexcept;
+    ~_Rsa4096_key_context_proxy() noexcept;
+};
+
+// FUNCTION _Make_raw_rsa4096_key_pair
+extern _NODISCARD EVP_PKEY* _Make_raw_rsa4096_key_pair() noexcept;
+
+// FUNCTION _Extract_private_key_from_raw_rsa4096_key_pair
+extern _NODISCARD RSA* _Extract_private_key_from_raw_rsa4096_key_pair(
+    const EVP_PKEY* const _Raw) noexcept;
+
+// FUNCTION _Extract_public_key_from_raw_rsa4096_key_pair
+extern _NODISCARD RSA* _Extract_public_key_from_raw_rsa4096_key_pair(
+    const EVP_PKEY* const _Raw) noexcept;
+
+// FUNCTION _Cast_rsa4096_key_handle
+extern _NODISCARD EVP_PKEY* _Cast_rsa4096_key_handle(RSA* const _Handle) noexcept;
+
+// CLASS rsa4096_key_pair
+class rsa4096_key_pair;
 
 // CLASS rsa4096_key
-class _SDSDLL_API rsa4096_key {
+class _SDSDLL_API rsa4096_key { // stores an RSA-4096 private or public key
 public:
-    using native_handle_type = EVP_PKEY*;
+    using native_handle_type = RSA*;
 
     rsa4096_key() noexcept;
     rsa4096_key(const rsa4096_key& _Other) noexcept;
@@ -83,50 +87,80 @@ public:
     rsa4096_key& operator=(const rsa4096_key& _Other) noexcept;
     rsa4096_key& operator=(rsa4096_key&& _Other) noexcept;
 
+    enum type : unsigned char {
+        none,
+        private_key,
+        public_key
+    };
+
     // checks if the handle is good
     _NODISCARD bool good() const noexcept;
 
-    // returns a native handle to the key
-    _NODISCARD native_handle_type native_handle() noexcept;
-    
-    // returns a native handle to the key for view
+    // returns a handle to the native implementation
     _NODISCARD const native_handle_type native_handle() const noexcept;
+
+    // returns the key type
+    _NODISCARD const type key_type() const noexcept;
 
     // unloads the current key
     void unload() noexcept;
 
-    // exports the public key
-    _NODISCARD string export_public();
+    // copies the key
+    _NODISCARD bool copy(const rsa4096_key& _Other) noexcept;
+    _NODISCARD bool copy(rsa4096_key&& _Other) noexcept;
 
-    // exports the private key
-    _NODISCARD string export_private();
+    // resets the key
+    native_handle_type reset() noexcept;
 
-    // imports the public key
-    _NODISCARD bool import_public(const string& _Key);
+    // returns the key in Base64 format
+    _NODISCARD string load() const;
 
-    // imports the private key
-    _NODISCARD bool import_private(const string& _Key);
-
-    // loads the public key from a file
-    _NODISCARD bool load_public(const path& _Target);
-
-    // loads the private key from a file
-    _NODISCARD bool load_private(const path& _Target);
-
-    // stores the public key to a file
-    _NODISCARD bool store_public(const path& _Target);
-
-    // stores the private key to a file
-    _NODISCARD bool store_private(const path& _Target);
+    // stores a new key
+    _NODISCARD bool store(const string& _New_key, const type _New_type);
 
 private:
-    native_handle_type _Myhandle;
+    friend _SDSDLL_API rsa4096_key_pair make_rsa4096_key_pair() noexcept;
 
-    friend _SDSDLL_API rsa4096_key make_rsa4096_key() noexcept;
+    native_handle_type _Myimpl;
+    type _Mytype;
 };
 
-// FUNCTION make_rsa4096_key
-_SDSDLL_API _NODISCARD rsa4096_key make_rsa4096_key() noexcept;
+// CLASS rsa4096_key_pair
+class _SDSDLL_API rsa4096_key_pair { // stores a RSA-4096 key pair
+public:
+    rsa4096_key_pair() noexcept;
+    rsa4096_key_pair(const rsa4096_key_pair& _Other) noexcept;
+    rsa4096_key_pair(rsa4096_key_pair&& _Other) noexcept;
+    ~rsa4096_key_pair() noexcept;
+
+    explicit rsa4096_key_pair(const rsa4096_key& _Private, const rsa4096_key& _Public) noexcept;
+    explicit rsa4096_key_pair(rsa4096_key&& _Private, rsa4096_key&& _Public) noexcept;
+
+    rsa4096_key_pair& operator=(const rsa4096_key_pair& _Other) noexcept;
+    rsa4096_key_pair& operator=(rsa4096_key_pair&& _Other) noexcept;
+
+    // checks if the keys are good
+    _NODISCARD bool good() const noexcept;
+
+    // returns the private key
+    _NODISCARD rsa4096_key& private_key() noexcept;
+
+    // returns the private key for view
+    _NODISCARD const rsa4096_key& private_key() const noexcept;
+
+    // returns the public key
+    _NODISCARD rsa4096_key& public_key() noexcept;
+
+    // returns the public key for view
+    _NODISCARD const rsa4096_key& public_key() const noexcept;
+
+private:
+    rsa4096_key _Mypriv;
+    rsa4096_key _Mypub;
+};
+
+// FUNCTION make_rsa4096_key_pair
+_SDSDLL_API _NODISCARD rsa4096_key_pair make_rsa4096_key_pair() noexcept;
 
 // STRUCT TEMPLATE rsa4096_traits
 template <class _Elem>

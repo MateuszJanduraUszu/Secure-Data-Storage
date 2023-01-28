@@ -8,140 +8,112 @@
 #if _SDSDLL_PREPROCESSOR_GUARD
 
 _SDSDLL_BEGIN
-// FUNCTION _Bio_buffer constructors/destructor
-_Bio_buffer::_Bio_buffer() noexcept : _Ptr(::BIO_new(::BIO_s_mem())) {}
+// FUNCTION _Bio_buffer_proxy constructors/destructor
+_Bio_buffer_proxy::_Bio_buffer_proxy() noexcept : _Buf(::BIO_new(::BIO_s_mem())) {}
 
-_Bio_buffer::_Bio_buffer(BIO* const _Ptr) noexcept : _Ptr(_Ptr) {}
-
-_Bio_buffer::~_Bio_buffer() noexcept {
-    if (_Ptr) {
-        ::BIO_free(_Ptr);
-        _Ptr = nullptr;
+_Bio_buffer_proxy::~_Bio_buffer_proxy() noexcept {
+    if (_Buf) {
+        ::BIO_free(_Buf);
+        _Buf = nullptr;
     }
 }
 
-// FUNCTION _Rsa4096_public_key_to_buffer
-_NODISCARD BIO* _Rsa4096_public_key_to_buffer(const EVP_PKEY* const _Key) {
-    BIO* const _Buf = ::BIO_new(::BIO_s_mem());
-    if (!_Buf) {
+// FUNCTION _Rsa4096_key_proxy constructor/destructor
+_Rsa4096_key_proxy::_Rsa4096_key_proxy(EVP_PKEY* const _Key) noexcept
+    : _Key(_Key ? _Key : ::EVP_PKEY_new()) {}
+
+_Rsa4096_key_proxy::~_Rsa4096_key_proxy() noexcept {
+    if (_Key) {
+        ::EVP_PKEY_free(_Key);
+        _Key = nullptr;
+    }
+}
+
+// FUNCTION _Rsa4096_key_context_proxy constructor/destructor
+_Rsa4096_key_context_proxy::_Rsa4096_key_context_proxy(EVP_PKEY* const _Key) noexcept
+    : _Ctx(_Key
+        ? ::EVP_PKEY_CTX_new(_Key, nullptr) : ::EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nullptr)) {}
+
+_Rsa4096_key_context_proxy::~_Rsa4096_key_context_proxy() noexcept {
+    if (_Ctx) {
+        ::EVP_PKEY_CTX_free(_Ctx);
+        _Ctx = nullptr;
+    }
+}
+
+// FUNCTION _Make_raw_rsa4096_key_pair
+_NODISCARD EVP_PKEY* _Make_raw_rsa4096_key_pair() noexcept {
+    _Rsa4096_key_context_proxy _Proxy(nullptr);
+    if (!_Proxy._Ctx) {
         return nullptr;
     }
 
-    return ::PEM_write_bio_PUBKEY(_Buf, _Key) != 0 ? _Buf : nullptr;
+    if (::EVP_PKEY_keygen_init(_Proxy._Ctx) <= 0) {
+        return nullptr;
+    }
+
+    if (::EVP_PKEY_CTX_set_rsa_keygen_bits(_Proxy._Ctx, 4096) <= 0) {
+        return nullptr;
+    }
+
+    EVP_PKEY* _Result = nullptr; // should be initialized
+    return ::EVP_PKEY_keygen(_Proxy._Ctx, _SDSDLL addressof(_Result)) > 0 ? _Result : nullptr;
 }
 
-// FUNCTION _Rsa4096_private_key_to_buffer
-_NODISCARD BIO* _Rsa4096_private_key_to_buffer(const EVP_PKEY* const _Key) {
-    BIO* const _Buf = ::BIO_new(::BIO_s_mem());
-    if (!_Buf) {
+#ifdef _MSC_VER
+#pragma warning(push, 3)
+#pragma warning(disable : 4996) // C4996: Raw RSA functions since OpenSSL 3.0
+#endif // _MSC_VER
+// FUNCTION _Extract_private_key_from_raw_rsa4096_key_pair
+_NODISCARD RSA* _Extract_private_key_from_raw_rsa4096_key_pair(
+    const EVP_PKEY* const _Raw) noexcept {
+    _Bio_buffer_proxy _Proxy;
+    if (!_Proxy._Buf) {
         return nullptr;
     }
 
     return ::PEM_write_bio_PrivateKey(
-        _Buf, _Key, nullptr, nullptr, 0, nullptr, nullptr) != 0 ? _Buf : nullptr;
+        _Proxy._Buf, _Raw, nullptr, nullptr, 0, nullptr, nullptr) != 0
+        ? ::PEM_read_bio_RSAPrivateKey(_Proxy._Buf, nullptr, nullptr, nullptr) : nullptr;
 }
 
-// FUNCTION _Export_rsa4096_key_from_buffer
-_NODISCARD string _Export_rsa4096_key_from_buffer(_Bio_buffer& _Bio_buf) {
-    const int _Buf_size = BIO_pending(_Bio_buf._Ptr);
-    _Sbo_buffer<char> _Buf(static_cast<size_t>(_Buf_size));
-    if (_Buf._Empty()) { // allocation failed
-        return string{};
+// FUNCTION _Extract_public_key_from_raw_rsa4096_key_pair
+_NODISCARD RSA* _Extract_public_key_from_raw_rsa4096_key_pair(
+    const EVP_PKEY* const _Raw) noexcept {
+    _Bio_buffer_proxy _Proxy;
+    if (!_Proxy._Buf) {
+        return nullptr;
     }
 
-    return ::BIO_read(_Bio_buf._Ptr, _Buf._Get(), _Buf_size) == _Buf_size
-        ? string{_Buf._Get(), static_cast<size_t>(_Buf_size)} : string{};
+    return ::PEM_write_bio_PUBKEY(_Proxy._Buf, _Raw) != 0
+        ? ::PEM_read_bio_RSA_PUBKEY(_Proxy._Buf, nullptr, nullptr, nullptr) : nullptr;
 }
 
-// FUNCTION _Import_rsa4096_key_to_buffer
-_NODISCARD bool _Import_rsa4096_key_to_buffer(_Bio_buffer& _Bio_buf, const string& _Key) {
-    const int _Key_size = static_cast<int>(_Key.size());
-    return ::BIO_write(_Bio_buf._Ptr, _Key.c_str(), _Key_size) == _Key_size;
-}
-
-// FUNCTION _Bio_buffer_to_file
-_NODISCARD bool _Bio_buffer_to_file(const path& _Target, _Bio_buffer& _Bio_buf) {
-    if (_SDSDLL exists(_Target)) { // use an existing file
-        if (!_SDSDLL clear_file(_Target)) {
-            return false;
-        }
-    } else { // use a new file
-        if (!_SDSDLL create_file(_Target)) {
-            return false;
-        }
+// FUNCTION _Cast_rsa4096_key_handle
+_NODISCARD EVP_PKEY* _Cast_rsa4096_key_handle(RSA* const _Handle) noexcept {
+    EVP_PKEY* const _Result = ::EVP_PKEY_new();
+    if (!_Result) {
+        return nullptr;
     }
 
-    const int _Buf_size = BIO_pending(_Bio_buf._Ptr);
-    _Sbo_buffer<char> _Buf(static_cast<size_t>(_Buf_size));
-    if (_Buf._Empty()) { // allocation failed
-        return false;
-    }
-
-    if (::BIO_read(_Bio_buf._Ptr, _Buf._Get(), _Buf_size) != _Buf_size) {
-        return false;
-    }
-
-    file _File(_Target);
-    if (!_File.is_open()) {
-        return false;
-    }
-
-    return _File.write(_Buf._Get(), static_cast<size_t>(_Buf_size));
-}
-
-// FUNCTION _File_to_bio_buffer
-_NODISCARD bool _File_to_bio_buffer(const path& _Target, _Bio_buffer& _Bio_buf) {
-    if (!_SDSDLL exists(_Target)) {
-        return false;
-    }
-
-#ifdef _M_X64
-    const size_t _File_size = _SDSDLL file_size(_Target);
-#else // ^^^ _M_X64 ^^^ / vvv _M_IX86 vvv
-    const size_t _File_size = static_cast<size_t>(_SDSDLL file_size(_Target));
-#endif // _M_X64
-    if (_File_size == 0) {
-        return false;
-    }
-
-    file _File(_Target, file_access::read);
-    if (!_File.is_open()) {
-        return false;
-    }
-
-    _Sbo_buffer<char> _Buf(_File_size);
-    if (_Buf._Empty()) { // allocation failed
-        return false;
-    }
-
-    size_t _Read = 0; // read bytes
-    if (!_File.read(_Buf._Get(), _File_size, _File_size, &_Read) || _Read != _File_size) {
-        return false;
-    }
-
-    const int _Buf_size = static_cast<int>(_Buf._Size());
-    return ::BIO_write(_Bio_buf._Ptr, _Buf._Get(), _Buf_size) == _Buf_size;
-}
-
-// FUNCTION _Rsa4096_key_context constructor/destructor
-_Rsa4096_key_context::_Rsa4096_key_context(EVP_PKEY* const _Key) noexcept
-    : _Ptr(_Key ? ::EVP_PKEY_CTX_new(_Key, nullptr) : ::EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nullptr)) {}
-
-_Rsa4096_key_context::~_Rsa4096_key_context() noexcept {
-    if (_Ptr) {
-        ::EVP_PKEY_CTX_free(_Ptr);
-        _Ptr = nullptr;
+    if (::EVP_PKEY_assign(_Result, EVP_PKEY_RSA, _Handle) != 0) {
+        return _Result;
+    } else {
+        ::EVP_PKEY_free(_Result);
+        return nullptr;
     }
 }
 
 // FUNCTION rsa4096_key constructors/destructor
-rsa4096_key::rsa4096_key() noexcept : _Myhandle(nullptr) {}
+rsa4096_key::rsa4096_key() noexcept : _Myimpl(nullptr), _Mytype(none) {}
 
-rsa4096_key::rsa4096_key(const rsa4096_key& _Other) noexcept
-    : _Myhandle(_STD exchange(const_cast<rsa4096_key&>(_Other)._Myhandle, nullptr)) {}
+rsa4096_key::rsa4096_key(
+    const rsa4096_key& _Other) noexcept : _Myimpl(nullptr), _Mytype(none) {
+    (void) copy(_Other);
+}
 
 rsa4096_key::rsa4096_key(rsa4096_key&& _Other) noexcept
-    : _Myhandle(_STD exchange(_Other._Myhandle, nullptr)) {}
+    : _Myimpl(_STD exchange(_Other._Myimpl, nullptr)), _Mytype(_Other._Mytype) {}
 
 rsa4096_key::~rsa4096_key() noexcept {
     unload();
@@ -150,8 +122,7 @@ rsa4096_key::~rsa4096_key() noexcept {
 // FUNCTION rsa4096_key::operator=
 rsa4096_key& rsa4096_key::operator=(const rsa4096_key& _Other) noexcept {
     if (this != _SDSDLL addressof(_Other)) {
-        _Myhandle                                  = _Other._Myhandle;
-        const_cast<rsa4096_key&>(_Other)._Myhandle = nullptr;
+        (void) copy(_Other);
     }
 
     return *this;
@@ -159,8 +130,8 @@ rsa4096_key& rsa4096_key::operator=(const rsa4096_key& _Other) noexcept {
 
 rsa4096_key& rsa4096_key::operator=(rsa4096_key&& _Other) noexcept {
     if (this != _SDSDLL addressof(_Other)) {
-        _Myhandle        = _Other._Myhandle;
-        _Other._Myhandle = nullptr;
+        _Mytype = _Other._Mytype;
+        _Myimpl = _Other.reset();
     }
 
     return *this;
@@ -168,160 +139,186 @@ rsa4096_key& rsa4096_key::operator=(rsa4096_key&& _Other) noexcept {
 
 // FUNCTION rsa4096_key::good
 _NODISCARD bool rsa4096_key::good() const noexcept {
-    return _Myhandle != nullptr;
+    return _Myimpl != nullptr && _Mytype != none;
 }
 
 // FUNCTION rsa4096_key::native_handle
-_NODISCARD rsa4096_key::native_handle_type rsa4096_key::native_handle() noexcept {
-    return _Myhandle;
+_NODISCARD const rsa4096_key::native_handle_type rsa4096_key::native_handle() const noexcept {
+    return _Myimpl;
 }
 
-_NODISCARD const rsa4096_key::native_handle_type rsa4096_key::native_handle() const noexcept {
-    return _Myhandle;
+// FUNCTION rsa4096_key::key_type
+_NODISCARD const rsa4096_key::type rsa4096_key::key_type() const noexcept {
+    return _Mytype;
 }
 
 // FUNCTION rsa4096_key::unload
 void rsa4096_key::unload() noexcept {
-    if (_Myhandle) {
-        ::EVP_PKEY_free(_Myhandle);
-        _Myhandle = nullptr;
+    if (_Myimpl) {
+        ::RSA_free(_Myimpl);
+        _Myimpl = nullptr;
+        _Mytype = none;
     }
 }
 
-// FUNCTION rsa4096_key::export_public
-_NODISCARD string rsa4096_key::export_public() {
-    if (!_Myhandle) {
+// FUNCTION rsa4096_key::copy
+_NODISCARD bool rsa4096_key::copy(const rsa4096_key& _Other) noexcept {
+    return store(_Other.load(), _Other._Mytype);
+}
+
+_NODISCARD bool rsa4096_key::copy(rsa4096_key&& _Other) noexcept {
+    return store(_Other.load(), _Other._Mytype);
+}
+
+// FUNCTION rsa4096_key::reset
+rsa4096_key::native_handle_type rsa4096_key::reset() noexcept {
+    native_handle_type _Old_impl = _Myimpl;
+    _Myimpl                      = nullptr;
+    _Mytype                      = none;
+    return _Old_impl;
+}
+
+// FUNCTION rsa4096_key::load
+_NODISCARD string rsa4096_key::load() const {
+    if (!good()) {
         return string{};
     }
 
-    _Bio_buffer _Bio_buf(_Rsa4096_public_key_to_buffer(_Myhandle));
-    return _Bio_buf._Ptr ? _Export_rsa4096_key_from_buffer(_Bio_buf) : string{};
-}
-
-// FUNCTION rsa4096_key::export_private
-_NODISCARD string rsa4096_key::export_private() {
-    if (!_Myhandle) {
+    _Bio_buffer_proxy _Proxy;
+    if (!_Proxy._Buf) {
         return string{};
     }
 
-    _Bio_buffer _Bio_buf(_Rsa4096_private_key_to_buffer(_Myhandle));
-    return _Bio_buf._Ptr ? _Export_rsa4096_key_from_buffer(_Bio_buf) : string{};
+    if (_Mytype == private_key) { // load a private key
+        if (::PEM_write_bio_RSAPrivateKey(
+            _Proxy._Buf, _Myimpl, nullptr, nullptr, 0, nullptr, nullptr) == 0) {
+            return string{};
+        }
+    } else { // load a public key
+        if (::PEM_write_bio_RSA_PUBKEY(_Proxy._Buf, _Myimpl) == 0) {
+            return string{};
+        }
+    }
+
+    const int _Buf_size = BIO_pending(_Proxy._Buf);
+    string _Result(static_cast<size_t>(_Buf_size), char{});
+    return ::BIO_read(
+        _Proxy._Buf, _Result.data(), _Buf_size) == _Buf_size ? _Result : string{};
 }
 
-// FUNCTION rsa4096_key::import_public
-_NODISCARD bool rsa4096_key::import_public(const string& _Key) {
-    if (_Myhandle) { // some key is already loaded
+// FUNCTION rsa4096_key::store
+_NODISCARD bool rsa4096_key::store(const string& _New_key, const type _New_type) {
+    if (good()) { // some key is already loaded
         return false;
     }
 
-    _Bio_buffer _Bio_buf;
-    if (!_Bio_buf._Ptr) {
+    if (_New_type != private_key && _New_type != public_key) { // unknown key type
         return false;
     }
 
-    if (!_Import_rsa4096_key_to_buffer(_Bio_buf, _Key)) {
+    _Bio_buffer_proxy _Proxy;
+    if (!_Proxy._Buf) {
         return false;
     }
 
-    _Myhandle = ::PEM_read_bio_PUBKEY(_Bio_buf._Ptr, nullptr, nullptr, nullptr);
-    return _Myhandle != nullptr;
+    const int _Key_size = static_cast<int>(_New_key.size());
+    if (::BIO_write(_Proxy._Buf, _New_key.c_str(), _Key_size) != _Key_size) {
+        return false;
+    }
+
+    if (_New_type == private_key) { // store a private key
+        _Myimpl = ::PEM_read_bio_RSAPrivateKey(_Proxy._Buf, nullptr, nullptr, nullptr);
+    } else { // store a public key
+        _Myimpl = ::PEM_read_bio_RSA_PUBKEY(_Proxy._Buf, nullptr, nullptr, nullptr);
+    }
+
+    if (_Myimpl) {
+        _Mytype = _New_type;
+        return true;
+    } else {
+        return false;
+    }
+}
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif // _MSC_VER
+
+// FUNCTION rsa4096_key_pair constructors/destructor
+rsa4096_key_pair::rsa4096_key_pair() noexcept : _Mypriv(), _Mypub() {}
+
+rsa4096_key_pair::rsa4096_key_pair(const rsa4096_key_pair& _Other) noexcept
+    : _Mypriv(_Other._Mypriv), _Mypub(_Other._Mypub) {}
+
+rsa4096_key_pair::rsa4096_key_pair(rsa4096_key_pair&& _Other) noexcept
+    : _Mypriv(_STD move(_Other._Mypriv)), _Mypub(_STD move(_Other._Mypub)) {}
+
+rsa4096_key_pair::rsa4096_key_pair(const rsa4096_key& _Private,
+    const rsa4096_key& _Public) noexcept : _Mypriv(_Private), _Mypub(_Public) {}
+
+rsa4096_key_pair::rsa4096_key_pair(rsa4096_key&& _Private, rsa4096_key&& _Public) noexcept
+    : _Mypriv(_STD move(_Private)), _Mypub(_STD move(_Public)) {}
+
+rsa4096_key_pair::~rsa4096_key_pair() noexcept {}
+
+// FUNCTION rsa4096_key_pair::operator=
+rsa4096_key_pair& rsa4096_key_pair::operator=(const rsa4096_key_pair& _Other) noexcept {
+    if (this != _SDSDLL addressof(_Other)) {
+        _Mypriv = _Other._Mypriv;
+        _Mypub  = _Other._Mypub;
+    }
+
+    return *this;
 }
 
-// FUNCTION rsa4096_key::import_private
-_NODISCARD bool rsa4096_key::import_private(const string& _Key) {
-    if (_Myhandle) { // some key is already loaded
-        return false;
+rsa4096_key_pair& rsa4096_key_pair::operator=(rsa4096_key_pair&& _Other) noexcept {
+    if (this != _SDSDLL addressof(_Other)) {
+        _Mypriv = _STD move(_Other._Mypriv);
+        _Mypub  = _STD move(_Other._Mypub);
     }
 
-    _Bio_buffer _Bio_buf;
-    if (!_Bio_buf._Ptr) {
-        return false;
-    }
-
-    if (!_Import_rsa4096_key_to_buffer(_Bio_buf, _Key)) {
-        return false;
-    }
-
-    _Myhandle = ::PEM_read_bio_PrivateKey(_Bio_buf._Ptr, nullptr, nullptr, nullptr);
-    return _Myhandle != nullptr;
+    return *this;
 }
 
-// FUNCTION rsa4096_key::load_public
-_NODISCARD bool rsa4096_key::load_public(const path& _Target) {
-    if (_Myhandle) { // some key is already loaded
-        return false;
-    }
-
-    _Bio_buffer _Bio_buf;
-    if (!_Bio_buf._Ptr) {
-        return false;
-    }
-
-    if (!_File_to_bio_buffer(_Target, _Bio_buf)) {
-        return false;
-    }
-
-    _Myhandle = ::PEM_read_bio_PUBKEY(_Bio_buf._Ptr, nullptr, nullptr, nullptr);
-    return _Myhandle != nullptr;
+// FUNCTION rsa4096_key_pair::good
+_NODISCARD bool rsa4096_key_pair::good() const noexcept {
+    return _Mypriv.good() && _Mypriv.key_type() == rsa4096_key::private_key
+        && _Mypub.good() && _Mypub.key_type() == rsa4096_key::public_key;
 }
 
-// FUNCTION rsa4096_key::load_private
-_NODISCARD bool rsa4096_key::load_private(const path& _Target) {
-    if (_Myhandle) { // some key is already loaded
-        return false;
-    }
-
-    _Bio_buffer _Bio_buf;
-    if (!_Bio_buf._Ptr) {
-        return false;
-    }
-
-    if (!_File_to_bio_buffer(_Target, _Bio_buf)) {
-        return false;
-    }
-
-    _Myhandle = ::PEM_read_bio_PrivateKey(_Bio_buf._Ptr, nullptr, nullptr, nullptr);
-    return _Myhandle != nullptr;
+// FUNCTION rsa4096_key_pair::private_key
+_NODISCARD rsa4096_key& rsa4096_key_pair::private_key() noexcept {
+    return _Mypriv;
 }
 
-// FUNCTION rsa4096_key::store_public
-_NODISCARD bool rsa4096_key::store_public(const path& _Target) {
-    if (!_Myhandle) { // no key is loaded
-        return false;
-    }
-
-    _Bio_buffer _Bio_buf(_Rsa4096_public_key_to_buffer(_Myhandle));
-    return _Bio_buf._Ptr ? _Bio_buffer_to_file(_Target, _Bio_buf) : false;
+_NODISCARD const rsa4096_key& rsa4096_key_pair::private_key() const noexcept {
+    return _Mypriv;
 }
 
-// FUNCTION rsa4096_key::store_private
-_NODISCARD bool rsa4096_key::store_private(const path& _Target) {
-    if (!_Myhandle) { // no key is loaded
-        return false;
-    }
-
-    _Bio_buffer _Bio_buf(_Rsa4096_private_key_to_buffer(_Myhandle));
-    return _Bio_buf._Ptr ? _Bio_buffer_to_file(_Target, _Bio_buf) : false;
+// FUNCTION rsa4096_key_pair::public_key
+_NODISCARD rsa4096_key& rsa4096_key_pair::public_key() noexcept {
+    return _Mypub;
 }
 
-// FUNCTION make_rsa4096_key
-_NODISCARD rsa4096_key make_rsa4096_key() noexcept {
-    _Rsa4096_key_context _Ctx(nullptr);
-    if (!_Ctx._Ptr) {
-        return rsa4096_key{};
+_NODISCARD const rsa4096_key& rsa4096_key_pair::public_key() const noexcept {
+    return _Mypub;
+}
+
+// FUNCTION make_rsa4096_key_pair
+_NODISCARD rsa4096_key_pair make_rsa4096_key_pair() noexcept {
+    EVP_PKEY* const _Raw = _Make_raw_rsa4096_key_pair();
+    if (!_Raw) { // failed to generate the keys
+        return rsa4096_key_pair{};
     }
 
-    if (::EVP_PKEY_keygen_init(_Ctx._Ptr) == 0) {
-        return rsa4096_key{};
-    }
-
-    if (::EVP_PKEY_CTX_set_rsa_keygen_bits(_Ctx._Ptr, 4096) == 0) {
-        return rsa4096_key{};
-    }
-
-    rsa4096_key _Key;
-    return ::EVP_PKEY_keygen(
-        _Ctx._Ptr, _SDSDLL addressof(_Key._Myhandle)) != 0 ? _Key : rsa4096_key{};
+    rsa4096_key_pair _Result;
+    rsa4096_key& _Private = _Result.private_key();
+    rsa4096_key& _Public  = _Result.public_key();
+    _Private._Myimpl      = _Extract_private_key_from_raw_rsa4096_key_pair(_Raw);
+    _Private._Mytype      = rsa4096_key::private_key;
+    _Public._Myimpl       = _Extract_public_key_from_raw_rsa4096_key_pair(_Raw);
+    _Public._Mytype       = rsa4096_key::public_key;
+    ::EVP_PKEY_free(_Raw);
+    return _Result;
 }
 
 // FUNCTION TEMPLATE rsa4096_traits::bytes_count
@@ -361,24 +358,39 @@ _NODISCARD constexpr bool rsa4096_traits<_Elem>::encrypt(
         return false;
     }
 
-    if (!_Key.good()) {
-        return false;
-    }
-    
-    _Rsa4096_key_context _Ctx(_Key.native_handle());
-    if (!_Ctx._Ptr) {
+    if (!_Key.good() || _Key.key_type() != key::public_key) {
         return false;
     }
 
-    if (::EVP_PKEY_encrypt_init(_Ctx._Ptr) <= 0) {
+    EVP_PKEY* _Key_handle;
+    {
+        // Note: We must use a temporary key, otherwise the key will be released.
+        key _Temp_key = _Key;
+        if (!_Temp_key.good()) {
+            return false;
+        }
+
+        _Key_handle = _Cast_rsa4096_key_handle(_Temp_key.reset());
+        if (!_Key_handle) {
+            return false;
+        }
+    }
+
+    _Rsa4096_key_proxy _Key_proxy(_Key_handle);
+    _Rsa4096_key_context_proxy _Ctx_proxy(_Key_proxy._Key);
+    if (!_Ctx_proxy._Ctx) {
         return false;
     }
 
-    if (::EVP_PKEY_CTX_set_rsa_padding(_Ctx._Ptr, RSA_PKCS1_OAEP_PADDING) <= 0) {
+    if (::EVP_PKEY_encrypt_init(_Ctx_proxy._Ctx) <= 0) {
         return false;
     }
 
-    if (::EVP_PKEY_CTX_set_rsa_oaep_md(_Ctx._Ptr, ::EVP_sha3_256()) <= 0) {
+    if (::EVP_PKEY_CTX_set_rsa_padding(_Ctx_proxy._Ctx, RSA_PKCS1_OAEP_PADDING) <= 0) {
+        return false;
+    }
+
+    if (::EVP_PKEY_CTX_set_rsa_oaep_md(_Ctx_proxy._Ctx, ::EVP_sha3_256()) <= 0) {
         return false;
     }
 
@@ -391,7 +403,8 @@ _NODISCARD constexpr bool rsa4096_traits<_Elem>::encrypt(
     }
 
     size_type _Bytes; // encrypted bytes (unused)
-    return ::EVP_PKEY_encrypt(_Ctx._Ptr, _Buf, &_Bytes, _Raw_data.c_str(), _Raw_data.size()) > 0;
+    return ::EVP_PKEY_encrypt(
+        _Ctx_proxy._Ctx, _Buf, &_Bytes, _Raw_data.c_str(), _Raw_data.size()) > 0;
 }
 
 // FUNCTION TEMPLATE rsa4096_traits::decrypt
@@ -403,29 +416,44 @@ _NODISCARD constexpr bool rsa4096_traits<_Elem>::decrypt(
         return false;
     }
  
-    if (!_Key.good()) {
+    if (!_Key.good() || _Key.key_type() != key::private_key) {
         return false;
     }
 
-    _Rsa4096_key_context _Ctx(_Key.native_handle());
-    if (!_Ctx._Ptr) {
+    EVP_PKEY* _Key_handle;
+    {
+        // Note: We must use a temporary key, otherwise the key will be released.
+        key _Temp_key = _Key;
+        if (!_Temp_key.good()) {
+            return false;
+        }
+
+        _Key_handle = _Cast_rsa4096_key_handle(_Temp_key.reset());
+        if (!_Key_handle) {
+            return false;
+        }
+    }
+
+    _Rsa4096_key_proxy _Key_proxy(_Key_handle);
+    _Rsa4096_key_context_proxy _Ctx_proxy(_Key_proxy._Key);
+    if (!_Ctx_proxy._Ctx) {
         return false;
     }
 
-    if (::EVP_PKEY_decrypt_init(_Ctx._Ptr) <= 0) {
+    if (::EVP_PKEY_decrypt_init(_Ctx_proxy._Ctx) <= 0) {
         return false;
     }
 
-    if (::EVP_PKEY_CTX_set_rsa_padding(_Ctx._Ptr, RSA_PKCS1_OAEP_PADDING) <= 0) {
+    if (::EVP_PKEY_CTX_set_rsa_padding(_Ctx_proxy._Ctx, RSA_PKCS1_OAEP_PADDING) <= 0) {
         return false;
     }
 
-    if (::EVP_PKEY_CTX_set_rsa_oaep_md(_Ctx._Ptr, ::EVP_sha3_256()) <= 0) {
+    if (::EVP_PKEY_CTX_set_rsa_oaep_md(_Ctx_proxy._Ctx, ::EVP_sha3_256()) <= 0) {
         return false;
     }
 
     size_type _Bytes = 0; // decrypted bytes
-    if (::EVP_PKEY_decrypt(_Ctx._Ptr, nullptr, &_Bytes, _Data, _Data_size) <= 0) {
+    if (::EVP_PKEY_decrypt(_Ctx_proxy._Ctx, nullptr, &_Bytes, _Data, _Data_size) <= 0) {
         return false;
     }
 
@@ -434,7 +462,7 @@ _NODISCARD constexpr bool rsa4096_traits<_Elem>::decrypt(
         return false;
     }
     
-    if (::EVP_PKEY_decrypt(_Ctx._Ptr, _Temp_buf._Get(), &_Bytes, _Data, _Data_size) <= 0) {
+    if (::EVP_PKEY_decrypt(_Ctx_proxy._Ctx, _Temp_buf._Get(), &_Bytes, _Data, _Data_size) <= 0) {
         return false;
     }
 
